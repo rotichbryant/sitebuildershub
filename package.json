@@ -1,17 +1,45 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "dependencies": {
-    "nuxt": "^3.15.4",
-    "vue": "latest",
-    "vue-router": "latest"
-  }
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vue-tsc && vite build",
+        "dev": "vite --port 8000",
+        "lint": "eslint resources/js --ext .js,.ts,.vue --ignore-path .gitignore --fix"
+    },
+    "devDependencies": {
+        "@inertiajs/vue3": "^2.0.0",
+        "@rushstack/eslint-patch": "^1.8.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "@vue/eslint-config-prettier": "^9.0.0",
+        "@vue/eslint-config-typescript": "^13.0.0",
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "eslint": "^8.57.0",
+        "eslint-plugin-vue": "^9.23.0",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.4.31",
+        "prettier": "^3.3.0",
+        "prettier-plugin-organize-imports": "^4.0.0",
+        "prettier-plugin-tailwindcss": "^0.6.5",
+        "sass-embedded": "^1.83.1",
+        "tailwindcss": "^3.2.1",
+        "typescript": "~5.5.3",
+        "vite": "^6.0",
+        "vue": "^3.4.0",
+        "vue-tsc": "^2.0.24"
+    },
+    "dependencies": {
+        "@coreui/chartjs": "^4.0.0",
+        "@coreui/coreui": "^5.2.0",
+        "@coreui/icons": "^3.0.1",
+        "@coreui/icons-vue": "^2.2.0",
+        "@coreui/utils": "^2.0.2",
+        "@coreui/vue": "^5.4.1",
+        "@coreui/vue-chartjs": "^3.0.0",
+        "@popperjs/core": "^2.11.8",
+        "chart.js": "^4.4.4",
+        "qalendar": "^3.9.0"
+    }
 }

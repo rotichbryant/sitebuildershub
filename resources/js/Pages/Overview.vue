@@ -295,7 +295,7 @@ const tableExample = [
                     </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                    <CTableRow v-for="item in tableExample" :key="item.name">
+                    <CTableRow v-for="(item,index) in tableExample" :key="index">
                     <CTableDataCell class="text-center">
                         <CAvatar size="md" :src="item.avatar.src" :status="item.avatar.status" />
                     </CTableDataCell>

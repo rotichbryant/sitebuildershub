@@ -1,18 +1,18 @@
 <?php
+namespace App\Http\Controllers\Dashboard;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class AlertsController extends Controller
+class SystemController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Alerts',[
+        return Inertia::render('System',[
             'status' => session('status')
         ]);
     }

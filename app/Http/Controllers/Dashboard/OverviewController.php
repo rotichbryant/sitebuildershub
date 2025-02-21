@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ClientsController extends Controller
+class OverviewController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return Inertia::render('Clients',[
+    {        
+        return Inertia::render('Overview',[
             'status' => session('status')
         ]);
-    }
+    }//
 
     /**
      * Show the form for creating a new resource.

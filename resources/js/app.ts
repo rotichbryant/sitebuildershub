@@ -29,6 +29,7 @@ createInertiaApp({
         app.use(ZiggyVue);
         app.mount(el);
         
+        app.config.globalProperties.$route = route
     },
     progress: {
         color: '#4B5563',

@@ -7,7 +7,7 @@ import avatar3 from '../../images/avatars/3.jpg'
 import avatar4 from '../../images/avatars/4.jpg'
 import avatar5 from '../../images/avatars/5.jpg'
 import avatar6 from '../../images/avatars/6.jpg'
-import {MainChart, WidgetsStatsA, WidgetsStatsD} from '../Components';
+import {MainChart, WidgetsStatsA, WidgetsStatsD} from '../../Components';
 
 const progressGroupExample1 = [
   { title: 'Monday', value1: 34, value2: 78 },

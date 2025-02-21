@@ -15,40 +15,34 @@
     <CSidebarBrand>CoreUI</CSidebarBrand>
   </CSidebarHeader>
   <CSidebarNav>
-    <CNavItem href="overview">
+    <CNavItem :href="route('dashboard.overview')">
       <CIcon customClassName="nav-icon" icon="cil-speedometer"/> Overview
     </CNavItem>
     <CNavTitle>Data Management</CNavTitle>
-    <CNavItem href="appointments">
-      <CIcon  customClassName="nav-icon" icon="cil-user"/> Appointments
-    </CNavItem>
-    <CNavItem href="calendar">
-      <CIcon  customClassName="nav-icon" icon="cil-user"/> Calendar
-    </CNavItem>
-    <CNavItem href="clients">
+    <CNavItem :href="route('dashboard.clients')">
       <CIcon  customClassName="nav-icon" icon="cil-user"/> Clients
     </CNavItem>
-    <CNavItem href="staff">
+    <CNavItem :href="route('dashboard.postings')">
+      <CIcon  customClassName="nav-icon" icon="cil-user"/> Postings
+    </CNavItem>
+    <CNavItem :href="route('dashboard.staff')">
       <CIcon  customClassName="nav-icon" icon="cil-user"/> Staff
     </CNavItem>
-    <CNavItem href="services">
-      <CIcon  customClassName="nav-icon" icon="cil-user"/> Services
+    <CNavItem :href="route('dashboard.subscriptions')">
+      <CIcon  customClassName="nav-icon" icon="cil-user"/> Subscriptions
     </CNavItem>
-    <CNavTitle>Messages</CNavTitle>
-    <CNavItem href="mail">
-      <CIcon  customClassName="nav-icon" icon="cil-envelope"/> Mail
-    </CNavItem>
-    <CNavItem href="alerts">
-      <CIcon  customClassName="nav-icon" icon="cil-bell"/> Alerts
+    <CNavTitle>Support</CNavTitle>
+    <CNavItem :href="route('dashboard.notifications')">
+      <CIcon  customClassName="nav-icon" icon="cil-bell"/> Notifications
     </CNavItem>
     <CNavTitle>Settings</CNavTitle>
-    <CNavItem href="profile">
+    <CNavItem :href="route('dashboard.profile')">
       <CIcon  customClassName="nav-icon" icon="cil-user"/> Profile
     </CNavItem>
-    <CNavItem href="company">
+    <CNavItem :href="route('dashboard.company')">
       <CIcon  customClassName="nav-icon" icon="cil-building"/> Company
     </CNavItem>
-    <CNavItem href="system">
+    <CNavItem :href="route('dashboard.system')">
       <CIcon  customClassName="nav-icon" icon="cil-cogs"/> System
     </CNavItem>
   </CSidebarNav>

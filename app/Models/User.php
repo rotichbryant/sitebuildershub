@@ -59,19 +59,7 @@ class User extends Authenticatable
     public function roles(): BelongsTo
     {
         return $this->belongsTo(
-            related: RoleModel::class,
-        );
-    }
-
-    /**
-     * The email accounts that belong to the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\EmailAccount>
-     */
-    public function emailAccounts(): HasMany
-    {
-        return $this->hasMany(
-            related: EmailAccount::class
+            related: Role::class,
         );
     }
     

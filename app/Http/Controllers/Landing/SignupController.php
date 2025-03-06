@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
-class OverviewController extends Controller
+class SignupController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {        
-        return Inertia::render('Dashboard/Overview',[
-            'status' => session('status')
-        ]);
-    }//
+    {
+        //
+    }
 
     /**
      * Show the form for creating a new resource.

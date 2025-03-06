@@ -20,16 +20,16 @@
     </CNavItem>
     <CNavTitle>Data Management</CNavTitle>
     <CNavItem :href="route('dashboard.clients')">
-      <CIcon  customClassName="nav-icon" icon="cil-user"/> Clients
+      <CIcon  customClassName="nav-icon" icon="cil-group"/> Clients
     </CNavItem>
     <CNavItem :href="route('dashboard.postings')">
-      <CIcon  customClassName="nav-icon" icon="cil-user"/> Postings
+      <CIcon  customClassName="nav-icon" icon="cil-applications"/> Postings
     </CNavItem>
     <CNavItem :href="route('dashboard.staff')">
       <CIcon  customClassName="nav-icon" icon="cil-user"/> Staff
     </CNavItem>
     <CNavItem :href="route('dashboard.subscriptions')">
-      <CIcon  customClassName="nav-icon" icon="cil-user"/> Subscriptions
+      <CIcon  customClassName="nav-icon" icon="cil-list"/> Subscriptions
     </CNavItem>
     <CNavTitle>Support</CNavTitle>
     <CNavItem :href="route('dashboard.notifications')">
@@ -43,7 +43,7 @@
       <CIcon  customClassName="nav-icon" icon="cil-building"/> Company
     </CNavItem>
     <CNavItem :href="route('dashboard.system')">
-      <CIcon  customClassName="nav-icon" icon="cil-cogs"/> System
+      <CIcon  customClassName="nav-icon" icon="cil-cog"/> System
     </CNavItem>
   </CSidebarNav>
   <CSidebarFooter class="border-top">

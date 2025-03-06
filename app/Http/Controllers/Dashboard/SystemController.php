@@ -12,7 +12,7 @@ class SystemController extends Controller
      */
     public function index()
     {
-        return Inertia::render('System',[
+        return Inertia::render('Dashboard/System',[
             'status' => session('status')
         ]);
     }

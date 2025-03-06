@@ -40,6 +40,8 @@
         "@coreui/vue-chartjs": "^3.0.0",
         "@popperjs/core": "^2.11.8",
         "chart.js": "^4.4.4",
+        "dropzone-vue3": "^1.0.2",
+        "lodash": "^4.17.21",
         "qalendar": "^3.9.0"
     }
 }

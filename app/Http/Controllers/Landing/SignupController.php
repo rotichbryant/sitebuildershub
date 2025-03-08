@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Landing\SignupRequest;
 use Illuminate\Http\Request;
 
 class SignupController extends Controller
 {
+    protected $redirectTo = '/';
+    
     /**
      * Display a listing of the resource.
      */
@@ -26,9 +29,13 @@ class SignupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SignupRequest $request)
     {
         //
+        $formData = $request->validated();
+
+        print_r(request()->route());
+        return response()->json(array('formData' => $formData,'message' => 'Successful'));
     }
 
     /**

@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import { LandingFooter, LandingHeader } from '../Components'
-</script>
-
 <template>
     <div class="wrapper d-flex flex-column min-vh-100">
       <LandingHeader />
@@ -14,3 +9,7 @@ import { LandingFooter, LandingHeader } from '../Components'
       <LandingFooter />
     </div>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { LandingFooter, LandingHeader } from '../Components/Landing'
+</script>

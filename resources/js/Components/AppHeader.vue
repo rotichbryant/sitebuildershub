@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useColorModes } from '@coreui/vue'
 
 // import AppBreadcrumb from './AppBreadcrumb.vue'
-import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt.vue'
+import AppHeaderDropdownAccnt from './Landing/Account.vue'
 // import { useSidebarStore } from '@/stores/sidebar.js'
 
 const headerClassNames = ref('mb-4 p-0')

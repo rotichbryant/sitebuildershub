@@ -4,18 +4,15 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 
-class HomeController extends Controller
+class AboutUsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        return Inertia::render('Landing/Home',[
-            'status' => session('status')
-        ]);
+        //
     }
 
     /**

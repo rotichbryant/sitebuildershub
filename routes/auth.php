@@ -11,7 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\CompanyController;
-use App\Http\Controllers\Dashboard\LoginController;
+use App\Http\Controllers\Dashboard\LoginController  as LandingLoginController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\OverviewController;
 use App\Http\Controllers\Dashboard\PostingController;
@@ -20,28 +20,33 @@ use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
 use App\Http\Controllers\Dashboard\SystemController;
 use App\Http\Controllers\Dashboard\LoginController as DashboardLoginController;
+use App\Http\Controllers\Landing\SignupController;
 use Illuminate\Support\Facades\Route;
 
 // Route::middleware('guest')->name('dashboard.')->prefix('dashboard')->group(function () {
 //     Route::get('login',  [DashboardLoginController::class, 'create'])->name('login');
 //     Route::post('login', [DashboardLoginController::class, 'store'])->name('store');
 // });
-
 Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.guest')->group(function () {
         Route::get('/login', [DashboardLoginController::class, 'index'])->name('login');
-        Route::post('login', [DashboardLoginController::class, 'store'])->name('store');
+        Route::post('/login', [DashboardLoginController::class, 'store'])->name('store');
     });
     Route::middleware('admin.auth')->group(function () {
-        Route::get('/',             [OverviewController::class, 'index'])->name('overview');
-        Route::get('/notifications',[NotificationController::class, 'index'])->name('notifications');
-        Route::get('/company',      [CompanyController::class, 'index'])->name('company');
-        Route::get('/clients',      [ClientsController::class, 'index'])->name('clients');
-        Route::get('/subscriptions',[SubscriptionController::class, 'index'])->name('subscriptions');
-        Route::get('/postings',     [PostingController::class, 'index'])->name('postings');
-        Route::get('/staff',        [StaffController::class,    'index'])->name('staff');
-        Route::get('/system',       [SystemController::class,   'index'])->name('system');
-        Route::get('/profile',      [DashboardProfileController::class,   'index'])->name('profile'); 
+        Route::get('/',      [DashboardLoginController::class, 'destroy'])->name('logout');
+    });
+    // Route::get('/profile',      [ProfileController::class, 'edit'])->name('profile.edit');
+    // Route::patch('/profile',    [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile',   [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+Route::name('landing.')->prefix('landing')->group(function () {
+    Route::middleware('landing.guest')->group(function () {
+        Route::post('/login', [LandingLoginController::class, 'store'])->name('login');
+        Route::post('/signup', [SignupController::class, 'store'])->name('signup');
+        // Route::post('login', [DashboardLoginController::class, 'store'])->name('store');
+    });
+    Route::middleware('landing.auth')->group(function () {
+        // Route::get('/',      [DashboardLoginController::class, 'destroy'])->name('logout');
     });
     // Route::get('/profile',      [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile',    [ProfileController::class, 'update'])->name('profile.update');

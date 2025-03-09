@@ -27,6 +27,7 @@ class UserSeeder extends Seeder
             'email_verified_at' => now()->format('Y-m-d H:i:s'),
             'password'          => Hash::make('password'),
             'role_id'           => $role->id,
+            'token'             => Str::random(20),
             'created_at'        => now()->format('Y-m-d H:i:s'),
             'updated_at'        => now()->format('Y-m-d H:i:s')
         ]);

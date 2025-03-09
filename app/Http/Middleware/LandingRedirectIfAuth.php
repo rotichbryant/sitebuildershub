@@ -17,7 +17,7 @@ class LandingRedirectIfAuth
     public function handle(Request $request, Closure $next, $guard = 'landing'): Response
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/');
+            return redirect(route('landing.home', absolute: false));
         }
 
         return $next($request);

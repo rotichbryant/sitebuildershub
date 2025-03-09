@@ -38,7 +38,7 @@ class LoginController extends Controller
     {
         $request->authenticate();
 
-        print_r($request->session()->regenerate());
+        $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard.overview', absolute: false));
     }

@@ -43,6 +43,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('picture')->nullable()->default(null);
             $table->string('phone_number')->nullable()->default(null);
+            $table->string('token');
             $table->foreignUuid('role_id')->references('id')->on('roles');
             $table->rememberToken();
             $table->timestamps();

@@ -13,11 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         
         $middleware->alias([
-            'admin.auth'  => \App\Http\Middleware\AdminRedirectIfAuth::class,
-            'admin.guest' => \App\Http\Middleware\AdminRedirectIfNotAuth::class,
-            'admin.role'  => \App\Http\Middleware\RedirectIfNotAdmin::class,
-            'landing.auth'  => \App\Http\Middleware\LandingRedirectIfNotAuth::class,
-            'landing.guest' => \App\Http\Middleware\LandingRedirectIfAuth::class,
+            'admin.auth'            => \App\Http\Middleware\AdminRedirectIfAuth::class,
+            'admin.guest'           => \App\Http\Middleware\AdminRedirectIfNotAuth::class,
+            'admin.role'            => \App\Http\Middleware\RedirectIfNotAdmin::class,
+            'landing.auth'          => \App\Http\Middleware\LandingRedirectIfNotAuth::class,
+            'landing.guest'         => \App\Http\Middleware\LandingRedirectIfAuth::class,
+            'landing.auth.optional' => \App\Http\Middleware\LandingOptionalAuth::class,
         ]);
 
         $middleware->web(append: [

@@ -1,13 +1,8 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import {AppFooter,AppHeader,AppSidebar} from '../Components'
-</script>
-
 <template>
   <div>
-    <AppSidebar />
+    <Sidebar />
     <div class="wrapper d-flex flex-column min-vh-100">
-      <AppHeader />
+      <Header />
       <div class="body flex-grow-1">
         <CContainer class="px-4" lg>
           <slot />
@@ -16,3 +11,8 @@ import {AppFooter,AppHeader,AppSidebar} from '../Components'
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import '../../scss/app.scss';
+import { ref } from 'vue';
+import {Header,Sidebar} from '../Components/Dashboard'
+</script>

@@ -1,15 +1,14 @@
 <template>
-    <div class="wrapper d-flex flex-column min-vh-100">
+  <div class="site-wrapper overflow-hidden ">
       <LandingHeader />
-        <div class="body flex-grow-1">
-            <CContainer fluid>
-            <slot />
-            </CContainer>
-        </div>
+      <slot />
       <LandingFooter />
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { LandingFooter, LandingHeader } from '../Components/Landing'
+import { onBeforeMount, onMounted } from 'vue';
+import '../../assets/css/bootstrap.css';
+import '../../assets/css/theme.css';
+import { LandingFooter, LandingHeader } from '../Components/Landing';
+
 </script>

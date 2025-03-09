@@ -1,26 +1,3 @@
-<script setup>
-import { onMounted, ref } from 'vue'
-import { useColorModes } from '@coreui/vue'
-
-// import AppBreadcrumb from './AppBreadcrumb.vue'
-import AppHeaderDropdownAccnt from './Landing/Account.vue'
-// import { useSidebarStore } from '@/stores/sidebar.js'
-
-const headerClassNames = ref('mb-4 p-0')
-const { colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
-// const sidebar = useSidebarStore()
-
-onMounted(() => {
-  document.addEventListener('scroll', () => {
-    if (document.documentElement.scrollTop > 0) {
-      headerClassNames.value = 'mb-4 p-0 shadow-sm'
-    } else {
-      headerClassNames.value = 'mb-4 p-0'
-    }
-  })
-})
-</script>
-
 <template>
   <CHeader position="sticky" :class="headerClassNames">
     <CContainer class="border-bottom px-4" fluid>
@@ -75,3 +52,25 @@ onMounted(() => {
     </CContainer> -->
   </CHeader>
 </template>
+<script setup>
+import { onMounted, ref } from 'vue'
+import { useColorModes } from '@coreui/vue'
+
+// import AppBreadcrumb from './AppBreadcrumb.vue'
+import AppHeaderDropdownAccnt from './Landing/Account.vue'
+// import { useSidebarStore } from '@/stores/sidebar.js'
+
+const headerClassNames = ref('mb-4 p-0')
+const { colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
+// const sidebar = useSidebarStore()
+
+onMounted(() => {
+  document.addEventListener('scroll', () => {
+    if (document.documentElement.scrollTop > 0) {
+      headerClassNames.value = 'p-0 shadow-sm'
+    } else {
+      headerClassNames.value = 'p-0'
+    }
+  })
+})
+</script>

@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\SignupRequest;
+use App\Mail\WelcomeMail;
+use App\Models\Company;
+use App\Models\CompanyModel;
+use App\Models\User;
+use App\Models\UserModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class SignupController extends Controller
 {
-    protected $redirectTo = '/';
     
     /**
      * Display a listing of the resource.
@@ -20,10 +28,37 @@ class SignupController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
+     * This method processes a verification token, finds the associated user,
+     * updates their email verification timestamp, and redirects to the landing page.
+     *
+     * @param Request $request The incoming HTTP request.
+     * @param string $token The verification token for the user.
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, string $token)
     {
-        //
+        // Attempt to find the user with the provided token
+        try {
+
+            // Find user
+            $user = User::where('token', $token)->firstOrFail();
+
+            // Update the user's email_verified_at timestamp
+            $user->update([
+                'email_verified_at' => now()->format('Y-m-d H:i:s'),
+                'token'             => Str::random(20),
+            ]);
+
+            // Redirect to the landing home page on successful verification
+            return redirect(route('landing.home'));
+
+        } catch (ModelNotFoundException $e) {
+            
+            // Abort with a 404 error if the user is not found
+            return abort(404);
+
+        }
     }
 
     /**
@@ -34,7 +69,24 @@ class SignupController extends Controller
         //
         $formData = $request->validated();
 
-        print_r(request()->route());
+        $company  = Company::first();
+        $role     = $company->roles()->where('state',0)->first();
+
+        print_r($company->id);
+
+        $user     = User::create([
+            'company_id' => $company->id,
+            'first_name' => $formData['first_name'],
+            'last_name'  => $formData['last_name'],
+            'email'      => $formData['email'],
+            'role_id'    => $role->id,
+            'password'   => Hash::make($formData['password']),
+            'token'      => Str::random(20),
+        ]);
+        
+
+        Mail::to($user)->send(new WelcomeMail($user));
+
         return response()->json(array('formData' => $formData,'message' => 'Successful'));
     }
 

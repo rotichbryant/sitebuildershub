@@ -11,7 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\CompanyController;
-use App\Http\Controllers\Dashboard\LoginController  as LandingLoginController;
+use App\Http\Controllers\Landing\LoginController  as LandingLoginController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\OverviewController;
 use App\Http\Controllers\Dashboard\PostingController;
@@ -29,21 +29,21 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.guest')->group(function () {
-        Route::get('/login', [DashboardLoginController::class, 'index'])->name('login');
-        Route::post('/login', [DashboardLoginController::class, 'store'])->name('store');
+        Route::get('/login',                 [DashboardLoginController::class, 'index'])->name('login');
+        Route::post('/login',                [DashboardLoginController::class, 'store'])->name('store');
     });
     Route::middleware('admin.auth')->group(function () {
-        Route::get('/',      [DashboardLoginController::class, 'destroy'])->name('logout');
+        Route::post('/logout',      [DashboardLoginController::class, 'destroy'])->name('logout');
     });
     // Route::get('/profile',      [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile',    [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile',   [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::name('landing.')->prefix('landing')->group(function () {
+Route::name('landing.')->group(function () {
     Route::middleware('landing.guest')->group(function () {
-        Route::post('/login', [LandingLoginController::class, 'store'])->name('login');
-        Route::post('/signup', [SignupController::class, 'store'])->name('signup');
-        // Route::post('login', [DashboardLoginController::class, 'store'])->name('store');
+        Route::get('/verification/{token}', [SignupController::class, 'create'])->name('verification');
+        Route::post('/login',               [LandingLoginController::class, 'store'])->name('login');
+        Route::post('/signup',              [SignupController::class, 'store'])->name('signup');
     });
     Route::middleware('landing.auth')->group(function () {
         // Route::get('/',      [DashboardLoginController::class, 'destroy'])->name('logout');

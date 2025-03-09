@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
-</script>
-
 <template>
   <div class="wrapper min-vh-100 d-flex flex-row align-items-center">
     <CContainer>
@@ -17,3 +12,8 @@ import { Link } from '@inertiajs/vue3';
     </CContainer>
   </div>        
 </template>
+<script setup lang="ts">
+import '../../scss/app.scss';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import { Link } from '@inertiajs/vue3';
+</script>

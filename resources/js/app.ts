@@ -7,17 +7,29 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const { VITE_APP_NAME, VITE_APP_URL } = import.meta.env || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} - ${VITE_APP_NAME || 'Laravel'}`,
     resolve: (name) => {
         if( name.includes('Landing') ){
             [
                 { src: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',   type: 'css'    },
-                { src: 'https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.js',                     type: 'script' },
-                { src: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/js/bootstrap.min.js',  type: 'script' },
-                { src: '../../assets/js/vendor.min.js',                                               type: 'script' },
+                { src: `${VITE_APP_URL}/assets/plugins/jquery/jquery.min.js`,                         type: 'script' },
+                { src: `${VITE_APP_URL}/assets/js/vendor.min.js`,                                     type: 'script' },
+                { src: `${VITE_APP_URL}/assets/css/bootstrap.css`,                                    type: 'css'    },
+                { src: `${VITE_APP_URL}/assets/css/theme.css`,                                        type: 'css'    },
+                { src: `${VITE_APP_URL}/assets/plugins/ui-range-slider/jquery-ui.css`,                type: 'css'    },
+                { src: `${VITE_APP_URL}/assets/plugins/ui-range-slider/jquery-ui.js`,                 type: 'script' },
+                { src: `${VITE_APP_URL}/assets/plugins/fancybox/jquery.fancybox.min.css`,             type: 'css'    },
+                { src: `${VITE_APP_URL}/assets/plugins/fancybox/jquery.fancybox.min.js`,              type: 'script' },
+                { src: `${VITE_APP_URL}/assets/plugins/counter-up/jquery.counterup.min.js`,           type: 'script' },
+                { src: `${VITE_APP_URL}/assets/plugins/counter-up/jquery.waypoints.min.js`,           type: 'script' },
+                { src: `${VITE_APP_URL}/assets/plugins/nice-select/nice-select.min.css`,              type: 'css'    },
+                { src: `${VITE_APP_URL}/assets/plugins/nice-select/jquery.nice-select.min.js`,        type: 'script' },
+                { src: `${VITE_APP_URL}/assets/plugins/aos/aos.min.js`,                               type: 'script' },
+                { src: `${VITE_APP_URL}/assets/plugins/aos/aos.min.css`,                              type: 'css'    },
+                { src: `${VITE_APP_URL}/assets/js/custom.js`,                                         type: 'script' },
             ].forEach( ({ type, src }) => {
                 if(type == 'css' && document.querySelector(`link[href="${src}"]`) == null ) {            
                     const css = document.createElement('link');

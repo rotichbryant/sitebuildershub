@@ -116,6 +116,7 @@ const modals: any  = computed({
   get: ()      => $props.modals,
   set: (value) => $emit('update:modals', value),
 });
+const pageProps: any = computed( () => usePage().props );
 
 
 // const $data: any = 
@@ -127,9 +128,10 @@ const modals: any  = computed({
  * @prop {Boolean} remember - Whether to remember the user.
  */
  const form = useForm({
-    email:    String(),
-    password: String(),
-    remember: Boolean(),
+  _token:   pageProps.csrf_token,
+  email:    String(),
+  password: String(),
+  remember: Boolean(),
 });
 
 /**

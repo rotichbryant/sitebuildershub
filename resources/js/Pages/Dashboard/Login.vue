@@ -57,7 +57,7 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { cloneDeep, has } from 'lodash';
-import { reactive, watch} from 'vue';
+import { computed, reactive, watch} from 'vue';
 
 defineProps<{
     errors: any;
@@ -68,6 +68,7 @@ defineProps<{
 const $data  = reactive({
   errors: Object(),  
 });
+const pageProps: any = computed( () => usePage().props );
 
 // const $data: any = 
 /**
@@ -78,6 +79,7 @@ const $data  = reactive({
  * @prop {Boolean} remember - Whether to remember the user.
  */
 const form = useForm({
+    _token:   pageProps.csrf_token,
     email:    String(),
     password: String(),
     remember: Boolean(),

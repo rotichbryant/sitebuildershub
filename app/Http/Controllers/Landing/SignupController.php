@@ -51,7 +51,9 @@ class SignupController extends Controller
             ]);
 
             // Redirect to the landing home page on successful verification
-            return redirect(route('landing.home'));
+            return back()->with([
+                'message' => 'Your account has been verified successfully',
+            ]);
 
         } catch (ModelNotFoundException $e) {
             
@@ -87,7 +89,9 @@ class SignupController extends Controller
 
         Mail::to($user)->send(new WelcomeMail($user));
 
-        return response()->json(array('formData' => $formData,'message' => 'Successful'));
+        return back()->with([
+            'message' => 'Your account has been created successfully',
+        ]);
     }
 
     /**

@@ -99,7 +99,9 @@
 <script lang="ts" setup>
 import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, defineEmits, defineProps, reactive, watch } from 'vue';
-import { cloneDeep, has, get } from 'lodash'
+import { cloneDeep, isEmpty, has, get } from 'lodash'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const $emit  = defineEmits(['update:modals']);
 const $data  = reactive({
@@ -144,14 +146,15 @@ const pageProps: any = computed( () => usePage().props );
     form.post(
       route('landing.login'), 
       {
-        onSuccess: (value) => {
+        onSuccess: (value: any) => {
+          if( !isEmpty(value.props.flash.message) ){
+            toast.success(value.props.flash.message);
+          }
           resetForm();
-        },
-        onError: (value) => {
-          console.log(value)
+          // modals.value.login = false;
         },
       }
-  );
+    );
 };
 
 /**
@@ -179,6 +182,7 @@ watch(
 watch(
   () => $props.modals!.login,
   (show: boolean) => {
+    console.log(show)
     jQuery.value('#login').modal( show ? { backdrop: 'static', keyboard: false, show, focus: true } : 'hide');
     if( !show ) resetForm();
   },

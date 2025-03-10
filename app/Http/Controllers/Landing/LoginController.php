@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('landing.home', absolute: false));
+        return back();
     }
 
     /**
@@ -67,12 +67,12 @@ class LoginController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard('landing')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return back();
     }
 }

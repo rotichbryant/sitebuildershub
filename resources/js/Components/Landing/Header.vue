@@ -42,6 +42,29 @@
             Sign up
           </a>
         </div>
+        <div class="header-btn-devider ml-auto ml-lg-5 pl-2 d-none d-xs-flex align-items-center" v-else>
+          <div>
+            <a href="#" class="px-3 ml-7 font-size-7 notification-block flex-y-center position-relative">
+              <i class="fas fa-bell heading-default-color"></i>
+              <span class="font-size-3 count font-weight-semibold text-white bg-primary circle-24 border border-width-3 border border-white">3</span>
+            </a>
+          </div>
+          <div>
+            <div class="dropdown show-gr-dropdown py-5">
+              <a class="proile media ml-7 flex-y-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user fa-lg"></i>                
+                <!-- <div class="circle-40">
+                </div> -->
+                <i class="fas fa-chevron-down heading-default-color ml-6"></i>
+              </a>
+              <div class="dropdown-menu gr-menu-dropdown dropdown-right border-0 border-width-2 py-2 w-auto bg-default" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="dashboard-settings.html">Settings </a>
+                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="candidate-profile-main.html">Edit Profile</a>
+                <a class="dropdown-item py-2 text-red font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="#" @click="logout">Log Out</a>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Mobile Menu Hamburger-->
         <button class="navbar-toggler btn-close-off-canvas  hamburger-icon border-0" type="button" data-toggle="collapse" data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation">
           <!-- <i class="icon icon-simple-remove icon-close"></i> -->
@@ -73,9 +96,7 @@ import { useColorModes } from '@coreui/vue'
 import { Login, SignUp } from './Modals'
 import { usePage } from '@inertiajs/vue3'
 import { isEmpty } from 'lodash'
-
-const headerClassNames = ref('p-0')
-const { colorMode, setColorMode } = useColorModes('coreui-free-vue-admin-template-theme')
+import { router } from '@inertiajs/vue3'
 
 /**
  * The reactive data object.
@@ -100,15 +121,7 @@ const $data = reactive({
  */
 const auth_user = computed( () => usePage().props.auth.user )
 
-onMounted(() => {
-  document.addEventListener('scroll', () => {
-    if (document.documentElement.scrollTop > 0) {
-      headerClassNames.value = 'p-0 shadow-sm'
-    } else {
-      headerClassNames.value = 'p-0'
-    }
-  })
-})
+const logout    = async () => router.post(route('landing.logout'));
 
 /**
  * Watch the signup modal and toggle the login modal

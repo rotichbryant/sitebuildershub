@@ -46,6 +46,7 @@ Route::name('landing.')->group(function () {
         Route::post('/signup',              [SignupController::class, 'store'])->name('signup');
     });
     Route::middleware('landing.auth')->group(function () {
+        Route::post('/logout',      [LandingLoginController::class, 'destroy'])->name('logout');
         // Route::get('/',      [DashboardLoginController::class, 'destroy'])->name('logout');
     });
     // Route::get('/profile',      [ProfileController::class, 'edit'])->name('profile.edit');

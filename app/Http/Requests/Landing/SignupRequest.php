@@ -31,6 +31,7 @@ class SignupRequest extends FormRequest
                 'string',
             ],
             'email'      => [
+                'unique:users,email',
                 'required',
                 'string',
                 'email:filter',

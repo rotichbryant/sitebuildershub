@@ -102,7 +102,9 @@
 <script lang="ts" setup>
 import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, defineEmits, defineProps, reactive, watch } from 'vue';
-import { has, get } from 'lodash'
+import { isEmpty, has, get } from 'lodash'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const $emit  = defineEmits(['update:modals']);
 const $data  = reactive({
@@ -141,11 +143,7 @@ const form = useForm({
 
 const resetForm = () => {
   $data.errors = {};
-  form.reset('first_name');
-  form.reset('last_name');
-  form.reset('email');
-  form.reset('password');
-  form.reset('password_confirmation');
+  form.reset();
 }
 
 /**
@@ -158,7 +156,11 @@ const submit = () => {
   form.post(
     route('landing.signup'), 
     {
-      onSuccess: (value) => {
+      onSuccess: (value: any) => {
+        if( !isEmpty(value.props.flash.message) ){
+          toast.success(value.props.flash.message);
+          modals.value.signup = false;
+        }
         resetForm();
       },
     }

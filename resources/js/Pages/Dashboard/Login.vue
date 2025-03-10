@@ -13,28 +13,35 @@
                             <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
                                 {{ status }}
                             </div>
-                            <CInputGroup class="mb-3">
-                                <CInputGroupText>
-                                    <CIcon icon="cil-user" />
-                                </CInputGroupText>
-                                <CFormInput
-                                    placeholder="Email Address"
-                                    autocomplete="email"
-                                    v-model="form.email"
-                                    :invalid="has()"
-                                />
-                            </CInputGroup>
-                            <CInputGroup class="mb-4">
-                                <CInputGroupText>
-                                    <CIcon icon="cil-lock-locked" />
-                                </CInputGroupText>
-                                <CFormInput
-                                    type="password"
-                                    placeholder="Password"
-                                    autocomplete="current-password"
-                                    v-model="form.password"
-                                />
-                            </CInputGroup>
+                            <CCol class="mb-3">
+                                <CInputGroup>
+                                    <CInputGroupText>
+                                        <CIcon icon="cil-user" />
+                                    </CInputGroupText>
+                                    <CFormInput
+                                        placeholder="Email Address"
+                                        autocomplete="email"
+                                        v-model="form.email"
+                                        :invalid="has($data.errors,'email')"
+                                    />
+                                </CInputGroup>
+                                <p v-if="has($data.errors,'email')" class="text-danger">{{ $data.errors.email }}</p>   
+                            </CCol>           
+                            <CCol class="mb-3">
+                                <CInputGroup>
+                                    <CInputGroupText>
+                                        <CIcon icon="cil-lock-locked" />
+                                    </CInputGroupText>
+                                    <CFormInput
+                                        type="password"
+                                        placeholder="Password"
+                                        autocomplete="current-password"
+                                        v-model="form.password"
+                                        :invalid="has($data.errors,'password')"
+                                    />
+                                </CInputGroup>
+                                <p v-if="has($data.errors,'password')" class="text-danger">{{ $data.errors.password }}</p>   
+                            </CCol>           
                             <CRow>
                                 <CButton color="primary" class="px-4" type="submit" :disabled="form.processing"><CSpinner size="sm" v-if="form.processing"/> Login </CButton>
                                 <CButton color="link" class="px-0">Forgot password?</CButton>
@@ -47,20 +54,20 @@
     </GuestLayout>
 </template>
 <script setup lang="ts">
-import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import { has } from 'lodash';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { cloneDeep, has } from 'lodash';
+import { reactive, watch} from 'vue';
 
 defineProps<{
     errors: any;
     canResetPassword?: boolean;
     status?: string;
 }>();
+
+const $data  = reactive({
+  errors: Object(),  
+});
 
 // const $data: any = 
 /**
@@ -95,4 +102,12 @@ const submit = () => {
         },
     });
 };
+
+watch(
+  () => usePage().props.errors,
+  (value) => {
+    $data.errors = cloneDeep(value);
+  },
+  { deep: true },
+)
 </script>

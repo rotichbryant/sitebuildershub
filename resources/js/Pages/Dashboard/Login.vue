@@ -79,7 +79,7 @@ const pageProps: any = computed( () => usePage().props );
  * @prop {Boolean} remember - Whether to remember the user.
  */
 const form = useForm({
-    _token:   pageProps.csrf_token,
+    _token:   pageProps.value.csrf_token,
     email:    String(),
     password: String(),
     remember: Boolean(),

@@ -99,7 +99,7 @@
 <script lang="ts" setup>
 import { useForm, usePage } from '@inertiajs/vue3';
 import { computed, defineEmits, defineProps, reactive, watch } from 'vue';
-import { cloneDeep, has } from 'lodash'
+import { cloneDeep, has, get } from 'lodash'
 
 const $emit  = defineEmits(['update:modals']);
 const $data  = reactive({
@@ -111,11 +111,11 @@ const $props = defineProps({
     type:    Object,
   } 
 });
+const jQuery: any  = computed( () => get(window,'jQuery') );
 const modals: any  = computed({
   get: ()      => $props.modals,
   set: (value) => $emit('update:modals', value),
 });
-const jQuery = computed( () => window.jQuery );
 
 
 // const $data: any = 

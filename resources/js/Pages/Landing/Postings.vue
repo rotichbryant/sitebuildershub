@@ -13,21 +13,17 @@
                 <PostingFilter />
                 <div class="pt-12 ml-lg-0 ml-md-15">
                     <div class="d-flex align-items-center justify-content-between">
-                        <h5 class="font-size-4 font-weight-normal text-default-color">
-                        <span class="heading-default-color">120</span>
-                        results for <span class="heading-default-color">UI Designer</span>
-                        </h5>
                         <div class="d-flex align-items-center result-view-type">
-                        <a class="heading-default-color pl-5 font-size-6 hover-text-hitgray" href="./search-list-1.html">
-                            <i class="fa fa-list-ul"></i>
-                        </a>
-                        <a class="heading-default-color pl-5 font-size-6 hover-text-hitgray active" href="./search-grid.html">
-                            <i class="fa fa-th-large"></i>
-                        </a>
+                            <a class="heading-default-color pl-5 font-size-6 hover-text-hitgray" href="#">
+                                <i class="fa fa-list-ul"></i>
+                            </a>
+                            <a class="heading-default-color pl-5 font-size-6 hover-text-hitgray active" href="#">
+                                <i class="fa fa-th-large"></i>
+                            </a>
                         </div>
                     </div>
                     <div class="pt-6">
-                        <div class="row justify-content-center">
+                        <div class="row">
                             <Posting />
                         </div>
                     </div>

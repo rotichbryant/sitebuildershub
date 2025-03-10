@@ -1,29 +1,6 @@
 <template>
   <!-- cta section -->
   <footer class="footer bg-ebony-clay dark-mode-texts">
-    <div class="container">
-      <!-- Cta section -->
-      <div class="pt-11 pt-lg-20 pb-13 pb-lg-20 border-bottom border-width-1 border-default-color-2">
-        <div class="row justify-content-center ">
-          <div class="col-xl-7 col-lg-12" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
-            <!-- cta-content start -->
-            <div class="pb-xl-0 pb-9 text-xl-left text-center">
-              <h2 class="text-white font-size-8 mb-4">Most comprehensive job portal</h2>
-              <p class="text-hit-gray font-size-5 mb-0">We must explain to you how all this mistaken idea of denouncing</p>
-            </div>
-            <!-- cta-content end -->
-          </div>
-          <div class="col-xl-5 col-lg-12" data-aos="fade-left" data-aos-duration="800" data-aos-once="true">
-            <!-- cta-btns start -->
-            <div class="btns d-flex justify-content-xl-end justify-content-center align-items-xl-center flex-wrap h-100  mx-n4">
-              <a class="btn btn-outline-gallery btn-xl mx-4 mt-6 text-uppercase" href="#" data-toggle="modal" data-target="#login">Log in</a>
-              <a class="btn btn-green btn-h-60 btn-xl mx-4 mt-6 text-uppercase" href="#" data-toggle="modal" data-target="#signup">Register</a>
-            </div>
-            <!-- cta-btns end -->
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="container  pt-12 pt-lg-19 pb-10 pb-lg-19">
       <div class="row">
         <div class="col-lg-4 col-sm-6 mb-lg-0 mb-9">
@@ -35,7 +12,7 @@
             <img src="image/l1/png/message.png" class="align-self-center mr-3" alt="">
             <div class="media-body pl-5">
               <p class="mb-0 font-size-4 text-white">Contact us at</p>
-              <a class="mb-0 font-size-4 font-weight-bold" href="mailto:support@uxtheme.net">support@uxtheme.net</a>
+              <a class="mb-0 font-size-4 font-weight-bold" href="mailto:support@uxtheme.net">info@sitebuildershub.com</a>
             </div>
           </div>
           <!-- media start -->
@@ -117,3 +94,6 @@
   </footer>
   <!-- footer area function end -->
 </template>
+<scrip setup lang="ts">
+
+</scrip>

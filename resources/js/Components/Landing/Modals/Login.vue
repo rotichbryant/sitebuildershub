@@ -141,7 +141,7 @@ const pageProps: any = computed( () => usePage().props );
  * on success.
  */
  const submit = () => {
-  console.log(pageProps.csrf_token);
+  console.log(pageProps);
     form.post(
       route('landing.login'), 
       {

@@ -13,7 +13,7 @@
             <!-- Range Slider -->
             <div class="slider-price w-25 text-right mr-7">
             <p class="font-weight-bold">
-                <input class="text-primary font-weight-semibold font-size-4 focus-reset" type="text" id="amount" readonly="">
+                <input class="text-primary font-weight-semibold font-size-4 focus-reset" type="text" id="amount" />
             </p>
             </div>
         </div>

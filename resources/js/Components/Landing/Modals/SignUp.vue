@@ -44,23 +44,23 @@
               <form @submit.prevent="submit">
                 <div class="form-group">
                   <label for="first_name" class="font-size-4 text-black-2 font-weight-semibold line-height-reset">First Name</label>
-                  <input type="text" :class="`form-control ${has($data.errors,'first_name') ? 'border-danger' : '' }`" placeholder="Jane" id="first_name">
+                  <input type="text" :class="`form-control ${has($data.errors,'first_name') ? 'border-danger' : '' }`" placeholder="Jane" id="first_name" v-model="form.first_name">
                   <p v-if="has($data.errors,'first_name')" class="text-danger m-0">{{ $data.errors.first_name }}</p>              
                 </div>
                 <div class="form-group">
                   <label for="last_name" class="font-size-4 text-black-2 font-weight-semibold line-height-reset">Last Name</label>
-                  <input type="text" :class="`form-control ${has($data.errors,'last_name') ? 'border-danger' : '' }`" placeholder="Doe" id="last_name">
+                  <input type="text" :class="`form-control ${has($data.errors,'last_name') ? 'border-danger' : '' }`" placeholder="Doe" id="last_name" v-model="form.last_name">
                   <p v-if="has($data.errors,'last_name')" class="text-danger m-0">{{ $data.errors.last_name }}</p>                
                 </div>
                 <div class="form-group">
                   <label for="email" class="font-size-4 text-black-2 font-weight-semibold line-height-reset">E-mail</label>
-                  <input type="email" :class="`form-control ${has($data.errors,'email') ? 'border-danger' : '' }`" placeholder="example@gmail.com" id="email">
+                  <input type="email" :class="`form-control ${has($data.errors,'email') ? 'border-danger' : '' }`" placeholder="example@gmail.com" id="email" v-model="form.email">
                   <p v-if="has($data.errors,'email')" class="text-danger">{{ $data.errors.email }}</p>                
                 </div>
                 <div class="form-group">
                   <label for="signup-password" class="font-size-4 text-black-2 font-weight-semibold line-height-reset">Password</label>
                   <div class="position-relative">
-                    <input type="password" :class="`form-control ${has($data.errors,'password') ? 'border-danger' : '' }`" id="signup-password" placeholder="Enter password">
+                    <input type="password" :class="`form-control ${has($data.errors,'password') ? 'border-danger' : '' }`" id="signup-password" placeholder="Enter password" v-model="form.password">
                     <a href="#" class="show-password pos-abs-cr fas mr-6 text-black-2" data-show-pass="password2"></a>
                   </div>
                   <p v-if="has($data.errors,'password')" class="text-danger">{{ $data.errors.password }}</p>                
@@ -68,7 +68,7 @@
                 <div class="form-group">
                   <label for="confirmation_password" class="font-size-4 text-black-2 font-weight-semibold line-height-reset">Confirm Password</label>
                   <div class="position-relative">
-                    <input type="password" :class="`form-control ${has($data.errors,'password_confirmation') ? 'border-danger' : '' }`" id="confirmation_password" placeholder="Enter password">
+                    <input type="password" :class="`form-control ${has($data.errors,'password_confirmation') ? 'border-danger' : '' }`" id="confirmation_password" placeholder="Enter password" v-model="form.password_confirmation">
                     <a href="#" class="show-password pos-abs-cr fas mr-6 text-black-2" data-show-pass="password23"></a>
                   </div>
                   <p v-if="has($data.errors,'password_confirmation')" class="text-danger">{{ $data.errors.password_confirmation }}</p>              

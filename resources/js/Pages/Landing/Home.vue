@@ -2,7 +2,7 @@
     <LandingLayout>
         <Head title="Home" />
         <!-- Hero Area -->
-        <div class="position-relative z-index-1 bg-squeeze pt-26 dark-mode-texts">
+        <div class="position-relative bg-squeeze pt-26 dark-mode-texts">
         <div class="pos-abs-tr h-100">
             <img src="../../../image/patterns/globe-pattern.png" alt="" class="h-100">
         </div>

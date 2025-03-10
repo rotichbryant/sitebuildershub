@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade form-modal" id="login" tabindex="-1" aria-hidden="true">
+  <div class="modal fade form-modal" id="login" tabindex="1" aria-hidden="true">
     <div class="modal-dialog max-width-px-840 position-relative">
       <button 
         type="button" 
@@ -148,7 +148,7 @@ const pageProps: any = computed( () => usePage().props );
           resetForm();
         },
         onError: (value) => {
-            console.log(value)
+          console.log(value)
         },
       }
   );

@@ -1,58 +1,60 @@
 <template>
-<!-- Header Area -->
-<header class="site-header site-header--menu-right bg-default py-7 py-lg-0 site-header--absolute site-header--sticky">
-  <div class="container">
-    <nav class="navbar site-navbar offcanvas-active navbar-expand-lg  px-0 py-0">
-      <!-- Brand Logo-->
-      <div class="brand-logo">
-        <a href="./index.html">
-          <!-- light version logo (logo must be black)-->
-          <img src="../../../image/logo-main-black.png" alt="" class="light-version-logo default-logo">
-          <!-- Dark version logo (logo must be White)-->
-          <img src="../../../image/logo-main-white.png" alt="" class="dark-version-logo">
-        </a>
-      </div>
-      <div class="collapse navbar-collapse" id="mobile-menu">
-        <div class="navbar-nav-wrapper">
-          <ul class="navbar-nav main-menu">
-            <li class="nav-item">
-              <a class="nav-link" :href="route('landing.home')">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" :href="route('landing.postings')">Postings</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" :href="route('landing.aboutus')">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" :href="route('landing.contactus')">Contact Us</a>
-            </li>
-          </ul>
+<div>
+  <!-- Header Area -->
+  <header class="site-header site-header--menu-right bg-default py-7 py-lg-0 site-header--absolute site-header--sticky z-index-1">
+    <div class="container">
+      <nav class="navbar site-navbar offcanvas-active navbar-expand-lg  px-0 py-0">
+        <!-- Brand Logo-->
+        <div class="brand-logo">
+          <a href="./index.html">
+            <!-- light version logo (logo must be black)-->
+            <img src="../../../image/logo-main-black.png" alt="" class="light-version-logo default-logo">
+            <!-- Dark version logo (logo must be White)-->
+            <img src="../../../image/logo-main-white.png" alt="" class="dark-version-logo">
+          </a>
         </div>
-        <button class="d-block d-lg-none offcanvas-btn-close focus-reset" type="button" data-toggle="collapse" data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="true" aria-label="Toggle navigation">
-          <i class="gr-cross-icon"></i>
-        </button>
-      </div>
-      <div class="header-btns header-btn-devider ml-auto pr-2 ml-lg-6 d-none d-xs-flex" v-if="isEmpty(auth_user)">
-        <a class="btn btn-transparent text-uppercase font-size-3 heading-default-color focus-reset" href="#" @click="$data.modals.login = true">
-          Log in
-        </a>
-        <a class="btn btn-primary text-uppercase font-size-3" href="#" @click="$data.modals.signup = true">
-          Sign up
-        </a>
-      </div>
-      <!-- Mobile Menu Hamburger-->
-      <button class="navbar-toggler btn-close-off-canvas  hamburger-icon border-0" type="button" data-toggle="collapse" data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation">
-        <!-- <i class="icon icon-simple-remove icon-close"></i> -->
-        <span class="hamburger hamburger--squeeze js-hamburger">
-          <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
+        <div class="collapse navbar-collapse" id="mobile-menu">
+          <div class="navbar-nav-wrapper">
+            <ul class="navbar-nav main-menu">
+              <li class="nav-item">
+                <a class="nav-link" :href="route('landing.home')">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" :href="route('landing.postings')">Postings</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" :href="route('landing.aboutus')">About Us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" :href="route('landing.contactus')">Contact Us</a>
+              </li>
+            </ul>
+          </div>
+          <button class="d-block d-lg-none offcanvas-btn-close focus-reset" type="button" data-toggle="collapse" data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="true" aria-label="Toggle navigation">
+            <i class="gr-cross-icon"></i>
+          </button>
+        </div>
+        <div class="header-btns header-btn-devider ml-auto pr-2 ml-lg-6 d-none d-xs-flex" v-if="isEmpty(auth_user)">
+          <a class="btn btn-transparent text-uppercase font-size-3 heading-default-color focus-reset" href="#" @click="$data.modals.login = true">
+            Log in
+          </a>
+          <a class="btn btn-primary text-uppercase font-size-3" href="#" @click="$data.modals.signup = true">
+            Sign up
+          </a>
+        </div>
+        <!-- Mobile Menu Hamburger-->
+        <button class="navbar-toggler btn-close-off-canvas  hamburger-icon border-0" type="button" data-toggle="collapse" data-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation">
+          <!-- <i class="icon icon-simple-remove icon-close"></i> -->
+          <span class="hamburger hamburger--squeeze js-hamburger">
+            <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+            </span>
           </span>
-        </span>
-      </button>
-      <!--/.Mobile Menu Hamburger Ends-->
-    </nav>
-  </div>
+        </button>
+        <!--/.Mobile Menu Hamburger Ends-->
+      </nav>
+    </div>
+  </header>
   <Login
     :modals="$data.modals"
     @update:modals="$data.modals = $event"
@@ -63,7 +65,7 @@
     @update:modals="$data.modals = $event"
     v-if="isEmpty(auth_user)"
   />
-</header>
+</div>
 </template>
 <script setup>
 import { computed, onMounted, ref, reactive, watch } from 'vue'

@@ -11,10 +11,14 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $company = $request->user()->company;
+
         return Inertia::render('Dashboard/Company',[
-            'status' => session('status')
+            'company' => $company, 
+            'status'  => session('status')
         ]);
     }
 

@@ -17,9 +17,8 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function index(Request $request): Response
+    public function index(Request $request)
     {
-        print_r('here');
         return Inertia::render('Dashboard/Profile', [
             // 'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),

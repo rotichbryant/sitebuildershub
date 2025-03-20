@@ -6,78 +6,50 @@
                 <h3>Company</h3>
                 <p>Contact information and profile</p>
             </CCol>
-            <CCol :md="12"> 
+            <CCol md="12"> 
                 <CRow>
-                    <CCol :md="10">
+                    <CCol md="12">
                         <CCard class="mb-4" id="logo-icon">
-                            <CCardHeader>
-                                <strong>Profile</strong>
-                            </CCardHeader>
                             <CCardBody>
-                                <CCol :md="12" class="mb-4">
-                                    <CCol :md="6">
-                                        <CRow>
-                                            <CCol :md="12">
-                                                <label>Logo</label>
-                                                <vue-dropzone
-                                                    ref="system-logo" 
-                                                    id="system-logo" 
-                                                    :options="$data.dropzoneOptions"
-                                                /> 
-                                            </CCol>
-                                            <CCol :md="12">
-                                                <CFormInput
-                                                    type="email"
-                                                    label="Mail Host"
-                                                    class="mb-2"
-                                                />  
-                                            </CCol>
-                                            <CCol :md="12">
-                                                <CFormInput
-                                                    type="email"
-                                                    label="Mail Host"
-                                                    class="mb-2"
-                                                />  
-                                            </CCol>
-                                            <CCol :md="12">
-                                                <CFormInput
-                                                    type="email"
-                                                    label="Mail Host"
-                                                    class="mb-2"
-                                                />  
-                                            </CCol>
-                                            <CCol :md="12">
-                                                <CFormInput
-                                                    type="email"
-                                                    label="Mail Host"
-                                                    class="mb-2"
-                                                />  
-                                            </CCol>
-                                            <CCol :md="12">
-                                                <CFormInput
-                                                    type="email"
-                                                    label="Mail Host"
-                                                    class="mb-2"
-                                                />  
-                                            </CCol>
-                                        </CRow>       
-                                    </CCol>          
-                                </CCol> 
+                                <CCol md="4">
+                                    <CRow>
+                                        <CCol md="12">
+                                            <CFormInput
+                                                type="text"
+                                                label="First Name"
+                                                v-model="$data.form.name"
+                                                class="mb-2"
+                                            />  
+                                        </CCol>
+                                        <CCol md="12">
+                                            <CFormInput
+                                                type="email"
+                                                label="Email Address"
+                                                v-model="$data.form.email"
+                                                class="mb-2"
+                                            />  
+                                        </CCol>
+                                        <CCol md="12" class="my-2">
+                                            <label class="mb-1">Phone Number</label>
+                                            <VueTelInput
+                                                v-model="$data.form.phone_number"
+                                            />  
+                                        </CCol>
+                                        <CCol md="12">
+                                            <CFormInput
+                                                type="text"
+                                                label="Address"
+                                                v-model="$data.form.address"
+                                                class="mb-2"
+                                            />  
+                                        </CCol>
+                                        <CCol md="12">
+                                            <CButton color="primary" @click="saveChanges">Save Changes</CButton>
+                                        </CCol>
+                                    </CRow>       
+                                </CCol>   
                             </CCardBody>
                         </CCard>    
-                    </CCol>
-                    <CCol :md="2">
-                        <CNav class="flex-column position-fixed" variant="underline">
-                            <CNavItem>
-                                <CNavLink href="#logo-icon" class="py-0"> App Logo & Icon </CNavLink>
-                            </CNavItem>
-                            <CNavItem>
-                                <CNavLink href="#mail" class="py-0"> Mail Settings </CNavLink>
-                            </CNavItem>
-                            <CNavItem>
-                                <CNavLink href="#payment" class="py-0"> Payment Gateway </CNavLink>
-                            </CNavItem>
-                        </CNav>
                     </CCol>
                 </CRow>
             </CCol>
@@ -86,9 +58,12 @@
 </template>
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { computed, reactive, watch } from 'vue';
+import { pick } from 'lodash';
 import vueDropzone from 'dropzone-vue3'
+import { VueTelInput } from 'vue3-tel-input'
+import 'vue3-tel-input/dist/vue3-tel-input.css'
 
 const $data: any = reactive({
     tab: 1,
@@ -97,6 +72,26 @@ const $data: any = reactive({
         thumbnailWidth: 150,
         maxFilesize: 0.5,
         headers: { "My-Awesome-Header": "header value" }
-    }
-})
+    },
+    form:   {},
+    errors: {}
+});
+
+const pageProps: any = computed( () => usePage().props );
+
+
+const saveChanges = () => {
+
+}
+
+watch(
+    () => pageProps.value.company,
+    (user) => {
+        $data.form = useForm({ 
+            ...pick(user,['name','address','email','phone_number','logo','icon']), 
+            _token: pageProps.value.csrf_token 
+        })
+    },
+    { immediate: true }
+)
 </script>

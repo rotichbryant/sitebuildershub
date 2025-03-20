@@ -40,12 +40,14 @@
         "@coreui/vue": "^5.4.1",
         "@coreui/vue-chartjs": "^3.0.0",
         "@popperjs/core": "^2.11.8",
+        "@types/dropzone": "^5.7.9",
         "@types/jquery": "^3.5.32",
         "chart.js": "^4.4.4",
         "dropzone-vue3": "^1.0.2",
         "fetch-inject": "^3.3.1",
         "lodash": "^4.17.21",
         "qalendar": "^3.9.0",
+        "vue3-tel-input": "^1.0.4",
         "vue3-toastify": "^0.2.8"
     }
 }

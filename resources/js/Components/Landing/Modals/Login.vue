@@ -174,7 +174,7 @@ const resetForm = () => {
 watch(
   () => usePage().props.errors,
   (value:any) => {
-    $data.errors = cloneDeep(value:any);
+    $data.errors = cloneDeep(value);
   },
   { deep: true },
 )

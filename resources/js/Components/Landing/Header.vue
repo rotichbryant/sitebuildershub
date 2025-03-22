@@ -128,11 +128,11 @@ const logout    = async () => router.post(route('landing.logout'));
  */
 watch( 
  ()      => $data.modals.signup,
- (value:any) => {
+ (value) => {
   /**
    * If the signup modal is visible, hide the login modal
    */
-  if(value:any) $data.modals.login = false;
+  if(value) $data.modals.login = false;
  }  
 );
 
@@ -141,11 +141,11 @@ watch(
  */
 watch( 
  ()      => $data.modals.login,
- (value:any) => {
+ (value) => {
   /**
    * If the login modal is visible, hide the signup modal
    */
-  if(value:any) $data.modals.signup = false;
+  if(value) $data.modals.signup = false;
  }  
 )
 </script>

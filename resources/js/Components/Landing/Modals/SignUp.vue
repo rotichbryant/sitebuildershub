@@ -119,7 +119,7 @@ const $props = defineProps({
 const jQuery: any  = computed( () => get(window,'jQuery') );
 const modals: any  = computed({
     get: ()      => $props.modals,
-    set: (value) => $emit('update:modals', value),
+    set: (value:any) => $emit('update:modals', value),
 });
 const pageProps: any = computed( () => usePage().props );
 
@@ -169,7 +169,7 @@ const submit = () => {
 
 watch(
   () => usePage().props.errors,
-  (value) => {
+  (value:any) => {
     $data.errors = value;
   },
   { deep: true },

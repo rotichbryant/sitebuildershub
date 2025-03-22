@@ -63,7 +63,7 @@ const $emit = defineEmits(['update:show','fetch']);
 
 const showModal = computed({
     get: () => $props.show,
-    set: (value) => $emit('update:show', value),
+    set: (value:any) => $emit('update:show', value),
 });
 // Form for creating new category
 const form = useForm({
@@ -81,7 +81,7 @@ const closeModal = () => {
 // Submit form to create new category
 const submitForm = () => {
     form.post(route('dashboard.sub_categories.store'), {
-        onSuccess: (value) => {
+        onSuccess: (value:any) => {
             $emit('fetch');
             $toast.success(value.props.status);
             closeModal();

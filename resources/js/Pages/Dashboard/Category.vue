@@ -116,11 +116,11 @@ const $fetch = async () => {
     }
 }
 
-const $delete = (value) => {
+const $delete = (value:any) => {
 
 }
 
-const $edit = (value) => {
+const $edit = (value:any) => {
 
 }
 

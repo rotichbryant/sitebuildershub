@@ -94,7 +94,7 @@ const form = useForm({
 const submit = () => {
     form.post(route('dashboard.login'), {
         onError: (value:any) => {
-            console.log(value:any)
+            console.log(value)
         },
         /**
          * Resets the password field on success.
@@ -108,7 +108,7 @@ const submit = () => {
 watch(
   () => usePage().props.errors,
   (value:any) => {
-    $data.errors = cloneDeep(value:any);
+    $data.errors = cloneDeep(value);
   },
   { deep: true },
 )

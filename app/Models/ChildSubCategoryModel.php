@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SubCategoryModel extends Model
+class ChildSubCategoryModel extends Model
 {
     use HasFactory, HasUuids;
     
@@ -17,7 +16,7 @@ class SubCategoryModel extends Model
      *
      * @var string
      */
-    protected $table = 'sub_categories';
+    protected $table = 'child_sub_categories';
     
     /**
      * The attributes that are mass assignable.
@@ -27,6 +26,7 @@ class SubCategoryModel extends Model
     protected $fillable = [
         'name',
         'category_id',
+        'sub_category_id',
     ];
     
     /**
@@ -38,7 +38,7 @@ class SubCategoryModel extends Model
         'created_at' => 'datetime:M d, Y',
         // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
     ];    
-        
+    
     /**
      * Get the category that owns the sub-category.
      */
@@ -48,10 +48,13 @@ class SubCategoryModel extends Model
     }
 
     /**
-     * Get the sub-categories for the category.
+     * Get the sub-category that owns the child sub-category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function childSubCategories(): HasMany
+    public function subCategory(): BelongsTo
     {
-        return $this->hasMany(ChildSubCategoryModel::class, 'sub_category_id');
-    }        
+        // A child sub-category belongs to a sub-category.
+        return $this->belongsTo(SubCategoryModel::class, 'sub_category_id');
+    }
 }

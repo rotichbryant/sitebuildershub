@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,10 +46,18 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function name(): Attribute {
-        return Attribute::make(
-            get: fn () => "$this->first_name $this->last_name",
-        );
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'created_at' => 'datetime:M d, Y',
+        // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
+    ];        
+
+    public function getNameAttribute() {
+        return "$this->first_name $this->last_name";
     }
 
     /**

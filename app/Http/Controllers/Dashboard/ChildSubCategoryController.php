@@ -3,24 +3,23 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\ChildSubCategoryModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ClientsController extends Controller
+class ChildSubCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $clients = User::with([
-            'role' => fn ($role) => $role->client(),
-        ])->paginate(10);
+        //
+        $categories = ChildSubCategoryModel::with(['category','subCategory'])->paginate(10);
 
-        return Inertia::render('Dashboard/Clients',[
-            'clients' => $clients,
-            'status'  => session('status')
+        return Inertia::render('Dashboard/SubCategory',[
+            'status'     => session('status'),
+            'categories' => $categories
         ]);
     }
 

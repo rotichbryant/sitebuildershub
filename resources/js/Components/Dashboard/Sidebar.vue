@@ -11,6 +11,20 @@
     <CNavItem :href="route('dashboard.clients')">
       <CIcon  customClassName="nav-icon" icon="cil-group"/> Clients
     </CNavItem>
+    <CNavGroup>
+      <template #togglerContent>
+        <CIcon  customClassName="nav-icon" icon="cil-list"/> Posting Categorization
+      </template>
+      <CNavItem :href="route('dashboard.categories')">
+        <CIcon  customClassName="nav-icon" /> Categories
+      </CNavItem>
+      <CNavItem :href="route('dashboard.sub_categories')">
+        <CIcon  customClassName="nav-icon" /> Sub Categories
+      </CNavItem>
+      <CNavItem :href="route('dashboard.child_sub_categories')">
+        <CIcon  customClassName="nav-icon" /> Child Sub Categories
+      </CNavItem>      
+    </CNavGroup>    
     <CNavItem :href="route('dashboard.postings')">
       <CIcon  customClassName="nav-icon" icon="cil-applications"/> Postings
     </CNavItem>

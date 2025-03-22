@@ -27,6 +27,17 @@ class Role extends Model
     ];
 
     /**
+     * Scope a query to only include client roles.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeClient($query): \Illuminate\Database\Eloquent\Builder
+    {
+        return $query->where('state', 0);
+    }
+
+    /**
      * Get the users that have this role.
      *
      * This defines a one-to-many relationship between the RoleModel and UserModel.

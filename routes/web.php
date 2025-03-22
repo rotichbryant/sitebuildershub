@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\ChildSubCategoryController;
 use App\Http\Controllers\Landing\AboutUsController;
 use App\Http\Controllers\Landing\ContactUsController;
 use App\Http\Controllers\Landing\HomeController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\Landing\OverviewController as LandingOverviewController
 use App\Http\Controllers\Dashboard\PostingController as DashboardPostingController;
 use App\Http\Controllers\Dashboard\ProfileController as DashboardProfileController;
 use App\Http\Controllers\Dashboard\StaffController;
+use App\Http\Controllers\Dashboard\SubCategoryController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
 use App\Http\Controllers\Dashboard\SystemController;
 use App\Http\Controllers\Landing\ChatController;
@@ -39,16 +42,26 @@ Route::name('landing.')->group(function () {
 
 Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.auth')->group(function () {
-        Route::get('/',             [DashboardOverviewController::class, 'index'])->name('overview');
-        Route::get('/notifications',[NotificationController::class, 'index'])->name('notifications');
-        Route::get('/company',      [CompanyController::class, 'index'])->name('company');
-        Route::get('/clients',      [ClientsController::class, 'index'])->name('clients');
-        Route::get('/subscriptions',[SubscriptionController::class, 'index'])->name('subscriptions');
-        Route::get('/postings',     [DashboardPostingController::class, 'index'])->name('postings');
-        Route::get('/staff',        [StaffController::class,    'index'])->name('staff');
-        Route::get('/system',       [SystemController::class,   'index'])->name('system');
-        Route::post('/system',      [SystemController::class,   'store'])->name('system.store');
-        Route::get('/profile',      [DashboardProfileController::class,   'index'])->name('profile'); 
+        Route::get('/',                      [DashboardOverviewController::class, 'index'])->name('overview');
+        Route::get('/notifications',         [NotificationController::class, 'index'])->name('notifications');
+        Route::get('/company',               [CompanyController::class, 'index'])->name('company');
+        Route::get('/clients',               [ClientsController::class, 'index'])->name('clients');
+        Route::get('/subscriptions',         [SubscriptionController::class, 'index'])->name('subscriptions');
+
+        Route::get('/categories',            [CategoryController::class, 'index'])->name('categories');
+        Route::post('/categories',           [CategoryController::class, 'store'])->name('categories.store');
+
+        Route::get('/subcategories',         [SubCategoryController::class, 'index'])->name('sub_categories');
+        Route::post('/subcategories',        [SubCategoryController::class, 'store'])->name('sub_categories.store');
+
+        Route::get('/childsubcategories',    [ChildSubCategoryController::class, 'index'])->name('child_sub_categories');
+        Route::post('/childsubcategories',   [ChildSubCategoryController::class, 'store'])->name('child_sub_categories.store');
+       
+        Route::get('/postings',              [DashboardPostingController::class, 'index'])->name('postings');
+        Route::get('/staff',                 [StaffController::class,    'index'])->name('staff');
+        Route::get('/system',                [SystemController::class,   'index'])->name('system');
+        Route::post('/system',               [SystemController::class,   'store'])->name('system.store');
+        Route::get('/profile',               [DashboardProfileController::class,   'index'])->name('profile'); 
     });
 });
 require __DIR__.'/auth.php';

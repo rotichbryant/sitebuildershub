@@ -7,6 +7,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import toast from './toast';
 
 const { VITE_APP_NAME, VITE_APP_URL } = import.meta.env || 'Laravel';
 
@@ -20,6 +21,7 @@ createInertiaApp({
         const app     = createApp({ render: () => h(App, props) });
 
         app.use(plugin);
+        app.use(toast);
         app.use(CoreuiVue)
         app.provide('icons', icons)
         app.component('CIcon', CIcon)

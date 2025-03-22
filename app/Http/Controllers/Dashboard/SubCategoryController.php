@@ -3,24 +3,26 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Requests\Dashboard\SubCategoryRequest;
+use App\Models\CategoryModel;
+use App\Models\SubCategoryModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ClientsController extends Controller
+class SubCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $clients = User::with([
-            'role' => fn ($role) => $role->client(),
-        ])->paginate(10);
+        $sub_categories = SubCategoryModel::with(['category'])->withCount(['childSubCategories'])->paginate(10);
+        $categories     = CategoryModel::all();
 
-        return Inertia::render('Dashboard/Clients',[
-            'clients' => $clients,
-            'status'  => session('status')
+        return Inertia::render('Dashboard/SubCategory',[
+            'categories'     => $categories,
+            'status'         => session('status'),
+            'sub_categories' => $sub_categories
         ]);
     }
 
@@ -35,9 +37,15 @@ class ClientsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubCategoryRequest $request)
     {
-        //
+        // Validate the request
+        $validated = $request->validated();
+
+        // Create the category with UUID
+        SubCategoryModel::create($validated);
+
+        return back()->with('status', 'Category created successfully');
     }
 
     /**

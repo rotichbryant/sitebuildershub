@@ -107,11 +107,11 @@ const $fetch = async () => {
     }
 }
 
-const $delete = ({ id }) => {
+const $delete = (value) => {
 
 }
 
-const $edit = ({ id }) => {
+const $edit = (value) => {
 
 }
 

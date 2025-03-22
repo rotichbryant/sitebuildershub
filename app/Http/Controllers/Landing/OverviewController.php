@@ -6,14 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ProfileController extends Controller
+class OverviewController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Landing/Profile',[
+        //
+        return Inertia::render('Landing/Overview',[
             'status' => session('status')
         ]);
     }

@@ -7,12 +7,16 @@ use App\Http\Controllers\Landing\PostingController as LandingPostingController;
 use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\CompanyController;
 use App\Http\Controllers\Dashboard\NotificationController;
-use App\Http\Controllers\Dashboard\OverviewController;
+use App\Http\Controllers\Dashboard\OverviewController as DashboardOverviewController;
+use App\Http\Controllers\Landing\OverviewController as LandingOverviewController;
 use App\Http\Controllers\Dashboard\PostingController as DashboardPostingController;
 use App\Http\Controllers\Dashboard\ProfileController as DashboardProfileController;
 use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
 use App\Http\Controllers\Dashboard\SystemController;
+use App\Http\Controllers\Landing\ChatController;
+use App\Http\Controllers\Landing\DashboardController;
+use App\Http\Controllers\Landing\MyPostingsController;
 use App\Http\Controllers\Landing\ProfileController as LandingProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,14 +29,17 @@ Route::name('landing.')->group(function () {
     Route::get('/contactus', [ContactUsController::class, 'index'])->name('contactus');
     
     Route::middleware('landing.auth')->group(function () {
+        Route::get('/overview',     [LandingOverviewController::class, 'index'])->name('overview');
+        Route::get('/mypostings',   [MyPostingsController::class, 'index'])->name('mypostings');
+        Route::get('/chat',         [ChatController::class, 'index'])->name('chat');
         Route::get('/profile',      [LandingProfileController::class, 'index'])->name('profile');
-        Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
+        // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
     });
 });
 
 Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.auth')->group(function () {
-        Route::get('/',             [OverviewController::class, 'index'])->name('overview');
+        Route::get('/',             [DashboardOverviewController::class, 'index'])->name('overview');
         Route::get('/notifications',[NotificationController::class, 'index'])->name('notifications');
         Route::get('/company',      [CompanyController::class, 'index'])->name('company');
         Route::get('/clients',      [ClientsController::class, 'index'])->name('clients');

@@ -1,5 +1,4 @@
 <template>
-<div>
   <!-- Header Area -->
   <header class="site-header site-header--menu-right bg-default py-7 py-lg-0 site-header--absolute site-header--sticky z-index-1">
     <div class="container">
@@ -58,8 +57,10 @@
                 <i class="fas fa-chevron-down heading-default-color ml-6"></i>
               </a>
               <div class="dropdown-menu gr-menu-dropdown dropdown-right border-0 border-width-2 py-2 w-auto bg-default" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="dashboard-settings.html">Settings </a>
-                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="candidate-profile-main.html">Edit Profile</a>
+                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.overview')">Overview </a>
+                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.mypostings')">My Postings </a>
+                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.chat')">Chat</a>
+                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.profile')">Profile</a>
                 <a class="dropdown-item py-2 text-red font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="#" @click="logout">Log Out</a>
               </div>
             </div>
@@ -77,18 +78,17 @@
         <!--/.Mobile Menu Hamburger Ends-->
       </nav>
     </div>
+    <Login
+      :modals="$data.modals"
+      @update:modals="$data.modals = $event"
+      v-if="isEmpty(auth_user)"
+    />
+    <SignUp
+      :modals="$data.modals"
+      @update:modals="$data.modals = $event"
+      v-if="isEmpty(auth_user)"
+    />
   </header>
-  <Login
-    :modals="$data.modals"
-    @update:modals="$data.modals = $event"
-    v-if="isEmpty(auth_user)"
-  />
-  <SignUp
-    :modals="$data.modals"
-    @update:modals="$data.modals = $event"
-    v-if="isEmpty(auth_user)"
-  />
-</div>
 </template>
 <script setup>
 import { computed, onMounted, ref, reactive, watch } from 'vue'

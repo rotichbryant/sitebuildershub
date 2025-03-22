@@ -1,5 +1,5 @@
 <template>
-  <div class="site-wrapper overflow-hidden ">
+  <div class="site-wrapper overflow-hidden bg-light">
       <LandingHeader />
       <slot />
       <LandingFooter />

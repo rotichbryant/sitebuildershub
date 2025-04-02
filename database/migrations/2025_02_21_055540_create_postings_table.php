@@ -13,6 +13,22 @@ return new class extends Migration
     {
         Schema::create('postings', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('category_id');
+            $table->string('county');
+            $table->uuid('sub_category_id');
+            $table->longText('description');
+            $table->json('images');
+            $table->string('location');
+            $table->string('negotiate');
+            $table->string('phone_number');
+            $table->integer('price');
+            $table->integer('quantity');
+            $table->string('title');
+            $table->string('town');
+            $table->uuid('user_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

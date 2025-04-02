@@ -32,10 +32,13 @@ Route::name('landing.')->group(function () {
     Route::get('/contactus', [ContactUsController::class, 'index'])->name('contactus');
     
     Route::middleware('landing.auth')->group(function () {
-        Route::get('/overview',     [LandingOverviewController::class, 'index'])->name('overview');
-        Route::get('/mypostings',   [MyPostingsController::class, 'index'])->name('mypostings');
-        Route::get('/chat',         [ChatController::class, 'index'])->name('chat');
-        Route::get('/profile',      [LandingProfileController::class, 'index'])->name('profile');
+        Route::get('/overview',           [LandingOverviewController::class, 'index'])->name('overview');
+        Route::get('/mypostings',         [MyPostingsController::class, 'index'])->name('mypostings');
+        Route::get('/mypostings/create',  [MyPostingsController::class, 'create'])->name('mypostings.create');
+        Route::post('/mypostings/upload', [MyPostingsController::class, 'upload'])->name('mypostings.upload');
+        Route::post('/mypostings',        [MyPostingsController::class, 'store'])->name('mypostings.store');
+        Route::get('/chat',               [ChatController::class, 'index'])->name('chat');
+        Route::get('/profile',            [LandingProfileController::class, 'index'])->name('profile');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
     });
 });

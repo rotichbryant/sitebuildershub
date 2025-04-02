@@ -67,7 +67,7 @@
                     <div class="mb-18">
                         <div class="row mb-11 align-items-center">
                             <div class="col-lg-6 mb-lg-0 mb-4">
-                            <h3 class="font-size-6 mb-0">Posted Adverts</h3>
+                            <h3 class="font-size-6 mb-0">Postings</h3>
                             </div>
                             <div class="col-lg-6">
                             <div class="d-flex flex-wrap align-items-center justify-content-lg-end">

@@ -7,9 +7,9 @@
         <div class="brand-logo">
           <a href="./index.html">
             <!-- light version logo (logo must be black)-->
-            <img src="../../../image/logo-main-black.png" alt="" class="light-version-logo default-logo">
+            <!-- <img src="../../../image/logo-main-black.png" alt="" class="light-version-logo default-logo"> -->
             <!-- Dark version logo (logo must be White)-->
-            <img src="../../../image/logo-main-white.png" alt="" class="dark-version-logo">
+            <!-- <img src="../../../image/logo-main-white.png" alt="" class="dark-version-logo"> -->
           </a>
         </div>
         <div class="collapse navbar-collapse" id="mobile-menu">

@@ -30,7 +30,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="border border-color-2" v-for="(post,index) in postings.data">
+                                        <tr class="border border-color-2" v-if="isEmpty(postings.data)">
+                                            <td class="table-y-middle py-7 min-width-px-155 text-center" colspan="7">
+                                                <h3 class="font-size-4 font-weight-normal text-black-2 mb-0"><i class="fa fa-exclamation-triangle mr-2"></i>No postings found</h3>
+                                            </td>
+                                        </tr>
+                                        <tr class="border border-color-2" v-for="(post,index) in postings.data"  v-if="!isEmpty(postings.data)">
                                             <th scope="row" class="pl-6 border-0 py-7 min-width-px-235">
                                                 <div class="">
                                                     <a href="jobdetails.html" class="font-size-4 mb-0 font-weight-semibold text-black-2">{{ post.title }}</a>
@@ -64,7 +69,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="pt-2 d-flex justify-content-center">
+                            <div class="pt-2 d-flex justify-content-center" v-if="!isEmpty(postings.data)">
                                 <nav aria-label="Page navigation example" >
                                     <ul class="pagination pagination-hover-primary rounded-0 ml-n2">
                                         <li class="page-item" v-for="(page,index) in postings.links">
@@ -88,6 +93,7 @@
 <script lang="ts" setup>
 import { LandingLayout } from '@/Layouts'
 import { Head, usePage } from '@inertiajs/vue3';
+import { isEmpty } from 'lodash';
 import { computed, reactive } from 'vue';
 
 const $data = reactive({

@@ -26,7 +26,14 @@
                                 </div>
                                 <div class="pt-6">
                                     <div class="row">
-                                        <Posting />
+                                        <Deferred data="postings">
+                                            <template #fallback>
+                                                <div>Loading...</div>
+                                            </template>
+                                            <template v-for="(posting,index) in postings.data" :key="posting.id">
+                                                <Posting :data="posting" />
+                                            </template>
+                                        </Deferred>
                                     </div>
                                 </div>
                                 <div class="text-center pt-5 pt-lg-13">
@@ -48,6 +55,9 @@
 </template>
 <script lang="ts" setup>
 import { LandingLayout } from '@/Layouts'
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { Posting, PostingFilter, PostingSidebar } from '../../Components/Landing';
+import { Deferred } from '@inertiajs/vue3'
+
+const postings = usePage().props.postings;
 </script>

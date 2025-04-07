@@ -51,6 +51,12 @@ class PostingModel extends Model
         // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
     ];    
     
+    public function getImagesAttribute() {
+        return collect(json_decode($this->attributes['images']))->map( function($image) {
+            return asset('storage/images/' . $image);
+        });
+    }
+
     /**
      * Get the sub-categories for the category.
      */

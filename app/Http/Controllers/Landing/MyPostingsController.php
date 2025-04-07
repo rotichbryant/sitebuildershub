@@ -49,7 +49,7 @@ class MyPostingsController extends Controller
         //
         $image = $request->file('image');
         $name  = Str::uuid().'.'.$image->getClientOriginalExtension();
-        $image->move(storage_path('app/images'), $name);
+        $image->move(asset('images'), $name);
 
         return response()->json(array('name' => $name ));
     }    

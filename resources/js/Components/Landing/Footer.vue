@@ -45,37 +45,6 @@
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
-              <div class="footer-widget widget3 mb-sm-0 mb-13">
-                <!-- footer widget title start -->
-                <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Product</p>
-                <!-- footer widget title end -->
-                <!-- widget social menu start -->
-                <ul class="widget-links pl-0 list-unstyled list-hover-primary">
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Features </a></li>
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Pricing</a></li>
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">News</a></li>
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Help desk</a></li>
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Support</a></li>
-                </ul>
-                <!-- widget social menu end -->
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
-              <div class="footer-widget widget4 mb-sm-0 mb-13">
-                <!-- footer widget title start -->
-                <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Services</p>
-                <!-- footer widget title end -->
-                <!-- widget social menu start -->
-                <ul class="widget-links pl-0 list-unstyled list-hover-primary">
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Digital Marketing</a></li>
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">SEO for Business</a></li>
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">Avasta Dash</a></li>
-                  <li class="mb-6"><a class="heading-default-color font-size-4 font-weight-normal" href="">UI Design</a></li>
-                </ul>
-                <!-- widget social menu end -->
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
               <div class="footer-widget widget4">
                 <!-- footer widget title start -->
                 <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Legal</p>

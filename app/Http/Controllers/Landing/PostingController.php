@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Models\CategoryModel;
+use App\Models\PostingModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,9 +17,10 @@ class PostingController extends Controller
     {
         $categories = CategoryModel::with(['subCategories'])->get();
         $locations  = config('location');
+        $postings   = PostingModel::with(['category','subCategory'])->orderBy('created_at', 'desc')->paginate(10);
         $status     = session('status');
 
-        return Inertia::render('Landing/Postings',compact('categories','locations','status'));
+        return Inertia::render('Landing/Postings',compact('categories','locations','postings','status'));
     }
 
     /**

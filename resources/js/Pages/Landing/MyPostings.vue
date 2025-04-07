@@ -64,20 +64,17 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="pt-2">
-                                <nav aria-label="Page navigation example" class="justify-content-center">
+                            <div class="pt-2 d-flex justify-content-center">
+                                <nav aria-label="Page navigation example" >
                                     <ul class="pagination pagination-hover-primary rounded-0 ml-n2">
-                                    <li class="page-item rounded-0 flex-all-center">
-                                        <a class="page-link rounded-0 border-0 px-3active" href="#" aria-label="Previous">
-                                        <i class="fas fa-chevron-left"></i>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link border-0 font-size-4 font-weight-semibold px-3" href="#">1</a></li>
-                                    <li class="page-item rounded-0 flex-all-center">
-                                        <a class="page-link rounded-0 border-0 px-3" href="#" aria-label="Next">
-                                        <i class="fas fa-chevron-right"></i>
-                                        </a>
-                                    </li>
+                                        <li class="page-item" v-for="(page,index) in postings.links">
+                                            <template v-if="page.url != null">
+                                                <a class="page-link rounded-0 border-0 px-3" :href="page.url" aria-label="Previous" v-if="page.label.includes('Previous')"><i class="fas fa-chevron-left"></i></a>                                             
+                                                <a class="page-link border-0 font-size-4 font-weight-semibold px-3 active" v-if="page.active" :href="page.url">{{ page.label }}</a>
+                                                <a class="page-link border-0 font-size-4 font-weight-semibold px-3" v-else :href="page.url">{{ page.label }}</a>   
+                                                <a class="page-link rounded-0 border-0 px-3" :href="page.url" aria-label="Next" v-if="page.label.includes('Next')"><i class="fas fa-chevron-right"></i></a>                                             
+                                            </template>
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>

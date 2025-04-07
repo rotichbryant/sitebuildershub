@@ -14,9 +14,15 @@ class OverviewController extends Controller
     public function index()
     {
         //
-        return Inertia::render('Landing/Overview',[
-            'status' => session('status')
-        ]);
+        $user = auth('landing')->user();
+
+        $stats = [
+            'postings' => $user->postings()->count(),
+        ];
+
+        $status = session('status');
+
+        return Inertia::render('Landing/Overview',compact('stats','status'));
     }
 
     /**

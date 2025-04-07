@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Models\CategoryModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,9 +14,11 @@ class PostingController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Landing/Postings',[
-            'status' => session('status')
-        ]);
+        $categories = CategoryModel::with(['subCategories'])->get();
+        $locations  = config('location');
+        $status     = session('status');
+
+        return Inertia::render('Landing/Postings',compact('categories','locations','status'));
     }
 
     /**

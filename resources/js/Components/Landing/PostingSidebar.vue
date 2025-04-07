@@ -2,10 +2,10 @@
     <div>
         <!-- Sidebar Start -->
         <div class="widgets mb-11">
-        <h4 class="font-size-6 font-weight-semibold mb-6">Category</h4>
-        <ul class="list-unstyled filter-check-list">
-            <li class="mb-2"><a href="#" class="toggle-item">Full Time</a></li>
-        </ul>
+            <h4 class="font-size-6 font-weight-semibold mb-6">Categories</h4>
+            <ul class="list-unstyled filter-check-list">
+                <li class="mb-2"><a href="#" class="toggle-item">Full Time</a></li>
+            </ul>
         </div>
         <div class="widgets mb-11 ">
         <div class="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">

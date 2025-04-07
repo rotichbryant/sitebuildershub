@@ -17,7 +17,7 @@ class LandingRedirectIfNotAuth
     public function handle(Request $request, Closure $next,$guard = 'landing'): Response
     {
         if (!Auth::guard($guard)->check()) {
-            return redirect('/login');
+            return redirect('/');
         }
 
         return $next($request);

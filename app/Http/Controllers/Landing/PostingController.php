@@ -16,8 +16,9 @@ class PostingController extends Controller
     public function index()
     {
         $categories = CategoryModel::with(['subCategories'])->get();
-        $locations  = config('location');
         $postings   = PostingModel::with(['category','subCategory'])->orderBy('created_at', 'desc')->paginate(10);
+
+        $locations  = config('location');
         $status     = session('status');
 
         return Inertia::render('Landing/Postings',compact('categories','locations','postings','status'));

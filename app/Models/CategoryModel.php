@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class CategoryModel extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $appends = [
+        'slug'
+    ];
     
     /**
      * The table associated with the model.
@@ -45,6 +49,16 @@ class CategoryModel extends Model
         return $this->hasMany(SubCategoryModel::class, 'category_id');
     }
 
+        /**
+     * Accessor to convert the name to a slug.
+     *
+     * @return string
+     */
+    public function getSlugAttribute(): string
+    {
+        return preg_replace("/\s+/", "", strtolower($this->name));
+    }
+    
     /**
      * Get the sub-categories for the category.
      */

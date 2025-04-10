@@ -1,5 +1,5 @@
 <template>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-4">
         <!-- Start Feature One -->
         <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
             <div class="d-block mb-7">

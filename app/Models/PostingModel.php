@@ -51,10 +51,21 @@ class PostingModel extends Model
         // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
     ];    
     
-    public function getImagesAttribute() {
-        return collect(json_decode($this->attributes['images']))->map( function($image) {
-            return asset('storage/images/' . $image);
-        });
+    /**
+     * Accessor to convert the stored images from JSON to a collection.
+     * 
+     * The images are stored in the database as a JSON string. This accessor
+     * will convert the JSON string to a collection of image paths.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getImagesAttribute(): \Illuminate\Support\Collection
+    {
+        return collect(json_decode($this->attributes['images']))
+            ->map(function ($image) {
+                // Convert the image path to an absolute URL
+                return asset('storage/images/' . $image);
+            });
     }
 
     /**

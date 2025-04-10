@@ -12,6 +12,10 @@ class SubCategoryModel extends Model
 {
     use HasFactory, HasUuids;
     
+    protected $appends = [
+        'slug'
+    ];
+
     /**
      * The table associated with the model.
      *
@@ -46,6 +50,16 @@ class SubCategoryModel extends Model
     {
         return $this->belongsTo(CategoryModel::class, 'category_id');
     }
+
+    /**
+     * Accessor to convert the name to a slug.
+     *
+     * @return string
+     */
+    public function getSlugAttribute(): string
+    {
+        return preg_replace("/\s+/", "", strtolower($this->name));
+    }    
 
     /**
      * Get the sub-categories for the category.

@@ -7,10 +7,13 @@
             <div class="row justify-content-center">
                 <div class="col-md-10 col-xs-12">
                     <div class="row">
-                        <div class="col-md-4 col-xs-8">
-                            <PostingSidebar />
+                        <div class="col-md-3 col-xs-8">
+                            <PostingSidebar
+                                :categories="categories"
+                                :filters="$data.filters"
+                            />
                         </div>
-                        <div class="col-md-8 col-xs-12 ">
+                        <div class="col-md-9 col-xs-12 ">
                             <!-- form -->
                             <PostingFilter />
                             <div class="pt-12 ml-lg-0 ml-md-15">
@@ -58,6 +61,14 @@ import { LandingLayout } from '@/Layouts'
 import { Head, usePage } from '@inertiajs/vue3';
 import { Posting, PostingFilter, PostingSidebar } from '../../Components/Landing';
 import { Deferred } from '@inertiajs/vue3'
+import { reactive, ref } from 'vue';
 
-const postings = usePage().props.postings;
+const $data = reactive({
+    filters:{
+        category: ref([])
+    }
+});
+
+const categories:     any = usePage().props.categories;
+const postings:       any = usePage().props.postings;
 </script>

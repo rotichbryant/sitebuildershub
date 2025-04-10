@@ -70,7 +70,7 @@ const addExtraFormData = (file: any,xhr: any, formData: any) => {
     formData.append('_token', pageProps.value.csrf_token);
 }
 
-const successFileUpload = (file, response) => {
+const successFileUpload = (file:any, response:any) => {
     console.log(response);
 }
 

@@ -51,14 +51,19 @@ Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::get('/clients',               [ClientsController::class, 'index'])->name('clients');
         Route::get('/subscriptions',         [SubscriptionController::class, 'index'])->name('subscriptions');
 
-        Route::get('/categories',            [CategoryController::class, 'index'])->name('categories');
-        Route::post('/categories',           [CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/categories/fetch',                     [CategoryController::class, 'create'])->name('categories.fetch');
+        Route::get('/categories',                           [CategoryController::class, 'index'])->name('categories');
+        Route::post('/categories',                          [CategoryController::class, 'store'])->name('categories.store');
+        Route::delete('/categories/{category}/delete',      [CategoryController::class, 'destroy'])->name('categories.delete');
 
-        Route::get('/subcategories',         [SubCategoryController::class, 'index'])->name('sub_categories');
-        Route::post('/subcategories',        [SubCategoryController::class, 'store'])->name('sub_categories.store');
+        Route::get('/subcategories',                          [SubCategoryController::class, 'index'])->name('sub_categories');
+        Route::get('/categories/fetch',                       [SubCategoryController::class, 'create'])->name('sub_categories.fetch');
+        Route::post('/subcategories',                         [SubCategoryController::class, 'store'])->name('sub_categories.store');
+        Route::delete('/subcategories/{sub_category}/delete', [SubCategoryController::class, 'destroy'])->name('sub_categories.delete');
 
-        Route::get('/childsubcategories',    [ChildSubCategoryController::class, 'index'])->name('child_sub_categories');
-        Route::post('/childsubcategories',   [ChildSubCategoryController::class, 'store'])->name('child_sub_categories.store');
+        Route::get('/childsubcategories',                            [ChildSubCategoryController::class, 'index'])->name('child_sub_categories');
+        Route::post('/childsubcategories',                           [ChildSubCategoryController::class, 'store'])->name('child_sub_categories.store');
+        Route::post('/childsubcategories/{childsubcategory}/delete', [ChildSubCategoryController::class, 'destroy'])->name('child_sub_categories.destroy');
        
         Route::get('/postings',              [DashboardPostingController::class, 'index'])->name('postings');
         Route::get('/staff',                 [StaffController::class,    'index'])->name('staff');

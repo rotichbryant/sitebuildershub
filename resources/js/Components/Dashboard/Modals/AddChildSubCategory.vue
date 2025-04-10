@@ -11,15 +11,28 @@
         </CModalHeader>
         <form @submit.prevent="submitForm">
             <CModalBody>
-                <CAlert v-if="form.errors.name" color="danger">{{ form.errors.name }}</CAlert>
-                <CFormInput
-                    id="name"
-                    v-model="form.name"
-                    label="Category Name"
-                    placeholder="Enter category name"
-                    :invalid="form.errors.name ? true : false"
-                    required
-                />
+                <CCol md="12">
+                    <CFormInput
+                        id="name"
+                        v-model="form.name"
+                        label="Category Name"
+                        placeholder="Enter category name"
+                        :invalid="form.errors.name ? true : false"
+                        required
+                    />
+                </CCol>
+                <CCol md="12" class="mt-3">
+                    <CFormSelect label="Select Category" v-model="form.category_id" required :invalid="form.errors.category_id ? true : false" @change="fetchSubCategories">
+                        <option>Select Category</option>
+                        <option :value="category.id" v-for="(category,index) in $props.categories" :key="index">{{ category.name }}</option>
+                    </CFormSelect>
+                </CCol>
+                <CCol md="12" class="mt-3">
+                    <CFormSelect label="Select Category" v-model="form.sub_category_id" required :invalid="form.errors.sub_category_id ? true : false">
+                        <option>Select Sub Category</option>
+                        <option :value="sub_category.id" v-for="(sub_category,index) in $data.sub_categories" :key="index">{{ sub_category.name }}</option>
+                    </CFormSelect>
+                </CCol>
             </CModalBody>
             <CModalFooter>
                 <CButton color="secondary" @click="closeModal">
@@ -35,16 +48,24 @@
 </template>
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { computed, inject } from 'vue';
+import { computed, inject, reactive } from 'vue';
 
 const $toast: any = inject("$toast");
 
 // Props
-const $props = defineProps({
+const $props: any = defineProps({
+    categories: {
+        type:    Array,
+        default: () =>  Array(),
+    },
     show: {
         type: Boolean,
         default: false,
     },
+});
+
+const $data: any = reactive({
+    sub_categories: [],
 });
 
 // Initialize emits
@@ -54,9 +75,12 @@ const showModal = computed({
     get: () => $props.show,
     set: (value:any) => $emit('update:show', value),
 });
+
 // Form for creating new category
 const form = useForm({
-    name: '',
+    name:            '',
+    category_id:     '',
+    sub_category_id: '',
 });
 
 // Close modal and reset form
@@ -66,14 +90,19 @@ const closeModal = () => {
     form.clearErrors();
 };
 
+const fetchSubCategories = ($event: any) => {
+    $data.sub_categories = $props.categories.find((category: any) => category.id == $event.target.value).sub_categories;
+    form.sub_category_id = '';
+};
+
 // Submit form to create new category
 const submitForm = () => {
-    form.post(route('dashboard.categories.store'), {
+    form.post(route('dashboard.child_sub_categories.store'), {
         onSuccess: (value:any) => {
             $emit('fetch');
             $toast.success(value.props.status);
             closeModal();
-        },
+        }
     });
 };
 </script>

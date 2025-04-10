@@ -8,6 +8,8 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, DefineComponent, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import toast from './toast';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const { VITE_APP_NAME, VITE_APP_URL } = import.meta.env || 'Laravel';
 
@@ -23,6 +25,7 @@ createInertiaApp({
         app.use(plugin);
         app.use(toast);
         app.use(CoreuiVue)
+        app.use(VueSweetalert2);
         app.provide('icons', icons)
         app.component('CIcon', CIcon)
         app.use(ZiggyVue);

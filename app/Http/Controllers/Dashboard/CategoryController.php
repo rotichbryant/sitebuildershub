@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = CategoryModel::withCount(['subCategories'])->paginate(0);
+        $categories = CategoryModel::withCount(['subCategories'])->paginate(10);
 
         return Inertia::render('Dashboard/Category',[
             'status'     => session('status'),
@@ -25,10 +25,17 @@ class CategoryController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create()
     {
-        //
+        // Retrieve the categories with their subcategories count
+        // and paginate them
+        $categories = CategoryModel::withCount(['subCategories'])->paginate(10);
+
+        // Return the categories as a JSON response
+        return back()->with(compact('categories'));
     }
 
     /**
@@ -72,8 +79,11 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(CategoryModel $category)
     {
-        //
+        // Delete the category
+        $category->delete();
+
+        return back()->with('message', 'Category deleted successfully');
     }
 }

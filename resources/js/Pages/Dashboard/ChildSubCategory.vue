@@ -1,14 +1,14 @@
 <template>
 <AuthenticatedLayout>
-    <Head title="Categories" />
+    <Head title="Child Sub Categories" />
     <CRow>
         <CCol xs="12">
         <CCard class="mb-4">
             <CCardBody> 
                 <CRow>
                     <CCol md="6">
-                        <h4>Categories</h4>
-                        <p class="text-muted">Manage your website categories to organize content effectively.</p>
+                        <h4>Child Sub Categories</h4>
+                        <p class="text-muted">Manage your website child sub categories to organize content effectively.</p>
                     </CCol>
                     <CCol md="6">
                         <CButton color="primary" class="float-end" @click="showModal = true">Add Child Sub Category</CButton>
@@ -19,36 +19,47 @@
                         <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Sub Categories</CTableHeaderCell>
-                        <CTableHeaderCell scope="col">Child Sub Categories</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Category</CTableHeaderCell>
+                        <CTableHeaderCell scope="col">Sub Category</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Created On</CTableHeaderCell>
                         <CTableHeaderCell scope="col"></CTableHeaderCell>
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                        <CTableRow v-for="(category, index) in $data.categories.data" :key="category.id">
-                            <CTableHeaderCell scope="row">{{ index + 1 }}</CTableHeaderCell>
-                            <CTableDataCell>{{ category.name }}</CTableDataCell>
-                            <CTableDataCell><CBadge color="primary">{{ category.sub_categories_count }}</CBadge></CTableDataCell>
-                            <CTableDataCell><CBadge color="primary">{{ category.sub_categories_count }}</CBadge></CTableDataCell>
-                            <CTableDataCell>{{ category.created_at }}</CTableDataCell>
+                        <CTableRow v-if="isEmpty($props.child_sub_categories.data)">
+                            <CTableDataCell colspan="6" class="text-center">
+                                <h6 class="mb-0"><CIcon name="cil-exclamation-circle"/> Nothing Found Here. </h6>
+                            </CTableDataCell>
+                        </CTableRow>
+                        <CTableRow v-for="(sub_category, index) in $props.child_sub_categories.data" :key="sub_category.id">
+                            <CTableDataCell scope="row">{{ index + 1 }}</CTableDataCell>
+                            <CTableDataCell>{{ sub_category.name }}</CTableDataCell>
+                            <CTableDataCell><CBadge color="primary">{{ sub_category.category.name }}</CBadge></CTableDataCell>
+                            <CTableDataCell><CBadge color="primary">{{ sub_category.sub_category.name }}</CBadge></CTableDataCell>
+                            <CTableDataCell>{{ sub_category.created_at }}</CTableDataCell>
                             <CTableDataCell>
                                 <CDropdown>
                                     <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon name="cil-options" /></CDropdownToggle>
                                     <CDropdownMenu>
-                                        <CDropdownItem href="#" @click="$edit(category)">Edit</CDropdownItem>
-                                        <CDropdownItem href="#" @click="$delete(category)">Delete</CDropdownItem>
+                                        <CDropdownItem href="#" @click="$edit(sub_category)">Edit</CDropdownItem>
+                                        <CDropdownItem href="#" @click="$delete(sub_category)">Delete</CDropdownItem>
                                     </CDropdownMenu>
                                 </CDropdown>
                             </CTableDataCell>
                         </CTableRow>
                     </CTableBody>
                 </CTable>
+                <CCol md="12">
+                    <CPagination aria-label="Page navigation example" size="sm" align="center">
+                        <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
+                    </CPagination>         
+                </CCol>
             </CCardBody>
         </CCard>
         </CCol>
     </CRow>
     <AddChildSubCategory 
+        :categories="$props.categories"
         :show="showModal" 
         @update:show="showModal = $event"
         @fetch="$fetch"
@@ -60,23 +71,27 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
 import { AddChildSubCategory } from '@/Components/Dashboard';
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
+import { isEmpty, isNull } from 'lodash';
 
 // Modal visibility state
 const showModal = ref(false);
 
 // In your Vue component
-const $props = defineProps({
-    categories: Object,
-    status: String
+const $props: any = defineProps({
+    categories:           Array,
+    child_sub_categories: Object,
+    status:               String
 });
 
 const $data = reactive({
-    categories: Object(),
+    child_sub_categories: Object(),
     loaders: {
         fetch: false
     }
-})
+});
+
+const pages = computed( () => !isEmpty($props.child_sub_categories) ? $props.child_sub_categories.links.filter( (link: any) => !isNull(link.url)) : [] );
 
 /**
  * Fetch categories from the server.
@@ -91,10 +106,10 @@ const $fetch = async () => {
         $data.loaders.fetch = true;
 
         // Fetch the categories from the server
-        const { data }: any = await router.get(route('dashboard.categories'));
+        const { data }: any = await router.get(route('dashboard.childsubcategories'));
 
         // Set the categories
-        $data.categories = data;
+        $data.child_sub_categories = data;
     } catch (error) {
         // Set the loading flag
         $data.loaders.fetch = false;

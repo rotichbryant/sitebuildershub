@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\ChildSubCategoryRequest;
+use App\Models\CategoryModel;
 use App\Models\ChildSubCategoryModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,11 +17,13 @@ class ChildSubCategoryController extends Controller
     public function index()
     {
         //
-        $categories = ChildSubCategoryModel::with(['category','subCategory'])->paginate(10);
+        $child_sub_categories = ChildSubCategoryModel::with(['category','subCategory'])->paginate(10);
+        $categories           = CategoryModel::with(['subCategories'])->get();
 
-        return Inertia::render('Dashboard/SubCategory',[
-            'status'     => session('status'),
-            'categories' => $categories
+        return Inertia::render('Dashboard/ChildSubCategory',[
+            'status'               => session('status'),
+            'categories'           => $categories,
+            'child_sub_categories' => $child_sub_categories
         ]);
     }
 
@@ -34,9 +38,15 @@ class ChildSubCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ChildSubCategoryRequest $request)
     {
-        //
+        // Validate the request
+        $validated = $request->validated();
+
+        // Create the category with UUID
+        ChildSubCategoryModel::create($validated);
+
+        return back()->with('status', 'Child Sub Category created successfully');
     }
 
     /**

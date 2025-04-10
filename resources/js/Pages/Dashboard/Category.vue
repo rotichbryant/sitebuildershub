@@ -68,9 +68,13 @@ import { AddCategory } from '@/Components/Dashboard';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { CTableDataCell, CTableFoot } from '@coreui/vue';
 import { isEmpty, isNull } from 'lodash';
+import { inject } from 'vue';
 
 // Modal visibility state
 const showModal = ref(false);
+
+const $swal: any  = inject('$swal');  
+const $toast: any = inject('$toast');  
 
 // In your Vue component
 const $props = defineProps({
@@ -100,7 +104,66 @@ const $fetch = async () => {
         $data.loaders.fetch = true;
 
         // Fetch the categories from the server
-        const { data }: any = await router.get(route('dashboard.categories'));
+        const { data: { categories } }: any = await router.get(route('dashboard.categories.fetch'));
+
+        // Set the categories
+        $data.categories = categories;
+    } catch (error) {
+        // Set the loading flag
+        $data.loaders.fetch = false;
+
+        // Log the error
+        console.error('Error fetching categories', error);
+    } finally {
+        // Set the loading flag
+        $data.loaders.fetch = false;
+    }
+}
+
+const $delete = async (value:any) => {
+    // Show a confirmation dialog to the user
+    const { isConfirmed } = await $swal.fire({
+        icon: 'question', // Icon to display in the dialog
+        title: 'Delete Category', // Title of the dialog
+        text: 'Are you sure you want to delete this category?', // Text content of the dialog
+        showCancelButton: true // Whether to show a "Cancel" button
+    });
+
+    // If the user does not confirm, exit the function
+    if (!isConfirmed) { return; }
+            
+    // Set the loading flag
+    $data.loaders.fetch = true;
+
+    // Fetch the categories from the server
+    router.delete(
+        route('dashboard.categories.delete',{ category: value.id }),
+        {
+            onSuccess: () => {
+                // Post message
+                $toast.success('Category has been deleted.');   
+
+                // Set the loading flag
+                $data.loaders.fetch = false;
+
+                // Fetch categories
+                $fetch();
+            },
+            onError: (error) => {
+                // Set the loading flag
+                $data.loaders.fetch = false;
+            }
+        }
+    );
+}
+
+const $edit = async (value:any) => {
+    try {
+        // Set the loading flag
+        $data.loaders.fetch = true;
+
+        // Fetch the categories from the server
+        const { data }: any = await router.put(route('dashboard.categories.show', value.id));
 
         // Set the categories
         $data.categories = data;
@@ -114,14 +177,6 @@ const $fetch = async () => {
         // Set the loading flag
         $data.loaders.fetch = false;
     }
-}
-
-const $delete = (value:any) => {
-
-}
-
-const $edit = (value:any) => {
-
 }
 
 onMounted( () => {

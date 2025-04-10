@@ -8,10 +8,10 @@
                 <CRow>
                     <CCol md="6">
                         <h4>Sub Categories</h4>
-                        <p class="text-muted">Manage your website categories to organize content effectively.</p>
+                        <p class="text-muted">Manage your website sub categories to organize content effectively.</p>
                     </CCol>
                     <CCol md="6">
-                        <CButton color="primary" class="float-end" @click="showModal = true">Add Child Category</CButton>
+                        <CButton color="primary" class="float-end" @click="showModal = true">Add Sub Category</CButton>
                     </CCol>
                 </CRow>
                 <CTable>
@@ -71,12 +71,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
 import { AddSubCategory } from '@/Components/Dashboard';
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, inject, onMounted, reactive, ref } from 'vue';
 import { CTableDataCell } from '@coreui/vue';
 import { isEmpty, isNull } from 'lodash';
 
 // Modal visibility state
 const showModal = ref(false);
+
+const $swal: any  = inject('$swal');  
+const $toast: any = inject('$toast');  
 
 // In your Vue component
 const $props: any = defineProps({
@@ -101,30 +104,67 @@ const pages = computed( () => !isEmpty($data.sub_categories) ? $data.sub_categor
  * @name $fetch
  * @returns {Promise<void>}
  */
-const $fetch = async () => {
+ const $fetch = async () => {
     try {
         // Set the loading flag
         $data.loaders.fetch = true;
 
         // Fetch the categories from the server
-        const { data }: any = await router.get(route('dashboard.sub_categories'));
+        const { data: { categories, sub_categories } }: any = await router.get(route('dashboard.sub_categories.fetch'));
 
         // Set the categories
-        $data.sub_categories = data;
+        $data.categories     = categories;
+
+        // Set the categories
+        $data.sub_categories = sub_categories;        
     } catch (error) {
         // Set the loading flag
         $data.loaders.fetch = false;
 
         // Log the error
-        console.error('Error fetching categories', error);
+        console.error('Error fetching sub categories', error);
     } finally {
         // Set the loading flag
         $data.loaders.fetch = false;
     }
 }
 
-const $delete = (value:any) => {
 
+const $delete = async (value:any) => {
+    // Show a confirmation dialog to the user
+    const { isConfirmed } = await $swal.fire({
+        icon:  'question', // Icon to display in the dialog
+        title: 'Delete Sub Category', // Title of the dialog
+        text:  `Are you sure you want to delete ${value.name}?`, // Text content of the dialog
+        showCancelButton: true // Whether to show a "Cancel" button
+    });
+
+    // If the user does not confirm, exit the function
+    if (!isConfirmed) { return; }
+            
+    // Set the loading flag
+    $data.loaders.fetch = true;
+
+    // Fetch the categories from the server
+    router.delete(
+        route('dashboard.sub_categories.delete',{ sub_category: value.id }),
+        {
+            onSuccess: () => {
+                // Post message
+                $toast.success(`${value.name} has been deleted.`);   
+
+                // Set the loading flag
+                $data.loaders.fetch = false;
+
+                // Fetch categories
+                $fetch();
+            },
+            onError: (error) => {
+                // Set the loading flag
+                $data.loaders.fetch = false;
+            }
+        }
+    );
 }
 
 const $edit = (value:any) => {

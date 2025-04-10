@@ -32,6 +32,11 @@ class SubCategoryController extends Controller
     public function create()
     {
         //
+        $sub_categories = SubCategoryModel::with(['category'])->withCount(['childSubCategories'])->paginate(10);
+        $categories     = CategoryModel::all();
+
+        // Return the categories as a JSON response
+        return back()->with(compact('categories','sub_categories'));
     }
 
     /**
@@ -45,7 +50,7 @@ class SubCategoryController extends Controller
         // Create the category with UUID
         SubCategoryModel::create($validated);
 
-        return back()->with('status', 'Category created successfully');
+        return back()->with('status', 'Sub Category created successfully');
     }
 
     /**
@@ -75,8 +80,11 @@ class SubCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SubCategoryModel $sub_category)
     {
-        //
+        // Delete the category
+        $sub_category->delete();
+
+        return back()->with('message', 'Sub-Category deleted successfully');
     }
 }

@@ -3,16 +3,34 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\PostingModel;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PostingController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
+     * This method displays a paginated list of postings (job postings)
+     * in the dashboard. It uses the PostingModel to retrieve the postings
+     * and orders them by the created_at date in descending order.
+     *
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //
+        // Retrieve the postings with their category and subcategory
+        // and paginate them
+        $postings = PostingModel::with(['category','subCategory','user'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // Retrieve the status message from the session
+        $status = session('status');
+
+        // Return the postings and the status message as a JSON response
+        return Inertia::render('Dashboard/Postings', compact('postings', 'status'));
     }
 
     /**
@@ -34,9 +52,13 @@ class PostingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(PostingModel $posting)
     {
-        //
+        // Retrieve the status message from the session
+        $status = session('status');
+
+        // Return the postings and the status message as a JSON response
+        return Inertia::render('Dashboard/Posting', compact('posting', 'status'));
     }
 
     /**

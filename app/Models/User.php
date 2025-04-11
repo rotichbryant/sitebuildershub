@@ -21,6 +21,15 @@ class User extends Authenticatable
     public $table = 'users';
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var string[]
+     */
+    protected $appends = [
+        'name' // The full name of the user, based on first_name and last_name.
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>

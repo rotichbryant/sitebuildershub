@@ -1,4 +1,5 @@
 export { default as Header } from './Header.vue';
+export { default as Posting } from './Posting.vue';
 export { default as Sidebar } from './Sidebar.vue';
 
 // Modals

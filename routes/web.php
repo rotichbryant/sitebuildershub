@@ -65,7 +65,9 @@ Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::post('/childsubcategories',                           [ChildSubCategoryController::class, 'store'])->name('child_sub_categories.store');
         Route::post('/childsubcategories/{childsubcategory}/delete', [ChildSubCategoryController::class, 'destroy'])->name('child_sub_categories.destroy');
        
-        Route::get('/postings',              [DashboardPostingController::class, 'index'])->name('postings');
+        Route::get('/postings/{posting}', [DashboardPostingController::class, 'show'])->name('postings.show');
+        Route::get('/postings',           [DashboardPostingController::class, 'index'])->name('postings');
+
         Route::get('/staff',                 [StaffController::class,    'index'])->name('staff');
         Route::get('/system',                [SystemController::class,   'index'])->name('system');
         Route::post('/system',               [SystemController::class,   'store'])->name('system.store');

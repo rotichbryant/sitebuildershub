@@ -54,6 +54,9 @@ class PostingController extends Controller
      */
     public function show(PostingModel $posting)
     {
+        // Load the related category, subcategory, and user for the posting
+        $posting->load(['category', 'subCategory', 'childSubCategory', 'user']);
+
         // Retrieve the status message from the session
         $status = session('status');
 

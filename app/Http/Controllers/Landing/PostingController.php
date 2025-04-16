@@ -13,13 +13,39 @@ class PostingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = CategoryModel::with(['subCategories'])->get();
-        $postings   = PostingModel::with(['category','subCategory'])->orderBy('created_at', 'desc')->paginate(10);
+        $postings    = PostingModel::with(['category','subCategory']);
+        $categories  = CategoryModel::with(['subCategories'])->get();
+        $queryParams = $request->query();
+        $locations   = config('location');
+        $status      = session('status');
 
-        $locations  = config('location');
-        $status     = session('status');
+        if( empty($queryParams) ){
+            $postings   = $postings->orderBy('created_at', 'desc')->paginate(10);
+        }
+
+        if( !empty($queryParams) ){
+
+            if( !empty($queryParams['categories']) ){
+                $postings = $postings->subCategories(explode(',',$queryParams['categories']));
+            }
+            
+            if( !empty($queryParams['cities']) ){
+                $postings = $postings->cities(explode(',',$queryParams['cities']));
+            }
+            
+            if( !empty($queryParams['price_range']) ){
+                $postings = $postings->range(explode(',',$queryParams['price_range']));
+            }
+
+            if( !empty($queryParams['name']) ){
+                $postings = $postings->name($queryParams['name']);
+            }
+            
+            $postings   = $postings->orderBy('created_at', 'desc')->paginate(10);
+            
+        }
 
         return Inertia::render('Landing/Postings',compact('categories','locations','postings','status'));
     }
@@ -27,9 +53,9 @@ class PostingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
     }
 
     /**

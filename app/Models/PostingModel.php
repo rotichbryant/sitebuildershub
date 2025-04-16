@@ -83,6 +83,14 @@ class PostingModel extends Model
     {
         return $this->belongsTo(SubCategoryModel::class, 'sub_category_id');
     } 
+
+    /**
+     * Get the sub-categories for the category.
+     */
+    public function childSubCategory(): BelongsTo
+    {
+        return $this->belongsTo(ChildSubCategoryModel::class, 'child_sub_category_id');
+    }     
     
     /**
      * Get the user that owns the posting.
@@ -92,4 +100,61 @@ class PostingModel extends Model
         return $this->belongsTo(User::class, 'user_id');
     }     
     
+
+    /**
+     * Scope a query to filter the postings by a price range.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $column
+     * @param  int  $start
+     * @param  int  $end
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRange($query, $range)
+    {
+        return $query->whereBetween('price', $range);
+    }
+    /**
+     * Scope a query to filter the postings by name.
+     *
+     * This scope allows filtering postings where the name contains
+     * the specified substring.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string  $name
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeName($query, $name)
+    {
+        return $query->where('name', 'like', "%$name%");
+    }
+
+    /**
+     * Scope a query to filter the postings by sub_categories.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array  $sub_categories
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSubCategories($query, array $sub_categories)
+    {
+        return $query->whereHas('subCategory', function ($query) use ($sub_categories) {
+            $query->whereIn('name', $sub_categories);
+        });
+    }
+
+    /**
+     * Scope a query to filter the postings by cities.
+     *
+     * This scope filters the postings based on the specified list of cities.
+     * It uses the 'town' column in the database to apply the filter.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array  $cities
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCities($query, array $cities)
+    {
+        return $query->whereIn('town', $cities);
+    }    
 }

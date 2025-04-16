@@ -126,19 +126,19 @@ $(document).ready(function() {
 
 
 /*----------  Range Slider  ----------*/
-$(function() {
-    $(".pm-range-slider").slider({
-        range: true,
-        min: 50,
-        max: 180,
-        values: [100, 130],
-        slide: function(event, ui) {
-            $("#amount").val("$" + ui.values[0] + " - " + ui.values[1] + "K");
-        }
-    });
-    $("#amount").val("$" + $(".pm-range-slider").slider("values", 0) +
-        " - " + $(".pm-range-slider").slider("values", 1) + "K");
-});
+// $(function() {
+//     $(".pm-range-slider").slider({
+//         range: true,
+//         min: $("#amount").data('min'),
+//         max: $("#amount").data('max'),
+//         values: [$("#amount").data('lower'), $("#amount").data('upper')],
+//         slide: function(event, ui) {
+//             console.log(event);
+//             $("#amount").val(`${$("#amount").data('currency')} ${ui.values[0]} - ${$("#amount").data('currency' ) } ${ui.values[1]}`);
+//         }
+//     });
+//     $("#amount").val(`${$("#amount").data('currency' ) } ${ $(".pm-range-slider").slider("values", 0) } - ${$("#amount").data('currency' ) } ${ $(".pm-range-slider").slider("values", 1) }`);
+// });
 
 
 $('.product-view-mode a').on('click', function(e) {

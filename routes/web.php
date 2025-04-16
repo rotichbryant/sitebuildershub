@@ -26,10 +26,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::name('landing.')->group(function () {
-    Route::get('/',          [HomeController::class, 'index'])->name('home');
-    Route::get('/postings',  [LandingPostingController::class, 'index'])->name('postings');
-    Route::get('/aboutus',   [AboutUsController::class, 'index'])->name('aboutus');
-    Route::get('/contactus', [ContactUsController::class, 'index'])->name('contactus');
+    Route::get('/',               [HomeController::class, 'index'])->name('home');
+    Route::get('/postings/fetch', [LandingPostingController::class, 'create'])->name('postings.fetch');
+    Route::get('/postings',       [LandingPostingController::class, 'index'])->name('postings');
+    Route::get('/aboutus',        [AboutUsController::class, 'index'])->name('aboutus');
+    Route::get('/contactus',      [ContactUsController::class, 'index'])->name('contactus');
     
     Route::middleware('landing.auth')->group(function () {
         Route::get('/overview',           [LandingOverviewController::class, 'index'])->name('overview');

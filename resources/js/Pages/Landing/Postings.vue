@@ -9,35 +9,28 @@
                     <div class="row">
                         <div class="col-md-3 col-xs-8">
                             <PostingSidebar
-                                :categories="categories"
+                                :locations="$data.locations"
+                                :categories="$data.categories"
                                 :filters="$data.filters"
+                                @filter="applyFilter"
+                                @update-filters="$data.filters = $event"
                             />
                         </div>
                         <div class="col-md-9 col-xs-12 ">
                             <!-- form -->
-                            <PostingFilter />
+                            <!-- <PostingFilter /> -->
                             <div class="pt-12 ml-lg-0 ml-md-15">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center result-view-type">
-                                        <a class="heading-default-color pl-5 font-size-6 hover-text-hitgray" href="#">
-                                            <i class="fa fa-list-ul"></i>
-                                        </a>
-                                        <a class="heading-default-color pl-5 font-size-6 hover-text-hitgray active" href="#">
-                                            <i class="fa fa-th-large"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="pt-6">
-                                    <div class="row">
-                                        <Deferred data="postings">
-                                            <template #fallback>
-                                                <div>Loading...</div>
-                                            </template>
-                                            <template v-for="(posting,index) in postings.data" :key="posting.id">
-                                                <Posting :data="posting" />
-                                            </template>
-                                        </Deferred>
-                                    </div>
+                                <div class="row">
+                                    <Deferred data="postings">
+                                        <template #fallback>
+                                            <div>Loading...</div>
+                                        </template>
+                                        <template v-for="(posting,index) in $data.postings.data" :key="posting.id">
+                                            <Posting 
+                                                :data="posting" 
+                                            />
+                                        </template>
+                                    </Deferred>
                                 </div>
                                 <div class="text-center pt-5 pt-lg-13">
                                     <a class="text-green font-weight-bold text-uppercase font-size-3 d-flex align-items-center justify-content-center" href="#">
@@ -58,17 +51,97 @@
 </template>
 <script lang="ts" setup>
 import { LandingLayout } from '@/Layouts'
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import { Posting, PostingFilter, PostingSidebar } from '../../Components/Landing';
 import { Deferred } from '@inertiajs/vue3'
-import { reactive, ref } from 'vue';
+import { computed, inject, onMounted, reactive, ref } from 'vue';
+import { isEmpty, get, keys, set, forEach, intersection, intersectionBy, map } from 'lodash';
 
-const $data = reactive({
+const $toast: any = inject('$toast'); 
+const $data: any  = reactive({
+    categories:   usePage().props.categories,
+    locations:    usePage().props.locations,
+    queryParams:  Object.fromEntries(new URLSearchParams(window.location.search).entries()),
+    postings:     usePage().props.postings,
     filters:{
-        category: ref([])
-    }
+        categories:  ref([]),
+        cities:      ref([]),
+        price_range: String(),
+        name:        ref([])
+    },
 });
 
-const categories:     any = usePage().props.categories;
-const postings:       any = usePage().props.postings;
+const applyFilter = () => {
+    let filters     = {}
+    let filter_keys = keys($data.filters).filter( (value:any) => !isEmpty( get($data.filters,value) ));
+
+    if( isEmpty(filter_keys) ){
+        $toast.info('Please select at least one filter.');
+        return;
+    }
+
+    filter_keys.forEach( (value) => {
+        switch(value){
+            case 'categories':
+                set(filters, 'categories', decodeURIComponent(get($data.filters,value).map( (category:any) => category.name ).join(',')));
+            break;
+            case 'cities':
+                set(filters, 'cities', decodeURIComponent(get($data.filters,value).map( (city:any) => city.name ).join(',')));
+            break;
+            case 'price_range':
+                set(filters, 'price_range', decodeURIComponent(get($data.filters,value).join(',')));
+            break;
+            case 'name':
+                set(filters, 'name', get($data.filters,value));
+            break;
+        }
+    });
+    
+    router.get(
+        route('landing.postings'), 
+        filters,
+        {
+
+            onSuccess: (value) => {
+                console.log(value);
+                // $data.postings = cloneDeep(postings);
+            }
+        }
+    );
+}
+
+onMounted(
+    () => {
+        forEach(
+            $data.queryParams,
+            (value,key) => {
+                switch(key){
+                    case 'categories':
+                        $data.filters.categories = intersectionBy(
+                            $data.categories.map( (category: any) => category.sub_categories).flat(),
+                            value.split(',').map( (category:any) => ({ name: category }) ),
+                            'name'
+                        );
+                    break;
+                    case 'cities':
+                        $data.filters.cities = intersectionBy(
+                            map($data.locations,(cities,key) => cities ).flat().map( city => ({ name: city }) ),
+                            value.split(',').map( (city:any) => ({ name: city }) ),
+                            'name'
+                        );
+                    break;
+                    case 'price_range':
+                        $data.filters.price_range = value.split(',');
+                    break;
+                    case 'name':
+                        $data.filters.name = value;
+                    break;
+                }
+            }
+        )
+        console.log($data.queryParams);
+        // const router = 
+    }
+)
+
 </script>

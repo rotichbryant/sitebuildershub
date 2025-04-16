@@ -1,5 +1,5 @@
 <template>
-    <div class="col-12 col-lg-4">
+    <div class="col-lg-4 col-md-6">
         <!-- Start Feature One -->
         <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
             <div class="d-block mb-7">
@@ -43,7 +43,7 @@ const props: any = defineProps({
         default:  Object(),
         type:     Object,
         required: true
-    } 
+    }
 });
 
 const posting: any = computed( () => props.data );

@@ -69,9 +69,9 @@ class PostingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(PostingModel $posting)
     {
-        //
+        return Inertia::render('Landing/ViewPosting',compact('posting'));
     }
 
     /**

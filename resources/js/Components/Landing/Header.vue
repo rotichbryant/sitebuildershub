@@ -60,7 +60,7 @@
                 <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.overview')">Overview </a>
                 <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.mypostings')">My Postings </a>
                 <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.chat')">Chat</a>
-                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.profile')">Profile</a>
+                <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.profile',{ tab:'personal'})">Profile</a>
                 <a class="dropdown-item py-2 text-red font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="#" @click="logout">Log Out</a>
               </div>
             </div>

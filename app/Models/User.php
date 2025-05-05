@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -153,6 +154,29 @@ class User extends Authenticatable
              */
             foreignKey: 'user_id',
         );
-    }   
+    } 
+
+    /**
+     * Get the business profile that belongs to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\BusinessProfileModel>
+     */
+    public function business_profile(): HasOne
+    {
+        /**
+         * Define the relationship using the BusinessProfileModel class.
+         * 
+         * @return HasMany<\App\Models\BusinessProfileModel>
+         */
+        return $this->hasOne(
+            related: BusinessProfileModel::class,
+            /**
+             * The foreign key on the `users` table that references the `id` column
+             * on the `business_profiles` table.
+             */
+            foreignKey: 'user_id',
+        );
+    }
+      
     
 }

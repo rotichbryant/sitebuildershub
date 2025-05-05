@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Landing\BusinessProfileRequest;
+use App\Models\BusinessProfileModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,14 +18,33 @@ class ProfileController extends Controller
         return Inertia::render('Landing/Profile',[
             'status' => session('status')
         ]);
-    }
+    }  
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $tab)
     {
         //
+        $data = [
+            'tab'       => $tab,
+            'status'    => session('status'),
+            'locations' => config('location'),
+        ];
+
+        $user           = auth('landing')->user();
+
+        switch($tab){
+            case 'personal':
+                $data['user']             = $user;
+            break;
+            case 'business':
+                $data['business_profile'] = $user->business_profile;
+                $data['stores']           = !empty($data['business_profile']) ? $data['business_profile']->stores : array();
+            break;
+        }
+
+        return Inertia::render('Landing/Profile',$data);
     }
 
     /**
@@ -32,6 +53,33 @@ class ProfileController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function business(BusinessProfileRequest $request)
+    {
+        //
+        $validated = $request->validated();
+
+        $user = auth('landing')->user();
+
+        if( empty($user->business_profile) ){
+            BusinessProfileModel::create(
+                array_merge($validated, [
+                    'user_id' => $user->id
+                ])
+            );
+        }
+        
+        if( !empty($user->business_profile) ){
+            $user->business_profile->update($validated);
+        }
+
+        return back()->with([
+            'message' => 'Business Profile Updated Successfully'
+        ]);
     }
 
     /**

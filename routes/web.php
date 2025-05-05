@@ -26,11 +26,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::name('landing.')->group(function () {
-    Route::get('/',               [HomeController::class, 'index'])->name('home');
-    Route::get('/postings/fetch', [LandingPostingController::class, 'create'])->name('postings.fetch');
-    Route::get('/postings',       [LandingPostingController::class, 'index'])->name('postings');
-    Route::get('/aboutus',        [AboutUsController::class, 'index'])->name('aboutus');
-    Route::get('/contactus',      [ContactUsController::class, 'index'])->name('contactus');
+    Route::get('/',                        [HomeController::class, 'index'])->name('home');
+    Route::get('/postings/show/{posting}', [LandingPostingController::class, 'show'])->name('postings.show');
+    Route::get('/postings',                [LandingPostingController::class, 'index'])->name('postings');
+    Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
+    Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
     
     Route::middleware('landing.auth')->group(function () {
         Route::get('/overview',           [LandingOverviewController::class, 'index'])->name('overview');
@@ -39,7 +39,9 @@ Route::name('landing.')->group(function () {
         Route::post('/mypostings/upload', [MyPostingsController::class, 'upload'])->name('mypostings.upload');
         Route::post('/mypostings',        [MyPostingsController::class, 'store'])->name('mypostings.store');
         Route::get('/chat',               [ChatController::class, 'index'])->name('chat');
-        Route::get('/profile',            [LandingProfileController::class, 'index'])->name('profile');
+        Route::get('/profile/{tab}',      [LandingProfileController::class, 'create'])->name('profile');
+        Route::post('/profile/business',  [LandingProfileController::class, 'business'])->name('profile.business');
+        Route::post('/profile/personal',  [LandingProfileController::class, 'personal'])->name('profile.personal');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
     });
 });

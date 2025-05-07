@@ -279,14 +279,38 @@ const checkDay = (day: any): boolean => {
 
 const getPlace = debounce (
     async (search_query: string) => {
+        if( isEmpty(search_query) ) {
+            $data.places = [];
+            return;
+        }
         console.log(search_query);
         try {
             $data.loaders.places = true;
+            // useForm().get(`/places?query=${search_query}`, {
+            //     onSuccess: (value: any) => {
+            //         // if( !isEmpty(value.props.flash.message) ){
+            //         //     toast.success(value.props.flash.message);
+            //         // }
+            //         // $data.places = value.props.places;
+            //         console.log(value.props.places);
+            //     },
+            // });
             const maps     = usePage().props.maps;
-            const { data } = await fetch(`${maps.api_url}/json?key=${maps.api_key}&input=${search_query}&inputtype=textquery&fields=${maps.fields}`);
+            const { data } = await fetch(
+                `${maps.api_url}/json?key=${maps.api_key}&input=${search_query}&inputtype=textquery&fields=${maps.fields}`,
+                {
+                    method: 'GET',
+                    mode: 'cors',
+                    headers: {
+                        'Referer': 'https://www.google.com',
+                        'Access-Control-Allow-Origin':'*'
+                    }
+                }
+            );
             $data.loaders.places = true;
             console.log(data);
         } catch(error) {
+            console.log(error);
             $data.loaders.places = false;
         } finally {
             $data.loaders.places = false;

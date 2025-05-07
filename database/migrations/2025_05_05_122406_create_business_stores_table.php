@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('address');
             $table->uuid('business_profile_id');
             $table->foreign('business_profile_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('open_from');
-            $table->string('open_to');
+            $table->json('open_from');
+            $table->json('open_to');
             $table->string('location');
             $table->string('name');
             $table->longText('tips');

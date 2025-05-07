@@ -27,8 +27,7 @@
                 <div class="card">
                     <div class="card-body">
                         <Stores 
-                            :data="delivery_options"
-                            :csrf_token="csrf_token"
+                            :data="delivery_options" 
                         />
                     </div>
                 </div>

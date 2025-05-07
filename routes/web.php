@@ -33,15 +33,16 @@ Route::name('landing.')->group(function () {
     Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
     
     Route::middleware('landing.auth')->group(function () {
-        Route::get('/overview',           [LandingOverviewController::class, 'index'])->name('overview');
-        Route::get('/mypostings',         [MyPostingsController::class, 'index'])->name('mypostings');
-        Route::get('/mypostings/create',  [MyPostingsController::class, 'create'])->name('mypostings.create');
-        Route::post('/mypostings/upload', [MyPostingsController::class, 'upload'])->name('mypostings.upload');
-        Route::post('/mypostings',        [MyPostingsController::class, 'store'])->name('mypostings.store');
-        Route::get('/chat',               [ChatController::class, 'index'])->name('chat');
-        Route::get('/profile/{tab}',      [LandingProfileController::class, 'create'])->name('profile');
-        Route::post('/profile/business',  [LandingProfileController::class, 'business'])->name('profile.business');
-        Route::post('/profile/personal',  [LandingProfileController::class, 'personal'])->name('profile.personal');
+        Route::get('/overview',                [LandingOverviewController::class, 'index'])->name('overview');
+        Route::get('/mypostings',              [MyPostingsController::class, 'index'])->name('mypostings');
+        Route::get('/mypostings/create',       [MyPostingsController::class, 'create'])->name('mypostings.create');
+        Route::post('/mypostings/upload',      [MyPostingsController::class, 'upload'])->name('mypostings.upload');
+        Route::post('/mypostings',             [MyPostingsController::class, 'store'])->name('mypostings.store');
+        Route::get('/chat',                    [ChatController::class, 'index'])->name('chat');
+        Route::get('/profile/{tab}',           [LandingProfileController::class, 'create'])->name('profile');
+        Route::post('/profile/business/store', [LandingProfileController::class, 'store'])->name('profile.business.store');
+        Route::post('/profile/business',       [LandingProfileController::class, 'business'])->name('profile.business');
+        Route::post('/profile/personal',       [LandingProfileController::class, 'personal'])->name('profile.personal');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
     });
 });

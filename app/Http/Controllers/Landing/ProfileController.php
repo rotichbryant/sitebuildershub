@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\BusinessProfileRequest;
+use App\Http\Requests\Landing\CreateStoreRequest;
 use App\Models\BusinessProfileModel;
+use App\Models\BusinessStoreModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -39,8 +41,9 @@ class ProfileController extends Controller
                 $data['user']             = $user;
             break;
             case 'business':
-                $data['business_profile'] = $user->business_profile;
-                $data['stores']           = !empty($data['business_profile']) ? $data['business_profile']->stores : array();
+                $data['maps']              = config('services.google');
+                $data['business_profile']  = $user->business_profile;
+                $data['stores']            = !empty($data['business_profile']) ? $data['business_profile']->stores : array();
             break;
         }
 
@@ -79,6 +82,31 @@ class ProfileController extends Controller
 
         return back()->with([
             'message' => 'Business Profile Updated Successfully'
+        ]);
+    }
+
+    
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function business_store(CreateStoreRequest $request)
+    {
+        //
+        $validated = $request->validated();
+
+        $user = auth('landing')->user();
+
+        BusinessStoreModel::create(
+            array_merge(
+                $validated, 
+                [
+                    'business_profile' => $user->business_profile->id
+                ]
+            )
+        );
+
+        return back()->with([
+            'message' => 'Business Store Created Successfully'
         ]);
     }
 

@@ -22,8 +22,12 @@ class CreateStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'address' => [
-                'string',
+            'coords.lat' => [
+                'regex:/^[-]?(([0-8]?[0-9])\.(\d+))|(90(\.0+)?)$/ ',
+                'required'
+            ],
+            'coords.lng' => [
+                'regex:/^[-]?(([0-1]?[0-7]?[0-9])\.(\d+))|(180(\.0+)?)$/ ',
                 'required'
             ],
             'location' => [
@@ -34,12 +38,20 @@ class CreateStoreRequest extends FormRequest
                 'string',
                 'required'
             ],
-            'open_from' => [
-                'object',
+            'open_from.id' => [
+                'integer',
                 'required'
             ],
-            'open_to' => [
-                'object',
+            'open_from.time' => [
+                'string',
+                'required'
+            ],
+            'open_to.id' => [
+                'integer',
+                'required'
+            ],
+            'open_to.time' => [
+                'string',
                 'required'
             ],
             'tips' => [

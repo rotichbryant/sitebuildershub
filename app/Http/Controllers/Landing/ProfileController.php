@@ -96,14 +96,13 @@ class ProfileController extends Controller
 
         $user = auth('landing')->user();
 
-        BusinessStoreModel::create(
-            array_merge(
-                $validated, 
-                [
-                    'business_profile' => $user->business_profile->id
-                ]
-            )
-        );
+        $validated['coords']              = json_encode($validated['coords']);
+        $validated['open_from']           = json_encode($validated['open_from']);
+        $validated['open_to']             = json_encode($validated['open_to']);
+        $validated['working_days']        = json_encode($validated['working_days']);
+        $validated['business_profile_id'] = $user->business_profile->id;
+        
+        BusinessStoreModel::create($validated);
 
         return back()->with([
             'message' => 'Business Store Created Successfully'

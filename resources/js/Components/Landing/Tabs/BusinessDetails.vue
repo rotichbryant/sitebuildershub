@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="card-body">
                         <Stores 
-                            :data="delivery_options" 
+                            :data="stores" 
                         />
                     </div>
                 </div>
@@ -49,5 +49,6 @@ const $data = reactive({
 const business_profile = usePage().props.business_profile;
 const csrf_token       = usePage().props.csrf_token;
 const delivery_options = usePage().props.delivery_options;
+const stores           = usePage().props.stores;
 
 </script>

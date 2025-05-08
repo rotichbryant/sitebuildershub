@@ -15,9 +15,8 @@ return [
     */
 
     'google' => [
-        'api_url' => env('GOOGLE_MAPS_API_URL'),
         'api_key' => env('GOOGLE_MAPS_API_KEY'),
-        'fields'  => env('GOOGLE_MAPS_FIELDS'),
+        'id'      => env('GOOGLE_MAPS_ID'),
     ],
 
     'postmark' => [

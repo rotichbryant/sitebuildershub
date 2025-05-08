@@ -17,6 +17,7 @@ use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\Dashboard\SubCategoryController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
 use App\Http\Controllers\Dashboard\SystemController;
+use App\Http\Controllers\GoogleMapsController;
 use App\Http\Controllers\Landing\ChatController;
 use App\Http\Controllers\Landing\DashboardController;
 use App\Http\Controllers\Landing\MyPostingsController;
@@ -31,6 +32,7 @@ Route::name('landing.')->group(function () {
     Route::get('/postings',                [LandingPostingController::class, 'index'])->name('postings');
     Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
     Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
+    Route::get('/places',                  [GoogleMapsController::class, 'create'])->name('maps.places');
     
     Route::middleware('landing.auth')->group(function () {
         Route::get('/overview',                [LandingOverviewController::class, 'index'])->name('overview');
@@ -40,7 +42,7 @@ Route::name('landing.')->group(function () {
         Route::post('/mypostings',             [MyPostingsController::class, 'store'])->name('mypostings.store');
         Route::get('/chat',                    [ChatController::class, 'index'])->name('chat');
         Route::get('/profile/{tab}',           [LandingProfileController::class, 'create'])->name('profile');
-        Route::post('/profile/business/store', [LandingProfileController::class, 'store'])->name('profile.business.store');
+        Route::post('/profile/business/store', [LandingProfileController::class, 'business_store'])->name('profile.business.store');
         Route::post('/profile/business',       [LandingProfileController::class, 'business'])->name('profile.business');
         Route::post('/profile/personal',       [LandingProfileController::class, 'personal'])->name('profile.personal');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');

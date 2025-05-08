@@ -49,7 +49,7 @@ class CategoryModel extends Model
         return $this->hasMany(SubCategoryModel::class, 'category_id');
     }
 
-        /**
+    /**
      * Accessor to convert the name to a slug.
      *
      * @return string

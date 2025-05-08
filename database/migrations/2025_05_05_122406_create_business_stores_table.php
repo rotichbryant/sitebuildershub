@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('business_stores', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('address');
+            $table->json('coords');
             $table->uuid('business_profile_id');
-            $table->foreign('business_profile_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('business_profile_id')->references('id')->on('business_profiles')->onDelete('cascade');
             $table->json('open_from');
             $table->json('open_to');
             $table->string('location');

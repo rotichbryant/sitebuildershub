@@ -12,6 +12,10 @@ class BusinessStoreModel extends Model
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasUuids, HasFactory;
 
+    protected $appends = [
+        'timeline'
+    ];
+
     public $table = 'business_stores';
 
     /**
@@ -20,8 +24,8 @@ class BusinessStoreModel extends Model
     * @var list<string>
     */
     protected $fillable = [
-        'address',
         'business_profile_id',
+        'coords',
         'open_from',
         'open_to',
         'location',
@@ -29,7 +33,36 @@ class BusinessStoreModel extends Model
         'tips',
         'working_days',
     ];
+
+        /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'coords'       => 'object',
+            'open_from'    => 'object',
+            'open_to'      => 'object',
+            'working_days' => 'array',
+        ];
+    }
     
+    /**
+     * Accessor to convert the name to a slug.
+     *
+     * @return string
+     */
+    public function getTimelineAttribute(): array
+    {
+        $timeline = collect($this->working_days)->sortBy('id');
+        return array(
+            'first' => $timeline->first()['name'],
+            'last'  => $timeline->last()['name'],
+        );
+    }
+
     /**
      * Get the business profile associated with the business store.
      *

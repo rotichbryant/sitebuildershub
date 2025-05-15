@@ -1,18 +1,24 @@
 <template>
-    <div>
+    <div class="p-6">
         <div class="widgets mb-4">
-            <p v-if="!isEmpty(filters.categories)" class="badge badge-primary p-3">
-                {{ filters.categories.map( (category: any) => category.name ).join(', ') }}
-                <a href="#" class="text-white ml-3"><i class="fa fa-close"></i></a>
-            </p>
-            <p v-if="!isEmpty(filters.cities)" class="badge badge-info p-3">
-                {{ filters.cities.map( (city: any) => city.name ).join(', ') }}
-                <a href="#" class="text-white ml-3"><i class="fa fa-close"></i></a>
-            </p>
-            <p v-if="!isEmpty(filters.price_range)" class="badge badge-warning p-3">
-                {{ filters.price_range.map( (price: any) => `KSH ${price}` ).join(' to ') }}
-                <a href="#" class="text-white ml-3"><i class="fa fa-close"></i></a>
-            </p>
+            <div class="col-12 px-0">
+                <p v-if="!isEmpty(filters.categories)" class="badge badge-primary p-3">
+                    {{ filters.categories.map( (category: any) => category.name ).join(', ') }}
+                    <a href="#" class="text-white ml-3"  @click.prevent=""><i class="fa fa-close"></i></a>
+                </p>
+            </div>
+            <div class="col-12 px-0">
+                <p v-if="!isEmpty(filters.cities)" class="badge badge-info p-3">
+                    {{ filters.cities.map( (city: any) => city.name ).join(', ') }}
+                    <a href="#" class="text-white ml-3" @click.prevent=""><i class="fa fa-close"></i></a>
+                </p>
+            </div>
+            <div class="col-12 px-0">
+                <p v-if="!isEmpty(filters.price_range)" class="badge badge-warning p-3">
+                    {{ filters.price_range.map( (price: any) => `KSH ${price}` ).join(' to ') }}
+                    <a href="#" class="text-white ml-3"  @click.prevent=""><i class="fa fa-close"></i></a>
+                </p>
+            </div>
         </div>
         <div class="widgets mb-4">
             <h4 class="font-size-6 font-weight-semibold ">Name</h4>
@@ -48,23 +54,8 @@
             />
         </div>
         <div class="widgets mb-4">
-            <div class="d-flex align-items-center pr-15 pr-xs-0 pr-md-0 pr-xl-22">
-                <h4 class="font-size-6 font-weight-semibold mb-6 w-75">Price Range</h4>
-                <!-- Range Slider -->
-                <div class="slider-price w-25 text-right mr-7">
-                    <p class="font-weight-bold">
-                        <input 
-                            class="text-primary font-weight-semibold font-size-4 focus-reset" 
-                            type="text" 
-                            id="amount" 
-                            data-currency="KSH" 
-                            data-min="1" 
-                            data-max="100000" 
-                            data-lower="2500" 
-                            data-upper="40000" 
-                        />
-                    </p>
-                </div>
+            <div class="d-flex align-items-center flex-column pr-15 pr-xs-0 pr-md-0 pr-xl-22">
+                <h4 class="font-size-6 font-weight-semibold mb-0 w-100">Price Range</h4>                
             </div>
             <div class="graph text-center mx-0 mt-5 position-relative chart-postion">
                 <span></span>
@@ -84,6 +75,18 @@
             <div class="range-slider">
                 <div class="pm-range-slider"></div>
             </div>
+            <div class="slider-price w-100 text-center my-4">
+                <input 
+                    class="text-primary font-weight-semibold font-size-4 focus-reset" 
+                    type="text" 
+                    id="amount" 
+                    data-currency="KSH" 
+                    data-min="1" 
+                    data-max="100000" 
+                    data-lower="2500" 
+                    data-upper="40000" 
+                />
+            </div>            
         </div>
         <!-- Sidebar End -->        
         <div class="col-12 px-0 py-3">

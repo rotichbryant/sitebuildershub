@@ -1,6 +1,10 @@
 <template>
     <div class="col-lg-4 col-md-6">
-        <a :href="route('landing.postings.show', { posting: posting.id })">
+        <a :href="route('landing.postings.view', { 
+            title:        decodeURIComponent(posting.title), 
+            category:     decodeURIComponent(posting.category.name), 
+            sub_category: decodeURIComponent(posting.sub_category.name) 
+        })">
             <!-- Start Feature One -->
             <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
                 <div class="d-block mb-7"><img :src="posting.images[0]" :alt="posting.title" width="100%"></div>

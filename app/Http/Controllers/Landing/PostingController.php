@@ -69,8 +69,22 @@ class PostingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PostingModel $posting)
+    public function show(Request $request)
     {
+        $title        = $request->query('title');
+        $category     = $request->query('category');
+        $sub_category = $request->query('sub_category');
+
+        $posting = PostingModel::with(['category','subCategory'])
+                                ->where('title', $title)
+                                ->whereHas('category',function($query) use($category){
+                                    return $query->where('name', $category);
+                                })
+                                ->whereHas('subCategory',function($query) use($sub_category){
+                                    return $query->where('name', $sub_category);
+                                })                                
+                                ->first();
+                                
         return Inertia::render('Landing/ViewPosting',compact('posting'));
     }
 

@@ -50,6 +50,10 @@ class PostingModel extends Model
         'created_at' => 'datetime:M d, Y',
         // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
     ];    
+
+    protected $with = [
+        'user'
+    ];
     
     /**
      * Accessor to convert the stored images from JSON to a collection.

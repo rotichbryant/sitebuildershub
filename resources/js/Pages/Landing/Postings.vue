@@ -8,35 +8,61 @@
                 <div class="col-md-10 col-xs-12">
                     <div class="row">
                         <div class="col-md-3 col-xs-8">
-                            <PostingSidebar
-                                :locations="$data.locations"
-                                :categories="$data.categories"
-                                :filters="$data.filters"
-                                @filter="applyFilter"
-                                @update-filters="$data.filters = $event"
-                            />
+                            <div class="bg-white shadow-9 rounded-4 mb-6">
+                                <PostingSidebar
+                                    :locations="$data.locations"
+                                    :categories="$data.categories"
+                                    :filters="$data.filters"
+                                    @filter="applyFilter"
+                                    @update-filters="$data.filters = $event"
+                                />
+                            </div>
                         </div>
                         <div class="col-md-9 col-xs-12 ">
                             <!-- form -->
                             <!-- <PostingFilter /> -->
-                            <div class="pt-12 ml-lg-0 ml-md-15">
+                            <div class="ml-lg-0 ml-md-15">
                                 <div class="row">
-                                    <Deferred data="postings">
+                                    <WhenVisible data="postings">
                                         <template #fallback>
-                                            <div>Loading...</div>
+                                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;">
+                                                <h6 class="text-primary">
+                                                    <i class="fa fa-spinner fa-spin mr-2"></i>
+                                                    <span>Loading...</span>
+                                                </h6>
+                                            </div>  
                                         </template>
-                                        <template v-for="(posting,index) in $data.postings.data" :key="posting.id">
+                                        <template v-for="(posting,index) in $data.postings.data" :key="posting.id" >
                                             <Posting 
                                                 :data="posting" 
                                             />
                                         </template>
-                                    </Deferred>
-                                </div>
-                                <div class="text-center pt-5 pt-lg-13">
-                                    <a class="text-green font-weight-bold text-uppercase font-size-3 d-flex align-items-center justify-content-center" href="#">
-                                        Load More
-                                        <i class="fas fa-sort-down ml-3 mt-n2 font-size-4"></i>
-                                    </a>
+                                        <template v-if="isEmpty($data.postings.data)">
+                                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" v-if="isEmpty($data.postings.data)">
+                                                <h6 class="text-primary">
+                                                    <i class="fa fa-exclamation-circle mr-2"></i>
+                                                    <span>Nothing Found Here</span>
+                                                </h6>
+                                            </div>                                              
+                                        </template>
+                                    </WhenVisible >                                  
+                                </div>                                
+                                <div class="col-12 mx-0" v-if="!isEmpty($data.postings.data)">
+                                    <div class="d-flex justify-content-center">
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
                             <!-- form end -->
@@ -53,7 +79,7 @@
 import { LandingLayout } from '@/Layouts'
 import { Head, router, usePage } from '@inertiajs/vue3';
 import { Posting, PostingFilter, PostingSidebar } from '../../Components/Landing';
-import { Deferred } from '@inertiajs/vue3'
+import { WhenVisible  } from '@inertiajs/vue3'
 import { computed, inject, onMounted, reactive, ref } from 'vue';
 import { isEmpty, get, keys, set, forEach, intersection, intersectionBy, map } from 'lodash';
 

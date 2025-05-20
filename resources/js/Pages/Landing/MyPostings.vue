@@ -63,7 +63,7 @@
                                                 <h3 class="font-size-4 font-weight-bold text-black-2 mb-0">{{ post.created_at }}</h3>
                                             </td>
                                             <td class="table-y-middle py-7 min-width-px-80">
-                                            <a href="" class="font-size-3 font-weight-bold text-green text-uppercase">Edit</a>
+                                                <a :href="route('landing.mypostings.show',{ posting: post.id })" class="font-size-3 font-weight-bold text-green text-uppercase">Edit</a>
                                             </td>
                                         </tr>
                                     </tbody>

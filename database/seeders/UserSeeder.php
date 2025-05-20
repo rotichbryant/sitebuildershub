@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $company = DB::table('companies')->first();
-        $role    = DB::table('roles')->where('state',0)->first();
+        $role    = DB::table('roles')->where('state',2)->first();
 
         DB::table('users')->insert([
             'id'                => Str::uuid(),

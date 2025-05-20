@@ -26,6 +26,10 @@ class UpdateSubscriptionRequest extends FormRequest
                 'required',
                 'boolean'
             ],
+            'default' => [
+                'required',
+                'boolean'
+            ],            
             'description' => [
                 'required',
                 'string'

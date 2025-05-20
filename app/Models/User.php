@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -65,7 +66,11 @@ class User extends Authenticatable
     protected $casts = [
         'created_at' => 'datetime:M d, Y',
         // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
-    ];        
+    ];       
+    
+    protected $with = [
+        'subscription'
+    ];
 
     public function getNameAttribute() {
         return "$this->first_name $this->last_name";
@@ -178,20 +183,20 @@ class User extends Authenticatable
         );
     }
       
-    public function subscription(): HasOne
+    public function subscription(): HasOneThrough
     {
         /**
          * Define the relationship using the BusinessProfileModel class.
          * 
          * @return HasMany<\App\Models\UserSubscriptionModel>
          */
-        return $this->hasOne(
-            related: UserSubscriptionModel::class,
-            /**
-             * The foreign key on the `users` table that references the `id` column
-             * on the `business_profiles` table.
-             */
-            foreignKey: 'user_id',
-        )->subscription();
+        return $this->hasOneThrough(
+            related: SubscriptionModel::class,
+            through: UserSubscriptionModel::class,
+            firstKey: 'user_id',
+            secondKey: 'id',
+            localKey: 'id',
+            secondLocalKey: 'subscription_id',
+        );
     }
 }

@@ -22,6 +22,7 @@
                             <CTableHeaderCell scope="col">Price</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Users</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                            <CTableHeaderCell scope="col">Default</CTableHeaderCell>
                             <CTableHeaderCell scope="col">Created On</CTableHeaderCell>
                             <CTableHeaderCell scope="col"></CTableHeaderCell>
                         </CTableRow>
@@ -38,8 +39,12 @@
                             <CTableDataCell>{{ subscription.currency_price }}</CTableDataCell>
                             <CTableDataCell>{{ subscription.users_count }}</CTableDataCell>
                             <CTableDataCell>
-                              <CBadge color="success" v-if="subscription.active">Active</CBadge>
-                              <CBadge color="warning" v-if="!subscription.active">Inactive</CBadge>
+                              <CBadge color="success" class="p-2" v-if="subscription.active">Active</CBadge>
+                              <CBadge color="warning" class="p-2" v-if="!subscription.active">Inactive</CBadge>
+                            </CTableDataCell>
+                            <CTableDataCell >
+                              <CIcon name="cil-check" class="text-success" v-if="subscription.default" />
+                              <CIcon name="cil-x-circle" class="text-danger"  v-if="!subscription.default" />
                             </CTableDataCell>
                             <CTableDataCell>{{ moment(subscription.created_at).format('MMMM Do YYYY') }}</CTableDataCell>
                             <CTableDataCell>

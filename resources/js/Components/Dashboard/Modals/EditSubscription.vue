@@ -51,10 +51,15 @@
                                 <p v-show="has($data.errors,'description')" class="text-danger">{{ $data.errors.description }}</p>              
                             </CCol> 
                             <CCol md="12" class="mt-2">
-                                <CFormLabel for="price">Status</CFormLabel>
+                                <CFormLabel for="active">Status</CFormLabel>
                                 <CFormSwitch size="xl" v-model="$data.form.active" :label="$data.form.active ? 'Active' : 'Inactive'" id="active"/>
                                 <p v-show="has($data.errors,'active')" class="text-danger">{{ $data.errors.active }}</p>              
                             </CCol>
+                            <CCol md="12" class="mt-2">
+                                <CFormLabel for="default">Default</CFormLabel>
+                                <CFormSwitch size="xl" v-model="$data.form.default" :label="$data.form.default ? 'Yes' : 'No'" id="default"/>
+                                <p v-show="has($data.errors,'default')" class="text-danger">{{ $data.errors.default }}</p>              
+                            </CCol>                            
                         </CRow>
                     </CCol>
                     <CCol md="7" class="border border-left-0 border-top-0 border-bottom-0">
@@ -98,6 +103,7 @@ const $data: any  = reactive({
     errors: {},
     form: {
         active:      Boolean(),
+        default:     Boolean(),
         description: String(),
         features:    {
             max_posts: Number()
@@ -135,6 +141,7 @@ const $emit = defineEmits(['update:show','fetch']);
 const formSchema: any = computed( 
     () => object().shape({
         active:      boolean().required('*Status is required'),
+        default:     boolean().required('*Default is required'),
         description: string().required("*Description is required"),
         name:        string().required("*Name is required"),
         features:    object().shape({
@@ -226,7 +233,7 @@ watch(
 watch(
     () => $props.show,
     (value) => {
-        if(value){ $data.form = pick($props.subscription,['active','features','name','price','description']); }
+        if(value){ $data.form = pick($props.subscription,['active','default','features','name','price','description']); }
         if(!value) { resetForm() }
     }
 )

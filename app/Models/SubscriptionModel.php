@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,10 +18,6 @@ class SubscriptionModel extends Model
         'currency_price'
     ];
 
-    public $casts = [
-        'features' => 'object'
-    ];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +26,7 @@ class SubscriptionModel extends Model
     protected $fillable = [
         'active',
         'company_id',
+        'default',
         'description',
         'features',
         'name',
@@ -46,6 +44,11 @@ class SubscriptionModel extends Model
 
     public function getCurrencyPriceAttribute(){
         return $this->company->currency." ".$this->price;
+    }
+
+    public function getFeaturesAttribute($value)
+    {
+        return json_decode($value);
     }
 
     /**

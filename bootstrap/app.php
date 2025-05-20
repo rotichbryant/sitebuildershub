@@ -3,6 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -38,4 +41,23 @@ return Application::configure(basePath: dirname(__DIR__))
     
         //     return $response;
         // });
+        $exceptions->respond(function (Response $response) {
+
+            if ( in_array($response->getStatusCode(), [500, 503, 404, 403]) ) {
+                return Inertia::render(
+                    str_contains(request()->path(),'dashboard') ? 'Dashboard/ErrorPage' : 'Landing/ErrorPage', 
+                    ['status' => $response->getStatusCode()]
+                );
+                // ->toResponse($request)->setStatusCode($response->getStatusCode());
+
+            } elseif ($response->getStatusCode() === 419) {
+
+                return back()->with([
+                    'message' => 'The page expired, please try again.',
+                ]);
+                
+            }
+
+            return $response;
+        });
     })->create();

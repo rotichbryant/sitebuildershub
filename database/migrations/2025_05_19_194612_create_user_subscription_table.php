@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('subscription_id');
             $table->uuid('user_id');
-            $table->foreign('subscription_id')->references('id')->on('companies')->onDelete('cascade');     
+            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');     
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');                           
             $table->timestamps();
         });

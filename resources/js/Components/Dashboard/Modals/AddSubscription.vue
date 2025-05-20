@@ -50,6 +50,11 @@
                                 ></CFormTextarea>       
                                 <p v-show="has($data.errors,'description')" class="text-danger">{{ $data.errors.description }}</p>              
                             </CCol> 
+                            <CCol md="12" class="mt-2">
+                                <CFormLabel for="default">Default</CFormLabel>
+                                <CFormSwitch size="xl" v-model="$data.form.default" :label="$data.form.default ? 'Yes' : 'No'" id="default"/>
+                                <p v-show="has($data.errors,'default')" class="text-danger">{{ $data.errors.default }}</p>              
+                            </CCol>                              
                         </CRow>
                     </CCol>
                     <CCol md="7" class="border border-left-0 border-top-0 border-bottom-0">
@@ -87,11 +92,12 @@
 import { useForm } from '@inertiajs/vue3';
 import { computed, inject, reactive, ref, watch } from 'vue';
 import { each, has, isEmpty, set, unset } from 'lodash';
-import { number, object, string } from 'yup';
+import { boolean, number, object, string } from 'yup';
 
 const $data: any  = reactive({
     errors: {},
     form: {
+        default:     Boolean(),
         description: String(),
         features:    {
             max_posts: Number()
@@ -124,6 +130,7 @@ const $emit = defineEmits(['update:show','fetch']);
 
 const formSchema: any = computed( 
     () => object().shape({
+        default:      boolean().required('*Status is required'),
         description: string().required("*Description is required"),
         name:        string().required("*Name is required"),
         features:    object().shape({

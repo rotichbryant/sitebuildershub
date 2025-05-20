@@ -7,8 +7,10 @@ use App\Http\Requests\Landing\SignupRequest;
 use App\Mail\WelcomeMail;
 use App\Models\Company;
 use App\Models\CompanyModel;
+use App\Models\SubscriptionModel;
 use App\Models\User;
 use App\Models\UserModel;
+use App\Models\UserSubscriptionModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -69,29 +71,39 @@ class SignupController extends Controller
     public function store(SignupRequest $request)
     {
         //
-        $formData = $request->validated();
+        try {
+            $formData = $request->validated();
 
-        $company  = Company::first();
-        $role     = $company->roles()->where('state',0)->first();
+            $company      = Company::firstOrFail();
+            $role         = $company->roles()->where('state',0)->firstOrFail();
+            $subscription = SubscriptionModel::where('default',true)->firstOrFail();
 
-        print_r($company->id);
+            $user     = User::create([
+                'company_id' => $company->id,
+                'first_name' => $formData['first_name'],
+                'last_name'  => $formData['last_name'],
+                'email'      => $formData['email'],
+                'role_id'    => $role->id,
+                'password'   => Hash::make($formData['password']),
+                'token'      => Str::random(20),
+            ]);
+            
+            UserSubscriptionModel::create([
+                'subscription_id' => $subscription->id,
+                'user_id'         => $user->id,
+            ]);        
 
-        $user     = User::create([
-            'company_id' => $company->id,
-            'first_name' => $formData['first_name'],
-            'last_name'  => $formData['last_name'],
-            'email'      => $formData['email'],
-            'role_id'    => $role->id,
-            'password'   => Hash::make($formData['password']),
-            'token'      => Str::random(20),
-        ]);
-        
+            Mail::to($user)->send(new WelcomeMail($user));
 
-        Mail::to($user)->send(new WelcomeMail($user));
+            return back()->with([
+                'message' => 'Your account has been created successfully',
+            ]);
 
-        return back()->with([
-            'message' => 'Your account has been created successfully',
-        ]);
+        } catch (ModelNotFoundException $e) {
+            
+            // Abort with a 404 error if the user is not found
+            return abort(404);
+        }
     }
 
     /**

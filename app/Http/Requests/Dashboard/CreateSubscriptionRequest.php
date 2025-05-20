@@ -23,6 +23,10 @@ class CreateSubscriptionRequest extends FormRequest
     {
         return [
             //
+            'default' => [
+                'required',
+                'boolean'
+            ],             
             'description' => [
                 'required',
                 'string'

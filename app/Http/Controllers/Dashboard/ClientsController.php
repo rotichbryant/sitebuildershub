@@ -14,9 +14,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = User::with([
-            'role' => fn ($role) => $role->client(),
-        ])->paginate(10);
+        $clients = User::whereHas('role',fn($query) => $query->where('state',0))->paginate(10);
 
         return Inertia::render('Dashboard/Clients',[
             'clients' => $clients,

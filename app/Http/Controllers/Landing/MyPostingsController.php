@@ -10,6 +10,7 @@ use App\Models\PostingModel;
 use App\Models\SubCategoryModel;
 use Error;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -29,11 +30,12 @@ class MyPostingsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource.   
      */
     public function create()
-    {
-        //
+    {    
+        Gate::authorize('create-posting');
+
         $categories     = CategoryModel::with(['subCategories'])->get();
         $locations      = config('location');
         $status         = session('status');
@@ -59,9 +61,9 @@ class MyPostingsController extends Controller
      */
     public function store(CreatePostingRequest $request)
     {
-        //
+        Gate::authorize('create-posting');
+        
         try {
-            
             $form = $request->validated();
 
             $form['category_id']     = explode('/', $form['category'])[0];
@@ -86,9 +88,11 @@ class MyPostingsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(PostingModel $posting)
     {
-        //
+        $posting->load(['category','subCategory']);
+                               
+        return Inertia::render('Landing/ViewMyPosting',compact('posting'));
     }
 
     /**

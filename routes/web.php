@@ -35,13 +35,16 @@ Route::name('landing.')->group(function () {
     Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
     Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
     Route::get('/places',                  [GoogleMapsController::class, 'create'])->name('maps.places');
-    
+
     Route::middleware('landing.auth')->group(function () {
         Route::get('/overview',                [LandingOverviewController::class, 'index'])->name('overview');
-        Route::get('/mypostings',              [MyPostingsController::class, 'index'])->name('mypostings');
-        Route::get('/mypostings/create',       [MyPostingsController::class, 'create'])->name('mypostings.create');
-        Route::post('/mypostings/upload',      [MyPostingsController::class, 'upload'])->name('mypostings.upload');
-        Route::post('/mypostings',             [MyPostingsController::class, 'store'])->name('mypostings.store');
+
+        Route::get('/mypostings/{posting}/view', [MyPostingsController::class, 'show'])->name('mypostings.show');    
+        Route::get('/mypostings/create',         [MyPostingsController::class, 'create'])->name('mypostings.create');
+        Route::get('/mypostings',                [MyPostingsController::class, 'index'])->name('mypostings');
+        Route::post('/mypostings/upload',        [MyPostingsController::class, 'upload'])->name('mypostings.upload');
+        Route::post('/mypostings',               [MyPostingsController::class, 'store'])->name('mypostings.store');
+        
         Route::get('/chat',                    [ChatController::class, 'index'])->name('chat');
         Route::get('/profile/{tab}',           [LandingProfileController::class, 'create'])->name('profile');
         Route::post('/profile/business/store', [LandingProfileController::class, 'business_store'])->name('profile.business.store');

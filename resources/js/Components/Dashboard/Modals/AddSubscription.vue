@@ -1,0 +1,228 @@
+<template>
+    <!-- Category Creation Modal -->
+    <CModal
+        :visible="showModal"
+        @close="closeModal"
+        alignment="center"
+        title="Create Subscription"
+        size="lg"
+    >
+        <CModalHeader>
+            <CModalTitle>Create Subscription </CModalTitle>
+        </CModalHeader>
+        <form @submit.prevent="submitForm">
+            <CModalBody>
+                <CRow>
+                    <CCol md="5">
+                        <CRow>
+                            <CCol md="12">                        
+                                <CFormInput
+                                    id="name"
+                                    v-model="$data.form.name"
+                                    label="Name"
+                                    placeholder="Enter subscription name"
+                                    :invalid="has($data.errors,'name') ? true : false"
+                                />
+                                <p v-show="has($data.errors,'name')" class="text-danger">{{ $data.errors.name }}</p>              
+                            </CCol> 
+                            <CCol md="12">   
+                                <CFormLabel for="validationTooltipUsername">Price</CFormLabel>
+                                <CInputGroup class="has-validation">
+                                    <CInputGroupText id="append-price">KSH</CInputGroupText>
+                                    <CFormInput
+                                        id="price"
+                                        v-model.number="$data.form.price"
+                                        type="number"
+                                        min="0"
+                                        placeholder="Cost of subscription"
+                                        :invalid="has($data.errors,'price') ? true : false"
+                                    />  
+                                </CInputGroup>  
+                                <p v-show="has($data.errors,'price')" class="text-danger">{{ $data.errors.price }}</p>              
+                            </CCol>   
+                            <CCol md="12">                        
+                                <CFormTextarea
+                                    id="description"
+                                    label="Description" 
+                                    rows="4"
+                                    text="Write something about this subscription"
+                                    v-model="$data.form.description"
+                                ></CFormTextarea>       
+                                <p v-show="has($data.errors,'description')" class="text-danger">{{ $data.errors.description }}</p>              
+                            </CCol> 
+                        </CRow>
+                    </CCol>
+                    <CCol md="7" class="border border-left-0 border-top-0 border-bottom-0">
+                        <CRow>
+                            <CCol md="12">
+                                <CFormInput
+                                    id="max_posts"
+                                    v-model.number="$data.form.features.max_posts"
+                                    label="Max Number Of Posts"
+                                    placeholder="Enter max number of posts"
+                                    :invalid="has($data.errors,'features.max_posts') ? true : false"
+                                    type="number"
+                                    min="0"
+                                    text="Set 0 to disable this feature"
+                                />
+                                <p v-show="has($data.errors,'features.max_posts')" class="text-danger">{{ $data.errors['features.max_posts'] }}</p>              
+                            </CCol>                                                                                               
+                        </CRow>
+                    </CCol>
+                </CRow>
+            </CModalBody>
+            <CModalFooter>
+                <CButton color="secondary" @click="closeModal">
+                    Close
+                </CButton>
+                <CButton color="primary" type="submit" :disabled="$data.isDisabled">
+                    <CSpinner v-if="$data.loaders.create" variant="light" size="sm"/>
+                    Save Subscription
+                </CButton>
+            </CModalFooter>
+        </form>
+    </CModal>
+</template>
+<script setup lang="ts">
+import { useForm } from '@inertiajs/vue3';
+import { computed, inject, reactive, ref, watch } from 'vue';
+import { each, has, isEmpty, set, unset } from 'lodash';
+import { number, object, string } from 'yup';
+
+const $data: any  = reactive({
+    errors: {},
+    form: {
+        description: String(),
+        features:    {
+            max_posts: Number()
+        },
+        name:  String(),
+        price: Number()
+    },
+    isDisabled: false,
+    loaders: {
+        create: false
+    }
+});
+
+const $toast: any = inject("$toast");
+
+// Props
+const $props = defineProps({
+    flash: {
+        type: Object,
+        default: () => {}
+    },    
+    show: {
+        type: Boolean,
+        default: false,
+    }
+});
+
+// Initialize emits
+const $emit = defineEmits(['update:show','fetch']);
+
+const formSchema: any = computed( 
+    () => object().shape({
+        description: string().required("*Description is required"),
+        name:        string().required("*Name is required"),
+        features:    object().shape({
+            max_posts: number().required("*Max of posts is required")
+        }),
+        price:        number().required("*Price is required"),
+    }) 
+);
+
+/**
+ * Validates a form field based on the provided field name.
+ * Uses the formSchema to validate the field and updates the errors object accordingly.
+ * Updates the isDisabled property based on the presence of errors.
+ *
+ * @param {string} field - The name of the field to validate.
+ */
+const validateForm = async (field:string) => {
+    try {
+        // Validate the field using the formSchema
+        await formSchema.value.validateAt(field, $data.form);
+		delete $data.errors[field];
+    } catch(error: any) {
+        // If the field is invalid, update the errors object with the error message
+        $data.errors[error.path] = error.message;
+    } finally {
+        // Update the isDisabled property based on the presence of errors
+        $data.isDisabled = !isEmpty($data.errors);
+    }
+}
+
+const showModal = computed({
+    get: () => $props.show,
+    set: (value:any) => $emit('update:show', value),
+});
+
+// Close modal and reset form
+const closeModal = () => {
+    showModal.value = false;
+};
+
+/**
+ * Resets the form data.
+ *
+ * Resets the form fields to their initial state (empty strings and empty objects).
+ */
+const resetForm = () => {
+    $data.form =  {
+        description: String(), // Description of the subscription
+        features:    {
+            max_posts: Number() // The maximum number of posts allowed
+        },
+        name:  String(), // Name of the subscription
+        price: Number() // Price of the subscription
+    }
+    $data.errors = {}
+}
+
+// Submit form to create new category
+const submitForm = () => {
+    $data.loaders.create = true;
+    useForm($data.form).post(
+        route('dashboard.subscriptions.store'), 
+        {
+            onSuccess: (value:any) => {
+                showModal.value = false;
+                $toast.success(value.props.flash.message);
+                $data.loaders.create = false;
+            },
+        }
+    );
+};
+
+/**
+ * Watches for changes in the form data.
+ *
+ * Iterates over each field in the form and validates it using the validateForm function.
+ * The watch is set to deep to ensure nested properties are observed.
+ */
+watch(
+  () => $data.form, 
+  (form) => {
+    // Iterate over each field in the form and validate it
+    each(
+      form,
+      (value, key) => {
+        validateForm(key); // Validate the individual form field
+      }
+    );
+  },
+  { 
+    deep: true, // Set to true to observe nested properties
+    immediate: true
+  }
+);
+
+watch(
+    () => $props.show,
+    (value) => {
+        if(!value){ resetForm() }
+    }
+)
+</script>

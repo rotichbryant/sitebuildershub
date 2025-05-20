@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\CreateSubscriptionRequest;
+use App\Http\Requests\Dashboard\UpdateSubscriptionRequest;
+use App\Models\SubscriptionModel;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SubscriptionController extends Controller
 {
@@ -12,7 +16,12 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        $subscriptions = SubscriptionModel::paginate(10);
+
+        // Render the view and pass the data
+        return Inertia::render('Dashboard/Subscription', [
+            'subscriptions' => $subscriptions,
+        ]);
     }
 
     /**
@@ -26,17 +35,26 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateSubscriptionRequest $request)
     {
         //
+        $user                    = $request->user();
+
+        $validated               = $request->validated();
+        $validated['company_id'] = $user->company_id;
+
+        SubscriptionModel::create($validated);
+
+        return back()->with('message', 'Subscription created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(SubscriptionModel $subscription)
     {
         //
+        return back()->with('data',compact('subscription'));
     }
 
     /**
@@ -50,16 +68,27 @@ class SubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateSubscriptionRequest $request,  SubscriptionModel $subscription)
     {
-        //
+
+        $validated = $request->validated();
+
+        $subscription->update($validated);
+
+        return back()->with('message', 'Subscription updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SubscriptionModel $subscription)
     {
         //
+
+        print_r($subscription);
+        ;
+        $subscription->delete();
+
+        return back()->with('message', "Subscription {$subscription->name} deleted.");
     }
 }

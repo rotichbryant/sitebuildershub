@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->boolean('active')->nullable()->default(false);
+            $table->uuid('company_id');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');            
+            $table->string('description');
+            $table->json('features');
+            $table->string('name');
+            $table->float('price',8,2);
             $table->timestamps();
         });
     }

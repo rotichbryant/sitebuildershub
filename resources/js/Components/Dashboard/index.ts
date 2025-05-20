@@ -6,6 +6,8 @@ export { default as Sidebar } from './Sidebar.vue';
 export { default as AddCategory } from './Modals/AddCategory.vue';
 export { default as AddSubCategory } from './Modals/AddSubCategory.vue';
 export { default as AddChildSubCategory } from './Modals/AddChildSubCategory.vue';
+export { default as AddSubscription } from './Modals/AddSubscription.vue';
+export { default as EditSubscription } from './Modals/EditSubscription.vue';
 
 // Tabs
 export { default as MailTab } from './Tabs/System/Mail.vue';

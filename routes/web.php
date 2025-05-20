@@ -17,11 +17,13 @@ use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\Dashboard\SubCategoryController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
 use App\Http\Controllers\Dashboard\SystemController;
+use App\Http\Controllers\Dashboard\TransactionController;
 use App\Http\Controllers\GoogleMapsController;
 use App\Http\Controllers\Landing\ChatController;
 use App\Http\Controllers\Landing\DashboardController;
 use App\Http\Controllers\Landing\MyPostingsController;
 use App\Http\Controllers\Landing\ProfileController as LandingProfileController;
+use App\Models\TransactionModel;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,11 +53,18 @@ Route::name('landing.')->group(function () {
 
 Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.auth')->group(function () {
-        Route::get('/',                      [DashboardOverviewController::class, 'index'])->name('overview');
-        Route::get('/notifications',         [NotificationController::class, 'index'])->name('notifications');
-        Route::get('/company',               [CompanyController::class, 'index'])->name('company');
-        Route::get('/clients',               [ClientsController::class, 'index'])->name('clients');
-        Route::get('/subscriptions',         [SubscriptionController::class, 'index'])->name('subscriptions');
+        Route::get('/',                             [DashboardOverviewController::class, 'index'])->name('overview');
+        Route::get('/notifications',                [NotificationController::class, 'index'])->name('notifications');
+        Route::get('/company',                      [CompanyController::class, 'index'])->name('company');
+        Route::get('/clients',                      [ClientsController::class, 'index'])->name('clients');
+
+        Route::get('/subscriptions',                          [SubscriptionController::class, 'index'])->name('subscriptions');
+        Route::put('/subscriptions/{subscription}/show',      [SubscriptionController::class, 'show'])->name('subscriptions.edit');
+        Route::post('/subscriptions/{subscription}/update',   [SubscriptionController::class, 'update'])->name('subscriptions.update');
+        Route::post('/subscriptions',                         [SubscriptionController::class, 'store'])->name('subscriptions.store');
+        Route::delete('/subscriptions/{subscription}/delete', [SubscriptionController::class, 'destroy'])->name('subscriptions.delete');
+        
+        Route::get('/transactions',                 [TransactionController::class, 'index'])->name('transactions');
 
         Route::get('/categories/fetch',                     [CategoryController::class, 'create'])->name('categories.fetch');
         Route::get('/categories',                           [CategoryController::class, 'index'])->name('categories');

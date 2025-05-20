@@ -178,5 +178,20 @@ class User extends Authenticatable
         );
     }
       
-    
+    public function subscription(): HasOne
+    {
+        /**
+         * Define the relationship using the BusinessProfileModel class.
+         * 
+         * @return HasMany<\App\Models\UserSubscriptionModel>
+         */
+        return $this->hasOne(
+            related: UserSubscriptionModel::class,
+            /**
+             * The foreign key on the `users` table that references the `id` column
+             * on the `business_profiles` table.
+             */
+            foreignKey: 'user_id',
+        )->subscription();
+    }
 }

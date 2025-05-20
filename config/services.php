@@ -40,4 +40,25 @@ return [
         ],
     ],
 
+    'pesapal' => [
+        'base' => [
+            'live'    => 'https://pay.pesapal.com/v3/api', // live phase endpoint
+            'sandbox' => 'https://cybqa.pesapal.com/pesapalv3/api', // testing phase endpoint
+        ],
+        'endpoints' => [
+            'auth'         => '/Auth/RequestToken', // get authorization token
+            'cancel'       => '/Transactions/CancelOrder',
+            'getipns'      => '/URLSetup/GetIpnList', // list all Instant Payment Notification
+            'status'       => '/Transactions/GetTransactionStatus', // track the transaction status
+            'registeripn'  => '/URLSetup/RegisterIPN', // register Instant Payment Notification
+            'ipn'          => '/URLSetup/RegisterIPN', // create an Instant Payment Notification
+            'orderRequest' => '/Transactions/SubmitOrderRequest', // create an order request for a client
+        ],
+        'configuration' => [
+            'consumer_key'    => env('PESAPAL_CONSUMER_KEY'),
+            'consumer_secret' => env('PESAPAL_CONSUMER_SECRET'),
+            'live'            => env('PESAPAL_LIVE'),
+        ],
+    ],
+
 ];

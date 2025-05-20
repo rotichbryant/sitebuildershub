@@ -34,6 +34,9 @@
     <CNavItem :href="route('dashboard.subscriptions')">
       <CIcon  customClassName="nav-icon" icon="cil-list"/> Subscriptions
     </CNavItem>
+    <CNavItem :href="route('dashboard.transactions')">
+      <CIcon  customClassName="nav-icon" icon="cil-money"/> Transactions
+    </CNavItem>    
     <CNavTitle>Support</CNavTitle>
     <CNavItem :href="route('dashboard.notifications')">
       <CIcon  customClassName="nav-icon" icon="cil-bell"/> Notifications

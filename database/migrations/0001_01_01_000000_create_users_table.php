@@ -15,6 +15,7 @@ return new class extends Migration
             $table->engine = 'InnoDB';
             $table->uuid('id')->primary();
             $table->string('address');
+            $table->string('currency')->nullable()->default('KES');
             $table->string('icon')->nullable()->default(null);
             $table->string('logo')->nullable()->default(null);
             $table->string('name');

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\TransactionModel;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
@@ -12,7 +14,12 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = TransactionModel::paginate(10);
+
+        // Render the view and pass the data
+        return Inertia::render('Dashboard/Transaction', [
+            'transactions' => $transactions,
+        ]);
     }
 
     /**

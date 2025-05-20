@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\ChatController as DashboardChatController;
 use App\Http\Controllers\Dashboard\ChildSubCategoryController;
 use App\Http\Controllers\Landing\AboutUsController;
 use App\Http\Controllers\Landing\ContactUsController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Dashboard\ClientsController;
 use App\Http\Controllers\Dashboard\CompanyController;
 use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\OverviewController as DashboardOverviewController;
+use App\Http\Controllers\Dashboard\PlacementController;
 use App\Http\Controllers\Landing\OverviewController as LandingOverviewController;
 use App\Http\Controllers\Dashboard\PostingController as DashboardPostingController;
 use App\Http\Controllers\Dashboard\ProfileController as DashboardProfileController;
@@ -39,11 +41,12 @@ Route::name('landing.')->group(function () {
     Route::middleware('landing.auth')->group(function () {
         Route::get('/overview',                [LandingOverviewController::class, 'index'])->name('overview');
 
-        Route::get('/mypostings/{posting}/view', [MyPostingsController::class, 'show'])->name('mypostings.show');    
-        Route::get('/mypostings/create',         [MyPostingsController::class, 'create'])->name('mypostings.create');
-        Route::get('/mypostings',                [MyPostingsController::class, 'index'])->name('mypostings');
-        Route::post('/mypostings/upload',        [MyPostingsController::class, 'upload'])->name('mypostings.upload');
-        Route::post('/mypostings',               [MyPostingsController::class, 'store'])->name('mypostings.store');
+        Route::get('/mypostings/{posting}/view',      [MyPostingsController::class, 'show'])->name('mypostings.show');    
+        Route::get('/mypostings/create',              [MyPostingsController::class, 'create'])->name('mypostings.create');
+        Route::get('/mypostings',                     [MyPostingsController::class, 'index'])->name('mypostings');
+        Route::post('/mypostings/upload',             [MyPostingsController::class, 'upload'])->name('mypostings.upload');
+        Route::post('/mypostings',                    [MyPostingsController::class, 'store'])->name('mypostings.store');
+        Route::delete('/mypostings/{posting}/delete', [MyPostingsController::class, 'destroy'])->name('mypostings.delete');
         
         Route::get('/chat',                    [ChatController::class, 'index'])->name('chat');
         Route::get('/profile/{tab}',           [LandingProfileController::class, 'create'])->name('profile');
@@ -57,9 +60,16 @@ Route::name('landing.')->group(function () {
 Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.auth')->group(function () {
         Route::get('/',                             [DashboardOverviewController::class, 'index'])->name('overview');
+        Route::get('/chat',                         [DashboardChatController::class, 'index'])->name('chat');
         Route::get('/notifications',                [NotificationController::class, 'index'])->name('notifications');
         Route::get('/company',                      [CompanyController::class, 'index'])->name('company');
         Route::get('/clients',                      [ClientsController::class, 'index'])->name('clients');
+
+        Route::get('/placements',                       [PlacementController::class, 'index'])->name('placements');
+        Route::put('/placements/{placement}/show',      [PlacementController::class, 'show'])->name('placements.edit');
+        Route::post('/placements/{placement}/update',   [PlacementController::class, 'update'])->name('placements.update');        
+        Route::post('/placements',                      [PlacementController::class, 'store'])->name('placements.store');
+        Route::delete('/placements/{placement}/delete', [PlacementController::class, 'destroy'])->name('placements.delete');
 
         Route::get('/subscriptions',                          [SubscriptionController::class, 'index'])->name('subscriptions');
         Route::put('/subscriptions/{subscription}/show',      [SubscriptionController::class, 'show'])->name('subscriptions.edit');

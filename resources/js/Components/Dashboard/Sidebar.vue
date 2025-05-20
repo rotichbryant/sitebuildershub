@@ -36,11 +36,17 @@
     </CNavItem>
     <CNavItem :href="route('dashboard.transactions')">
       <CIcon  customClassName="nav-icon" icon="cil-money"/> Transactions
-    </CNavItem>    
+    </CNavItem> 
+    <CNavItem :href="route('dashboard.placements')">
+      <CIcon  customClassName="nav-icon" icon="cil-bookmark"/> Advert Placements
+    </CNavItem>        
     <CNavTitle>Support</CNavTitle>
     <CNavItem :href="route('dashboard.notifications')">
       <CIcon  customClassName="nav-icon" icon="cil-bell"/> Notifications
     </CNavItem>
+    <CNavItem :href="route('dashboard.chat')">
+      <CIcon  customClassName="nav-icon" icon="cil-envelope-open"/> Chat
+    </CNavItem>    
     <CNavTitle>Settings</CNavTitle>
     <CNavItem :href="route('dashboard.profile')">
       <CIcon  customClassName="nav-icon" icon="cil-user"/> Profile

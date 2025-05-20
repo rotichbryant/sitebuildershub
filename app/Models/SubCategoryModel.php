@@ -52,6 +52,14 @@ class SubCategoryModel extends Model
     }
 
     /**
+     * Get the category that owns the sub-category.
+     */
+    public function postings(): HasMany
+    {
+        return $this->hasMany(PostingModel::class,'id');
+    }    
+
+    /**
      * Accessor to convert the name to a slug.
      *
      * @return string

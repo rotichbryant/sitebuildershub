@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('business_stores', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->uuid('id')->primary();
             $table->json('coords');
             $table->uuid('business_profile_id');

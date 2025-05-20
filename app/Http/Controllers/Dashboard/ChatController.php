@@ -1,29 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Landing;
+namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\PostingModel;
-use App\Models\SubCategoryModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class HomeController extends Controller
+class ChatController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $categories = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
-
-        // $posting    = PostingModel::whereHas('transaction',fn ($query) => {
-
-        // })->get();
-
-        return Inertia::render('Landing/Home',[
-            'status' => session('status'),
-            'categories' => $categories
+        return Inertia::render('Dashboard/Chat',[
+            'status'     => session('status'),
         ]);
     }
 

@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->uuid('id')->primary();
             $table->boolean('active')->nullable()->default(false);
             $table->boolean('default')->nullable()->default(false);

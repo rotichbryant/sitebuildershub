@@ -43,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // });
         $exceptions->respond(function (Response $response) {
 
-            if ( in_array($response->getStatusCode(), [500, 503, 404, 403]) ) {
+            if ( in_array($response->getStatusCode(), [404, 403]) ) {
                 return Inertia::render(
                     str_contains(request()->path(),'dashboard') ? 'Dashboard/ErrorPage' : 'Landing/ErrorPage', 
                     ['status' => $response->getStatusCode()]

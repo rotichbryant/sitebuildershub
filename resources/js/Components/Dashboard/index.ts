@@ -8,6 +8,8 @@ export { default as AddSubCategory } from './Modals/AddSubCategory.vue';
 export { default as AddChildSubCategory } from './Modals/AddChildSubCategory.vue';
 export { default as AddSubscription } from './Modals/AddSubscription.vue';
 export { default as EditSubscription } from './Modals/EditSubscription.vue';
+export { default as AddPlacement } from './Modals/AddPlacement.vue';
+export { default as EditPlacement } from './Modals/EditPlacement.vue';
 
 // Tabs
 export { default as MailTab } from './Tabs/System/Mail.vue';

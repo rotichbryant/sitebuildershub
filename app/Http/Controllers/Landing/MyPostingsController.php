@@ -114,8 +114,10 @@ class MyPostingsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(PostingModel $posting)
     {
-        //
+        $posting->delete();
+
+        return back()->with('message', 'Posting has been deleted');
     }
 }

@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->uuid('id')->primary();
             $table->float('amount',8,2);
             $table->string('confirmation_code');
@@ -20,7 +21,8 @@ return new class extends Migration
             $table->integer('status_code');
             $table->string('reference');
             $table->string('tracking_id');
-            $table->morphs('transactionable');
+            $table->morphs('sourceable');
+            $table->morphs('targetable');
             $table->timestamps();
         });
     }

@@ -63,7 +63,8 @@
                                                 <h3 class="font-size-4 font-weight-bold text-black-2 mb-0">{{ post.created_at }}</h3>
                                             </td>
                                             <td class="table-y-middle py-7 min-width-px-80">
-                                                <a :href="route('landing.mypostings.show',{ posting: post.id })" class="font-size-3 font-weight-bold text-green text-uppercase">Edit</a>
+                                                <a :href="route('landing.mypostings.show',{ posting: post.id })" class="btn btn-sm btn-primary">Edit</a>
+                                                <a href="#" class="btn btn-sm btn-danger" @click="$delete(post)">Delete</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -92,16 +93,53 @@
 </template>
 <script lang="ts" setup>
 import { LandingLayout } from '@/Layouts'
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import { isEmpty } from 'lodash';
-import { computed, reactive } from 'vue';
+import { computed, inject, reactive } from 'vue';
+
+const $swal: any  = inject('$swal');  
+const $toast: any = inject('$toast');  
 
 const $data = reactive({
+    loaders:{
+        fetch: false
+    },
     modals: {
         create: false
     }
 });
 
+const $props: any = defineProps({
+    flash:         Object
+});
+
 const postings: any = computed( () => usePage().props.postings );
 
+const $delete = async (value:any) => {
+    // Show a confirmation dialog to the user
+    const { isConfirmed } = await $swal.fire({
+        icon:  'question', // Icon to display in the dialog
+        title: 'Delete Posting', // Title of the dialog
+        text:  `Are you sure you want to delete ${value.title}?`, // Text content of the dialog
+        showCancelButton: true // Whether to show a "Cancel" button
+    });
+
+    // If the user does not confirm, exit the function
+    if (!isConfirmed) { return; }
+
+    // Fetch the categories from the server
+    router.delete(
+        route('landing.mypostings.delete',{ posting: value.id }),
+        {
+            onSuccess: () => {
+                // Post message
+                $toast.success($props.flash.message);   
+            },
+            onError: (error) => {
+                // Set the loading flag
+                $data.loaders.fetch = false;
+            }
+        }
+    );
+}
 </script>

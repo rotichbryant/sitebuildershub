@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('delivery_options', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->uuid('id')->primary();
             $table->uuid('business_profile_id');
             $table->foreign('business_profile_id')->references('id')->on('users')->onDelete('cascade');

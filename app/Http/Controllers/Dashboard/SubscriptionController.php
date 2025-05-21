@@ -43,6 +43,8 @@ class SubscriptionController extends Controller
         $validated               = $request->validated();
         $validated['company_id'] = $user->company_id;
 
+        $validated['features']   = json_encode($validated['features']);
+
         SubscriptionModel::create($validated);
 
         return back()->with('message', 'Subscription created successfully');

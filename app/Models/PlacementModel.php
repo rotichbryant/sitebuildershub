@@ -14,6 +14,7 @@ class PlacementModel extends Model
     use HasFactory, HasUuids;
     
     protected $appends = [
+        'custom',
         'currency_price'
     ];
 
@@ -31,16 +32,22 @@ class PlacementModel extends Model
      */
     protected $fillable = [
         'company_id',
+        'custom',
         'name',
         'price',
         'section',
     ];
+    
 
     protected $withCount = ['postings'];
 
     public function getCurrencyPriceAttribute(){
         return $this->company->currency." ".$this->price;
-    }   
+    } 
+    
+    public function getCustomAttribute($value){
+        return empty($this->attributes['custom']) ? [ 'height' => 0, 'width' => 0 ] : json_decode($this->attributes['custom']);
+    } 
     
     
     /**

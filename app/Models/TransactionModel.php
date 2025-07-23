@@ -30,14 +30,27 @@ class TransactionModel extends Model
         'status',
         'status_code',
         'reference',
-        'tracking_id',
+        'sourceable_id',
+        'sourceable_target',
+        'targetable_id',
+        'targetable_target',
+        'tracking_id'
     ];
 
     /**
      * Get the parent transactionable model.
      */
-    public function transactionable(): MorphTo
+    public function sourceable(): MorphTo
     {
         return $this->morphTo();
-    }    
+    }  
+    
+
+    /**
+     * Get the parent transactionable model.
+     */
+    public function targetable(): MorphTo
+    {
+        return $this->morphTo();
+    }      
 }

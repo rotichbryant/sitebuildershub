@@ -80,16 +80,16 @@
                                                 </div>
                                                 <div class="col-md-6 col-xs-12">
                                                     <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Price</label>
-                                                    <div class="input-group ">
+                                                    <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text">Kshs</span>
-                                                        </div>
+                                                            <span class="input-group-text p-2 bg-success text-white">Kshs</span>
+                                                        </div> 
                                                         <input type="number" min="1" class="form-control" placeholder="Phone Number" v-model="$data.active_form.price">
                                                     </div>
                                                     <p v-show="has($data.errors,'price')" class="text-danger">{{ $data.errors.price }}</p>              
                                                 </div>
-                                                <div class="col-12">
-                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Are you open to negotiate ?</label>
+                                                <div class="col-12 mb-2">
+                                                    <label class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Are you open to negotiate ?</label>
                                                     <div class="btn-group col-12 px-0">
                                                         <button 
                                                             type="button"
@@ -115,12 +115,68 @@
                                                     </div>  
                                                     <p v-show="has($data.errors,'negotiate')" class="text-danger">{{ $data.errors.negotiate }}</p>              
                                                 </div>
+                                                <div class="col-12 mb-2">
+                                                    <label class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Promote Advert</label>
+                                                    <div class="btn-group col-12 px-0">
+                                                        <button 
+                                                            type="button"
+                                                            :class="`btn btn-primary btn-variants-outline ${$data.active_form.promotion_status ? 'active' : ''}`"
+                                                            @click="$data.active_form.promotion_status = true"
+                                                        >
+                                                            Yes
+                                                        </button>
+                                                        <button 
+                                                            type="button"
+                                                            :class="`btn btn-primary btn-variant-outline ${!$data.active_form.promotion_status ? 'active' : ''}`"
+                                                            @click="$data.active_form.promotion_status = false"
+                                                        >
+                                                            No
+                                                        </button>
+                                                    </div>  
+                                                    <p v-show="has($data.errors,'promote.status')" class="text-danger">{{ $data.active_form.promotion_status }}</p>             
+                                                </div> 
+                                                <div class="col-12" v-if="$data.active_form.promotion_status">
+                                                    <div class="row">
+                                                        <div class="col-12 mb-2">
+                                                            <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Placement Section</label>
+                                                            <select class="form-control w-100" @change="select_section" :value="$data.active_form.promotion_section">
+                                                                <option value="">Select Section*</option>
+                                                                <option v-for="(item,key) in pageProps.placements" :value="item.section">{{ item.name }}</option> 
+                                                            </select>
+                                                            <p v-show="has($data.errors,'promotion_section')" class="text-danger">{{ $data.errors.promotion_section }}</p>              
+                                                        </div>  
+                                                        <div class="col-12 mb-2"> 
+                                                            <div class="row">  
+                                                                <div class="col-6">
+                                                                    <label class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Date From</label>
+                                                                    <input type="date" :min="moment().format('YYYY-MM-DD')" class="form-control" placeholder="Date From" v-model="$data.active_form.promotion_date_from">
+                                                                    <p v-show="has($data.errors,'promotion_date_from')" class="text-danger">{{ $data.errors.promotion_date_from }}</p>              
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <label class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Date To</label>
+                                                                    <input type="date" :min="moment().format('YYYY-MM-DD')" class="form-control" placeholder="Date To" v-model="$data.active_form.promotion_date_to">
+                                                                    <p v-show="has($data.errors,'promotion_date_to')" class="text-danger">{{ $data.errors.promotion_date_to }}</p>              
+                                                                </div>  
+                                                            </div>
+                                                        </div> 
+                                                        <div class="col-12">
+                                                            <label class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Amount</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text p-2 bg-success text-white">Kshs</span>
+                                                                </div>                                                            
+                                                                <input type="number" class="form-control" placeholder="Cost" v-model="$data.active_form.promotion_amount">
+                                                            </div>
+                                                            <p v-show="has($data.errors,'promotion_amount')" class="text-danger">{{ $data.errors.promotion_amount }}</p>              
+                                                        </div>                                                                                                              
+                                                    </div>                                                     
+                                                </div>                                               
                                             </div>
                                         </div>
                                     </Transition>
                                 </div>
                             <div class="col-lg-12 mt-4 px-0 d-flex justify-content-between">
-                                <button type="button" class="btn btn-primary text-uppercase h-px-48" v-if="$data.tab != 1 && $data.tab < 3" @click="$data.tab--">Back</button>
+                                <button type="button" class="btn btn-primary text-uppercase h-px-48" v-if="$data.tab != 1 && $data.tab <= 3" @click="$data.tab--">Back</button>
                                 <button type="button" class="btn btn-primary text-uppercase h-px-48" v-if="$data.tab < 3"  @click="nextTab" :disabled="$data.isDisabled">Next</button>
                                 <button type="button" class="btn btn-primary text-uppercase h-px-48" v-if="$data.tab == 3" @click="submit" :disabled="$data.isDisabled">Create</button>
                             </div>
@@ -157,8 +213,10 @@ import { computed, reactive, watch } from 'vue';
 import vueDropzone from 'dropzone-vue3';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import { object, string, number, date, InferType, array } from 'yup';
+import { object, string, number, date, InferType, array, boolean, ref } from 'yup';
 import { isEmpty, has, cloneDeep, each, flatten, keys, set, flattenDeep, flattenDepth } from 'lodash';
+import moment from 'moment';
+import { data } from 'jquery';
 
 const $data: any  = reactive({
     active_form:   {},
@@ -184,9 +242,14 @@ const $data: any  = reactive({
             phone_number: String()
         },
         {
-            quantity:     Number(),
-            price:        Number(),
-            negotiate:    String('notsure'),
+            quantity:               Number(),
+            price:                  Number(),
+            negotiate:              String('notsure'),
+            promotion_amount:       Number(),
+            promotion_status:       Boolean(),
+            promotion_section:      String(),
+            promotion_date_from:    moment().format('YYYY-MM-DD'),
+            promotion_date_to:      moment().add(1,'days').format('YYYY-MM-DD'),
         }
     ],
     schemas: [
@@ -201,9 +264,30 @@ const $data: any  = reactive({
             phone_number: string().required("*Phone Number is required"),
         },
         {
-            negotiate:    string().required("*Negotiate is required"),
-            quantity:     number().min(1).required("*Quantity is required"),     
-            price:        number().min(1).required("*Price is required")    
+            negotiate:      string().required("*Negotiate is required"),
+            quantity:       number().min(1).required("*Quantity is required"),     
+            price:          number().min(1).required("*Price is required"),
+            promotion_amount: number().when("promotion_status",{
+                is:   true,
+                then: (schema) => schema.min(1, "*Promotion Cost cannot be 0" ).required("*Promotion Cost is required"),
+                otherwise: (schema) => schema.nullable()
+            }),
+            promotion_date_from: string().when("promotion_status",{
+                is:   true,
+                then:      (schema) => schema.matches(/^\d{4}-\d{2}-\d{2}$/,'Promotion date from invalid').required("*Promotion Date From is required"),
+                otherwise: (schema) => schema.nullable()
+            }),
+            promotion_date_to:   string().when("promotion_status",{
+                is:   true,
+                then:      (schema) => schema.matches(/^\d{4}-\d{2}-\d{2}$/,'Promotion date to invalid').required("*Promotion Date To is required"),
+                otherwise: (schema) => schema.nullable()
+            }),                                            
+            promotion_section:   string().when("promotion_status",{
+                is:   true,
+                then: (schema)      => schema.required("*Promotion Section is required"),
+                otherwise: (schema) => schema.nullable()
+            }),
+            promotion_status:    boolean().required("*Promotion Status is required")  
         }
     ],
     tab: 1,
@@ -248,23 +332,66 @@ const addExtraFormData = (file: any,xhr: any, formData: any) => {
  * Posts the form data to the `login` route and resets the password field
  * on success.
  */
-const submit = () => {
-    $data.form = { ...$data.form, ...$data.active_form };
-    useForm({ 
-        ...$data.form,  
-        _token: pageProps.value.csrf_token 
-    }).post(
+const submit = async () => {
+    const section = pageProps.value.placements.find( (item:any) => item.section == $data.active_form.promotion_section )
+    const form    = { 
+        ...$data.form, 
+        ...$data.active_form,
+        placement_id: section.id, 
+        _token: pageProps.value.csrf_token
+    };
+
+    useForm(form).post(
         route('landing.mypostings.store'), 
         {
-            onSuccess: (value: any) => {
-                if( !isEmpty(value.props.flash.message) ){
-                    toast.success(value.props.flash.message);
+            onSuccess: ({ props}: any) => {
+                if( !form.promotion_status ){
+                    if( !isEmpty(props.flash.message) ){
+                        toast.success(props.flash.message);
+                    }
+                    resetForm();                    
                 }
-                resetForm();
+
+                if( form.promotion_status ){
+                    create_transaction(props.data)
+                }
             },
         }
-    );
+    );        
 };
+
+const create_transaction = async (promotion: any) => {
+    router.put(
+        route('landing.transactions.promotion.create',{ promotion: promotion.id }),
+        {},
+        {
+            onSuccess: ({ props: { data: { order } } }: any) => {
+                window.location.href = order.redirect_url;
+            }
+        }
+    );
+}
+
+const calculate_promotion_cost = (value: any) => {
+    const section = pageProps.value.placements.find( (item: any) => item.section == value );
+    const days    = moment($data.active_form.promotion_date_to).diff(moment($data.active_form.promotion_date_from),'days');
+
+    $data.active_form.promotion_section = value;
+    $data.active_form.promotion_amount  = (section.price * days);
+}
+
+const select_section = ($event:any) => {
+
+    $data.active_form.promotion_date_from = moment().format('YYYY-MM-DD');
+    $data.active_form.promotion_date_to   = moment().add(1,'days').format('YYYY-MM-DD');
+
+    const value   = $event.target.value;
+    const section = pageProps.value.placements.find( (item: any) => item.section == value );
+    const days    = moment($data.active_form.promotion_date_to).diff(moment($data.active_form.promotion_date_from),'days');
+
+    $data.active_form.promotion_section = value;
+    $data.active_form.promotion_amount  = (section.price * days);
+}
 
 /**
  * Called when a file is successfully uploaded.
@@ -306,9 +433,14 @@ const resetForm = () => {
             phone_number: String()
         },
         {
-            quantity:     Number(),
-            price:        Number(),
-            negotiate:    String('notsure'),
+            quantity:            Number(),
+            price:               Number(),
+            negotiate:           String('notsure'),
+            promotion_amount:    Number(),
+            promotion_status:    Boolean(),
+            promotion_section:   String(),
+            promotion_date_from: moment().format('YYYY-MM-DD'),
+            promotion_date_to:   moment().add(1,'days').format('YYYY-MM-DD'),
         }
     ]
 
@@ -327,6 +459,7 @@ watch(
     // Iterate over each field in the form and validate it
     $data.active_schema = $data.schemas[tab-1];
     $data.active_form   = $data.tab_forms[tab-1];
+    $data.errors        = Object()
   },
   {
     immediate: true
@@ -342,6 +475,16 @@ watch(
  watch(
   () => $data.active_form, 
   (form) => {
+
+    // Check on promotion form
+    if( 
+        !isEmpty(form.promotion_section) && 
+        !isEmpty(form.promotion_date_from) &&
+        !isEmpty(form.promotion_date_to)
+    ){
+        calculate_promotion_cost(form.promotion_section);
+    }
+
     // Iterate over each field in the form and validate it
     each(
       form,

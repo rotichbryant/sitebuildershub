@@ -34,10 +34,10 @@
           </button>
         </div>
         <div class="header-btns header-btn-devider ml-auto pr-2 ml-lg-6 d-none d-xs-flex" v-if="isEmpty(auth_user)">
-          <a class="btn btn-transparent text-uppercase font-size-3 heading-default-color focus-reset" href="#" @click="$data.modals.login = true">
+          <a class="btn btn-transparent text-uppercase font-size-3 heading-default-color focus-reset" href="#" @click="modals.login = true">
             Log in
           </a>
-          <a class="btn btn-primary text-uppercase font-size-3" href="#" @click="$data.modals.signup = true">
+          <a class="btn btn-primary text-uppercase font-size-3" href="#" @click="modals.signup = true">
             Sign up
           </a>
         </div>
@@ -78,41 +78,14 @@
         <!--/.Mobile Menu Hamburger Ends-->
       </nav>
     </div>
-    <Login
-      :modals="$data.modals"
-      @update:modals="$data.modals = $event"
-      v-if="isEmpty(auth_user)"
-    />
-    <SignUp
-      :modals="$data.modals"
-      @update:modals="$data.modals = $event"
-      v-if="isEmpty(auth_user)"
-    />
   </header>
 </template>
 <script setup>
-import { computed, onMounted, ref, reactive, watch } from 'vue'
-import { useColorModes } from '@coreui/vue'
-import { Login, SignUp } from './Modals'
-import { usePage } from '@inertiajs/vue3'
 import { isEmpty } from 'lodash'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
+import { computed } from 'vue';
 
-/**
- * The reactive data object.
- * 
- * @property {Boolean} visible - Whether the menu is visible or not.
- * @property {Object} modals - The modals object.
- * @property {Boolean} modals.login - Whether the login modal is visible or not.
- * @property {Boolean} modals.signup - Whether the signup modal is visible or not.
- */
-const $data = reactive({
-  visible: false,
-  modals: {
-    login: false,
-    signup: false
-  }
-});
+const logout    = async () => router.post(route('landing.logout'));
 
 /**
  * The computed property for the authenticated user.
@@ -121,31 +94,17 @@ const $data = reactive({
  */
 const auth_user = computed( () => usePage().props.auth.user )
 
-const logout    = async () => router.post(route('landing.logout'));
+const $props = defineProps({
+    modals: {
+        type: Object,
+        default: () => {}
+    }
+});
 
-/**
- * Watch the signup modal and toggle the login modal
- */
-watch( 
- ()      => $data.modals.signup,
- (value) => {
-  /**
-   * If the signup modal is visible, hide the login modal
-   */
-  if(value) $data.modals.login = false;
- }  
-);
+const $emit = defineEmits(['update:modals']);
 
-/**
- * Watch the login modal and toggle the signup modal
- */
-watch( 
- ()      => $data.modals.login,
- (value) => {
-  /**
-   * If the login modal is visible, hide the signup modal
-   */
-  if(value) $data.modals.signup = false;
- }  
-)
+const modals = computed({
+    get: ()      => $props.modals,
+    set: (value) => $emit('update:modals', value),
+});
 </script>

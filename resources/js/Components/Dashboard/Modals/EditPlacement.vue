@@ -5,6 +5,7 @@
         @close="closeModal"
         alignment="center"
         title="Add New Category"
+        backdrop="static"
     >
         <CModalHeader>
             <CModalTitle>Add Placement</CModalTitle>
@@ -12,7 +13,7 @@
         <form @submit.prevent="submitForm">
             <CModalBody>
                 <CRow>
-                    <CCol md="12">                        
+                    <CCol md="12" class="mb-2">                        
                         <CFormInput
                             id="name"
                             v-model="$data.form.name"
@@ -22,14 +23,14 @@
                         />
                         <p v-show="has($data.errors,'name')" class="text-danger">{{ $data.errors.name }}</p>              
                     </CCol> 
-                    <CCol md="12"> 
+                    <CCol md="12" class="mb-2"> 
                         <CFormSelect id="section" label="Section" v-model="$data.form.section">
                             <option>Open this select section</option>
                             <option :value="section.value" v-for="(section,index) in $data.sections" :key="index">{{ section.name }}</option>
                         </CFormSelect>                      
                         <p v-show="has($data.errors,'section')" class="text-danger">{{ $data.errors.section }}</p>            
                     </CCol> 
-                    <CCol md="12">                        
+                    <CCol md="12"  class="mb-2">                        
                         <CFormInput
                             id="price"
                             v-model="$data.form.price"
@@ -39,7 +40,35 @@
                             :invalid="has($data.errors,'price') ? true : false"
                         />
                         <p v-show="has($data.errors,'price')" class="text-danger">{{ $data.errors.price }}</p>              
-                    </CCol>                                                             
+                    </CCol> 
+                    <CCol md="12">                        
+                        <CRow>                          
+                            <CCol md="6">
+                                <CFormInput
+                                    id="custom.height"
+                                    v-model.number="$data.form.custom.height"
+                                    label="Height"
+                                    placeholder="Enter height"
+                                    type="number"
+                                    min="480"
+                                    :invalid="has($data.errors,'custom.height') ? true : false"
+                                />
+                                <p v-show="has($data.errors,'custom.height')" class="text-danger">{{ $data.errors['custom.height'] }}</p>              
+                            </CCol> 
+                            <CCol md="6">
+                                <CFormInput
+                                    id="custom.width"
+                                    v-model.number="$data.form.custom.width"
+                                    label="Width"
+                                    placeholder="Enter width"
+                                    type="number"
+                                    min="640"
+                                    :invalid="has($data.errors,'custom.width') ? true : false"
+                                />
+                                <p v-show="has($data.errors,'custom.width')" class="text-danger">{{ $data.errors['custom.width'] }}</p>              
+                            </CCol>                                                         
+                        </CRow>
+                    </CCol>                                                                                
                 </CRow>
             </CModalBody>
             <CModalFooter>
@@ -67,17 +96,25 @@ const $data: any  = reactive({
     form: {
         section: String(),
         name:    String(),
-        price:   Number()
+        price:   Number(),
+        custom:  {
+            height: Number(),
+            width:  Number(),
+        }
     },
     sections: [
         {
-            name: 'Home',
-            value: 'home'
+            name: 'Leader Banner',
+            value: 'leader-banner'
         },
         {
-            name: 'Footer',
-            value: 'footer'
-        },               
+            name: 'Top Banner',
+            value: 'top-banner'
+        },                
+        {
+            name: 'Advert',
+            value: 'advert'
+        },                     
     ],
     isDisabled: false,
     loaders: {
@@ -105,6 +142,10 @@ const $emit = defineEmits(['update:show','fetch']);
 
 const formSchema: any = computed( 
     () => object().shape({
+        custom:  object().shape({
+            height: number().typeError('Amount must be a number').min(480,"Minimum height is 480").required("*Height is required"),
+            width:  number().typeError('Amount must be a number').min(640,"Minimum width is 640").required("*Width is required")
+        }),        
         name:    string().required("*Name is required"),
         price:   number().required("*Price is required"),
         section: string().required("*Section is required"),
@@ -118,11 +159,17 @@ const formSchema: any = computed(
  *
  * @param {string} field - The name of the field to validate.
  */
-const validateForm = async (field:string) => {
+const validateForm = async (form:string) => {
     try {
+        const valid_fields = await formSchema.value.validate(form);
         // Validate the field using the formSchema
-        await formSchema.value.validateAt(field, $data.form);
-		delete $data.errors[field];
+        each(
+            valid_fields,
+            (value,key) => 
+                value.constructor == Object ? 
+                    each(value,(item,item_key) => delete $data.errors[`${key}.${item_key}`] ) : 
+                        delete $data.errors[key] 
+        )
     } catch(error: any) {
         // If the field is invalid, update the errors object with the error message
         $data.errors[error.path] = error.message;
@@ -139,6 +186,10 @@ const validateForm = async (field:string) => {
  */
 const resetForm = () => {
     $data.form =  {
+        custom:  {
+            height: Number(),
+            width:  Number(),
+        },        
         section: String(),
         name:    String(),
         price:   Number()
@@ -175,13 +226,9 @@ const submitForm = () => {
 watch(
   () => $data.form, 
   (form) => {
-    // Iterate over each field in the form and validate it
-    each(
-      form,
-      (value, key) => {
-        validateForm(key); // Validate the individual form field
-      }
-    );
+    if( $props.show ){
+        validateForm(form); // Validate the individual form field
+    }
   },
   { 
     deep: true, // Set to true to observe nested properties
@@ -192,7 +239,7 @@ watch(
 watch(
     () => $props.show,
     (value) => {
-        if(value){ $data.form = pick($props.placement,['name','price','section']); }
+        if(value){ $data.form = pick($props.placement,['custom','name','price','section']); }
         if(!value) { resetForm() }
     }
 )

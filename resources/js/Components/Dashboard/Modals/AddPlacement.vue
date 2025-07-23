@@ -4,25 +4,16 @@
         :visible="showModal"
         @close="closeModal"
         alignment="center"
-        title="Add New Category"
+        title="Add New Placement"
+        backdrop="static"
     >
         <CModalHeader>
             <CModalTitle>Add Placement</CModalTitle>
         </CModalHeader>
         <form @submit.prevent="submitForm">
             <CModalBody>
-                <CRow>
-                    <CCol md="12">                        
-                        <CFormInput
-                            id="name"
-                            v-model="$data.form.name"
-                            label="Name"
-                            placeholder="Enter subscription name"
-                            :invalid="has($data.errors,'name') ? true : false"
-                        />
-                        <p v-show="has($data.errors,'name')" class="text-danger">{{ $data.errors.name }}</p>              
-                    </CCol> 
-                    <CCol md="12"> 
+                <CRow> 
+                    <CCol md="12" class="mb-2"> 
                         <CFormSelect id="section" label="Section" v-model="$data.form.section">
                             <option>Open this select section</option>
                             <option :value="section.value" v-for="(section,index) in $data.sections" :key="index">{{ section.name }}</option>
@@ -33,7 +24,7 @@
                         <CFormInput
                             id="price"
                             v-model="$data.form.price"
-                            label="Price"
+                            label="Price (per day)"
                             placeholder="Enter price"
                             type="number"
                             :invalid="has($data.errors,'price') ? true : false"
@@ -65,19 +56,27 @@ const $toast: any = inject("$toast");
 const $data: any  = reactive({
     errors: {},
     form: {
+        custom:  {
+            height: Number(),
+            width:  Number(),
+        },        
         section: String(),
         name:    String(),
         price:   Number()
     },
     sections: [
         {
-            name: 'Home',
-            value: 'home'
+            name: 'Leader Banner',
+            value: 'leader-banner'
         },
         {
-            name: 'Footer',
-            value: 'footer'
-        },               
+            name: 'Top Banner',
+            value: 'top-banner'
+        },                
+        {
+            name: 'Advert',
+            value: 'advert'
+        },                     
     ],
     isDisabled: false,
     loaders: {
@@ -101,6 +100,10 @@ const $emit = defineEmits(['update:show','fetch']);
 
 const formSchema: any = computed( 
     () => object().shape({
+        custom:  object().shape({
+            height: number().required("*Height is required"),
+            width:  number().required("*Width is required"),
+        }),        
         name:    string().required("*Name is required"),
         price:   number().min(1,'*Price should be atleast 1').required("*Price is required"),
         section: string().required("*Section is required"),
@@ -135,6 +138,10 @@ const validateForm = async (field:string) => {
  */
 const resetForm = () => {
     $data.form =  {
+        custom:  {
+            height: Number(),
+            width:  Number(),
+        },
         section: String(),
         name:    String(),
         price:   Number()
@@ -182,6 +189,15 @@ watch(
   { 
     deep: true, // Set to true to observe nested properties
     immediate: true
+  }
+);
+
+watch(
+  () => $data.form.section, 
+  (section) => {
+    if( !isEmpty(section) ){
+        $data.form.name = $data.sections.find( (item:any) => item.value == section )['name'];
+    }
   }
 );
 

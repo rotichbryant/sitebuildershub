@@ -25,6 +25,7 @@ use App\Http\Controllers\Landing\ChatController;
 use App\Http\Controllers\Landing\DashboardController;
 use App\Http\Controllers\Landing\MyPostingsController;
 use App\Http\Controllers\Landing\ProfileController as LandingProfileController;
+use App\Http\Controllers\Landing\TransactionController as LandingTransactionController;
 use App\Models\TransactionModel;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -45,9 +46,13 @@ Route::name('landing.')->group(function () {
         Route::get('/mypostings/create',              [MyPostingsController::class, 'create'])->name('mypostings.create');
         Route::get('/mypostings',                     [MyPostingsController::class, 'index'])->name('mypostings');
         Route::post('/mypostings/upload',             [MyPostingsController::class, 'upload'])->name('mypostings.upload');
+        Route::post('/mypostings/promote',            [MyPostingsController::class, 'promote'])->name('mypostings.promote');
         Route::post('/mypostings',                    [MyPostingsController::class, 'store'])->name('mypostings.store');
         Route::delete('/mypostings/{posting}/delete', [MyPostingsController::class, 'destroy'])->name('mypostings.delete');
         
+        Route::get('transactions/{promotion}/complete',[LandingTransactionController::class, 'update'])->name('transactions.promotion.complete');
+        Route::put('transactions/{promotion}/create',  [LandingTransactionController::class, 'create'])->name('transactions.promotion.create');
+
         Route::get('/chat',                    [ChatController::class, 'index'])->name('chat');
         Route::get('/profile/{tab}',           [LandingProfileController::class, 'create'])->name('profile');
         Route::post('/profile/business/store', [LandingProfileController::class, 'business_store'])->name('profile.business.store');
@@ -77,7 +82,7 @@ Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::post('/subscriptions',                         [SubscriptionController::class, 'store'])->name('subscriptions.store');
         Route::delete('/subscriptions/{subscription}/delete', [SubscriptionController::class, 'destroy'])->name('subscriptions.delete');
         
-        Route::get('/transactions',                 [TransactionController::class, 'index'])->name('transactions');
+        Route::get('/transactions',                         [TransactionController::class, 'index'])->name('transactions');
 
         Route::get('/categories/fetch',                     [CategoryController::class, 'create'])->name('categories.fetch');
         Route::get('/categories',                           [CategoryController::class, 'index'])->name('categories');

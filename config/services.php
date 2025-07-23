@@ -41,7 +41,7 @@ return [
     ],
 
     'pesapal' => [
-        'base' => [
+        'base_url' => [
             'live'    => 'https://pay.pesapal.com/v3/api', // live phase endpoint
             'sandbox' => 'https://cybqa.pesapal.com/pesapalv3/api', // testing phase endpoint
         ],
@@ -57,8 +57,11 @@ return [
         'configuration' => [
             'consumer_key'    => env('PESAPAL_CONSUMER_KEY'),
             'consumer_secret' => env('PESAPAL_CONSUMER_SECRET'),
-            'live'            => env('PESAPAL_LIVE'),
+            'status'          => env('PESAPAL_STATUS'),
         ],
+        'messages' => [
+            'promotion' => 'Advertiser {first_name} {last_name} is paying for promotion of {title}. The total amount is {amount}.'
+        ]
     ],
 
 ];

@@ -22,6 +22,16 @@ class UpdatePlacementRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'custom.height' => [
+                'required',
+                'integer',
+                'min:480'
+            ],      
+            'custom.width' => [
+                'required',
+                'integer',
+                'min:640'
+            ],                         
             'name' => [
                 'required',
                 'string'

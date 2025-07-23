@@ -55,10 +55,34 @@ class CreatePostingRequest extends FormRequest
                 'integer',
                 'required'
             ],
+            'promotion_status' => [
+                'boolean',
+                'required'
+            ],
+            'promotion_section' => [
+                'string',
+                'required_if:promotion_status,true'
+            ],
+            'promotion_date_from' => [
+                'date',
+                'required_if:promotion_status,true'
+            ],
+            'promotion_date_to' => [
+                'date',
+                'required_if:promotion_status,true'
+            ],
+            'promotion_amount' => [
+                'integer',
+                'required_if:promotion_status,true'
+            ],  
+            'placement_id' => [
+                'string',
+                'required_if:promotion_status,true'
+            ],    
             'title' => [
                 'string',
                 'required'
-            ],
+            ],                                                                              
         ];
     }
 }

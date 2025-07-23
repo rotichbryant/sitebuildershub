@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');        
             $table->string('name');
             $table->float('price',8,2);
-            $table->string('section');
+            $table->enum('section',array('advert','leader-banner','top-banner'))->unique();
             $table->timestamps();
         });
     }

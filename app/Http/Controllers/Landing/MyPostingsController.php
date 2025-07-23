@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\CreatePostingRequest;
+use App\Http\Requests\Landing\CreatePromotionPostingRequest;
 use App\Http\Requests\Landing\PostingFileUploadRequest;
 use App\Models\CategoryModel;
+use App\Models\PlacementModel;
 use App\Models\PostingModel;
+use App\Models\PromotionModel;
 use App\Models\SubCategoryModel;
 use Error;
 use Illuminate\Http\Request;
@@ -37,10 +40,11 @@ class MyPostingsController extends Controller
         Gate::authorize('create-posting');
 
         $categories     = CategoryModel::with(['subCategories'])->get();
+        $placements     = PlacementModel::get();
         $locations      = config('location');
         $status         = session('status');
 
-        return Inertia::render('Landing/CreatePosting',compact('categories','locations','status'));
+        return Inertia::render('Landing/CreatePosting',compact('categories','locations','placements','status'));
     }
 
     /**
@@ -74,9 +78,24 @@ class MyPostingsController extends Controller
 
             $form['user_id']         = auth('landing')->user()->id;
 
-            PostingModel::create($form);
+            $posting                 = PostingModel::create($form);        
             
-            return back()->with('message', 'Posting created successfully');
+            if( $form['promotion_status'] ){
+                
+                $promotion = PromotionModel::create([
+                    'amount'       => $form['promotion_amount'],
+                    'date_from'    => $form['promotion_date_from'],
+                    'date_to'      => $form['promotion_date_to'],
+                    'posting_id'   => $posting->id,
+                    'placement_id' => $form['placement_id'],
+                ]);
+
+                return back()->with('data',$promotion);
+            }
+            
+            if( !$form['promotion_status'] ){
+                return back()->with('message', 'Posting created successfully');        
+            }
 
         } catch(Error $error) {
 

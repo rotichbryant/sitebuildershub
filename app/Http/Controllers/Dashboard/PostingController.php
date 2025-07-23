@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\PlacementModel;
 use App\Models\PostingModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -26,11 +27,13 @@ class PostingController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        $placements = PlacementModel::get();
+
         // Retrieve the status message from the session
         $status = session('status');
 
         // Return the postings and the status message as a JSON response
-        return Inertia::render('Dashboard/Postings', compact('postings', 'status'));
+        return Inertia::render('Dashboard/Postings', compact('postings', 'status','placements'));
     }
 
     /**

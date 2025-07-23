@@ -16,15 +16,10 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $categories = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
+        $postings   = PostingModel::with(['category','subCategory'])->orderBy('created_at','desc')->take(10)->get();
+        $session    = session('status');
 
-        // $posting    = PostingModel::whereHas('transaction',fn ($query) => {
-
-        // })->get();
-
-        return Inertia::render('Landing/Home',[
-            'status' => session('status'),
-            'categories' => $categories
-        ]);
+        return Inertia::render('Landing/Home',compact('categories','postings','session'));
     }
 
     /**

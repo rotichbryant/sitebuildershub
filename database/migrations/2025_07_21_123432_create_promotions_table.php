@@ -18,12 +18,11 @@ return new class extends Migration
             $table->float('amount',8,2);
             $table->date('date_from');
             $table->date('date_to');
+            $table->string('image');
             $table->uuid('placement_id');
             $table->foreign('placement_id')->references('id')->on('advert_placements')->onUpdate('cascade')->onDelete('cascade');  
             $table->uuid('posting_id');
-            $table->foreign('posting_id')->references('id')->on('postings')->onUpdate('cascade')->onDelete('cascade');  
-            $table->uuid('transaction_id')->nullable();
-            $table->foreign('transaction_id')->nullable()->references('id')->on('transactions')->onUpdate('cascade')->onDelete('set null');                          
+            $table->foreign('posting_id')->references('id')->on('postings')->onUpdate('cascade')->onDelete('cascade');                          
             $table->timestamps();
         });
     }

@@ -26,7 +26,7 @@ class PostingFileUploadRequest extends FormRequest
             //
             'image' => [
                 'required',
-                File::image()->types('jpeg,png,jpg')->max(2048)
+                File::image()->types('jpeg,png,jpg')->max(10000)
             ],
         ];
     }

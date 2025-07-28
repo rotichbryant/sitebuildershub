@@ -61,22 +61,32 @@ class CreatePostingRequest extends FormRequest
             ],
             'promotion_section' => [
                 'string',
+                'nullable',
                 'required_if:promotion_status,true'
             ],
+            'promotion_image' => [
+                'string',
+                'nullable',
+                'required_if:promotion_status,true'
+            ],            
             'promotion_date_from' => [
                 'date',
+                'nullable',
                 'required_if:promotion_status,true'
             ],
             'promotion_date_to' => [
                 'date',
+                'nullable',
                 'required_if:promotion_status,true'
             ],
             'promotion_amount' => [
                 'integer',
+                'nullable',
                 'required_if:promotion_status,true'
             ],  
             'placement_id' => [
                 'string',
+                'nullable',
                 'required_if:promotion_status,true'
             ],    
             'title' => [

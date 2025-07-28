@@ -94,7 +94,20 @@ class PostingModel extends Model
     public function childSubCategory(): BelongsTo
     {
         return $this->belongsTo(ChildSubCategoryModel::class, 'child_sub_category_id');
-    }     
+    }    
+    
+    /**
+     * Get the promotions associated with the posting.
+     *
+     * This relationship is defined by the `posting_id` foreign key on the `promotions` table,
+     * which references the `id` column on the `postings` table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PromotionModel>
+     */
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(PromotionModel::class,'posting_id');
+    }        
     
     /**
      * Get the user that owns the posting.

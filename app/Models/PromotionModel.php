@@ -13,6 +13,10 @@ class PromotionModel extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $appends = [
+        'active',
+    ];
+
     /**
      * The table associated with the model.
      *
@@ -28,12 +32,30 @@ class PromotionModel extends Model
     protected $fillable = [
         'active',
         'amount',
+        'image',
         'date_from',
         'date_to',
         'placement_id',
         'posting_id',
         'transaction_id',
     ]; 
+
+        /**
+     * Accessor to convert the stored images from JSON to a collection.
+     * 
+     * The images are stored in the database as a JSON string. This accessor
+     * will convert the JSON string to a collection of image paths.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getImageAttribute()
+    {
+        return asset('storage/images/' . $this->attributes['image']);
+    }
+
+    public function getActiveAttribute(){
+        return !is_null($this->transaction) && $this->transaction->status == 200 ? true : false;
+    }     
     
     /**
      * Get the company that the placement belongs to.

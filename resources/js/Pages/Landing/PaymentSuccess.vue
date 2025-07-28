@@ -13,7 +13,7 @@
                     <i class="fa fa-check-circle"></i>
                     </h4>
                     <h4 class="font-size-10 mb-3 text-success font-weight-semibold">Payment Successful</h4>
-                    <h2 class="font-size-9 mb-4 text-success font-weight-bold">{{ $props.transaction.amount }}</h2>
+                    <h2 class="font-size-9 mb-4 text-success font-weight-bold">{{ $props.transaction.currency }} {{ $props.transaction.amount }}</h2>
                     <p class="text-muted font-size-3">Thank you for your payment</p>
                 </div>
 

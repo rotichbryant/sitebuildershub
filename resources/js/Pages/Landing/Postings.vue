@@ -2,12 +2,12 @@
     <LandingLayout>
         <Head title="Postings" />
         <!-- Main Content Start -->
-        <div class="bg-default-1 pt-26 pt-lg-28 pb-13 pb-lg-25">
+        <div class="bg-default-1 pt-10">
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-md-10 col-xs-12">
                     <div class="row">
-                        <div class="col-md-3 col-xs-8">
+                        <div class="col-md-3 col-xs-8" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
                             <div class="bg-white shadow-9 rounded-4 mb-6">
                                 <PostingSidebar
                                     :locations="$data.locations"
@@ -17,8 +17,23 @@
                                     @update-filters="$data.filters = $event"
                                 />
                             </div>
+                            <div class="bg-white shadow-9 rounded-4 mb-6 py-2" v-if="!isEmpty(advert_images)">
+                                <Swiper 
+                                    slidesPerView="auto" 
+                                    :spaceBetween="30" 
+                                    :modules="$data.modules" 
+                                    :loop="true" 
+                                    :pagination="{clickable: true}"
+                                    :centeredSlides="true"
+                                    :autoplay="{delay: 2500,disableOnInteraction: false}"                
+                                >
+                                    <SwiperSlide v-for="(image,index) in advert_images" :key="index">
+                                        <img :src="image.url" :height="image.height" style="display:">
+                                    </SwiperSlide>
+                                </Swiper>    
+                            </div>                            
                         </div>
-                        <div class="col-md-9 col-xs-12 ">
+                        <div class="col-md-9 col-xs-12 " data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
                             <!-- form -->
                             <!-- <PostingFilter /> -->
                             <div class="ml-lg-0 ml-md-15">
@@ -82,6 +97,14 @@ import { Posting, PostingFilter, PostingSidebar } from '../../Components/Landing
 import { WhenVisible  } from '@inertiajs/vue3'
 import { computed, inject, onMounted, reactive, ref } from 'vue';
 import { isEmpty, get, keys, set, forEach, intersection, intersectionBy, map } from 'lodash';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+// import required modules
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 const $toast: any = inject('$toast'); 
 const $data: any  = reactive({
@@ -95,7 +118,20 @@ const $data: any  = reactive({
         price_range: String(),
         name:        ref([])
     },
+    modules: [Autoplay, Pagination, Navigation],
 });
+
+const $props: any = defineProps({
+    placements: Array,
+});
+
+const advert_images = computed( 
+    () => $props.placements
+                .map(        (item:any) => ({ ...item, promotions: item.promotions.map( (promotion:any) => ({ ...promotion, height: item.custom.height, width: item.custom.width  })) }) )
+                .map(        (item:any) => item.promotions )
+                .flat().map( (item:any) => ({ url: item.image, height: item.height, width: item.width }) )
+);
+
 
 const applyFilter = () => {
     let filters     = {}

@@ -145,6 +145,17 @@
                                                             </select>
                                                             <p v-show="has($data.errors,'promotion_section')" class="text-danger">{{ $data.errors.promotion_section }}</p>              
                                                         </div>  
+                                                        <div class="col-12">
+                                                            <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Photo</label>
+                                                            <vue-dropzone
+                                                                ref="images" 
+                                                                id="images" 
+                                                                :options="$data.image_options"
+                                                                @vdropzone-sending="addExtraFormData"
+                                                                @vdropzone-success="successPromotionImageUpload"
+                                                            />    
+                                                            <p v-show="has($data.errors,'images')" class="text-danger">{{ $data.errors.images }}</p>              
+                                                        </div>                                                        
                                                         <div class="col-12 mb-2"> 
                                                             <div class="row">  
                                                                 <div class="col-6">
@@ -226,7 +237,15 @@ const $data: any  = reactive({
         url:            route('landing.mypostings.upload'),
         method:         'post',
         thumbnailWidth: 150,
-        maxFilesize:    2.6,
+        maxFilesize:    10.0,
+    },
+    image_options: {
+        paramName:       'image',
+        url:             route('landing.mypostings.upload'),
+        method:          'post',
+        thumbnailHeight: 480,
+        thumbnailWidth:  640,
+        maxFilesize:     10.0,
     },
     errors: {},
     form:   {},
@@ -272,19 +291,24 @@ const $data: any  = reactive({
                 then: (schema) => schema.min(1, "*Promotion Cost cannot be 0" ).required("*Promotion Cost is required"),
                 otherwise: (schema) => schema.nullable()
             }),
+            promotion_image: string().when("promotion_status",{
+                is:        true,
+                then:      (schema)      => schema.required("*Promotion Image is required"),
+                otherwise: (schema) => schema.nullable()
+            }),            
             promotion_date_from: string().when("promotion_status",{
-                is:   true,
+                is:        true,
                 then:      (schema) => schema.matches(/^\d{4}-\d{2}-\d{2}$/,'Promotion date from invalid').required("*Promotion Date From is required"),
                 otherwise: (schema) => schema.nullable()
             }),
             promotion_date_to:   string().when("promotion_status",{
-                is:   true,
+                is:        true,
                 then:      (schema) => schema.matches(/^\d{4}-\d{2}-\d{2}$/,'Promotion date to invalid').required("*Promotion Date To is required"),
                 otherwise: (schema) => schema.nullable()
             }),                                            
             promotion_section:   string().when("promotion_status",{
-                is:   true,
-                then: (schema)      => schema.required("*Promotion Section is required"),
+                is:        true,
+                then:      (schema)      => schema.required("*Promotion Section is required"),
                 otherwise: (schema) => schema.nullable()
             }),
             promotion_status:    boolean().required("*Promotion Status is required")  
@@ -333,13 +357,17 @@ const addExtraFormData = (file: any,xhr: any, formData: any) => {
  * on success.
  */
 const submit = async () => {
-    const section = pageProps.value.placements.find( (item:any) => item.section == $data.active_form.promotion_section )
+    const section = pageProps.value.placements.find( (item:any) => item.section == $data.active_form.promotion_section );
+
     const form    = { 
         ...$data.form, 
         ...$data.active_form,
-        placement_id: section.id, 
         _token: pageProps.value.csrf_token
     };
+
+    if( !isEmpty(section) ){
+        form['placement_id'] = section.id
+    }
 
     useForm(form).post(
         route('landing.mypostings.store'), 
@@ -389,6 +417,9 @@ const select_section = ($event:any) => {
     const section = pageProps.value.placements.find( (item: any) => item.section == value );
     const days    = moment($data.active_form.promotion_date_to).diff(moment($data.active_form.promotion_date_from),'days');
 
+    $data.image_options.thumbnailHeight = section.custom.height;
+    $data.image_options.thumbnailWidth  = section.custom.width;
+
     $data.active_form.promotion_section = value;
     $data.active_form.promotion_amount  = (section.price * days);
 }
@@ -402,6 +433,17 @@ const select_section = ($event:any) => {
 const successFileUpload = (_: any, { name }: any) => {
     // Add the file name to the images array
     $data.active_form.images.push(name);
+}
+
+/**
+ * Called when a file is successfully uploaded.
+ * 
+ * @param {Object} _ - The file object.
+ * @param {Object} { name } - The file name.
+ */
+const successPromotionImageUpload = (_: any, { name }: any) => {
+    // Add the file name to the images array
+    $data.active_form.promotion_image = name;
 }
 
 const nextTab = () => {
@@ -436,6 +478,7 @@ const resetForm = () => {
             quantity:            Number(),
             price:               Number(),
             negotiate:           String('notsure'),
+            promotion_image:     String(),
             promotion_amount:    Number(),
             promotion_status:    Boolean(),
             promotion_section:   String(),

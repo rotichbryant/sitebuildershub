@@ -1,7 +1,7 @@
 <template>
     <LandingLayout>
         <Head title="My Postings" />
-        <div class="container pt-26">
+        <div class="container pt-10">
             <div class="row">
                 <div class="col-12">
                     <div class="mb-18">

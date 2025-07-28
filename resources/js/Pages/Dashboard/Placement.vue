@@ -37,7 +37,7 @@
                             <CTableDataCell>{{ placement.name }}</CTableDataCell>
                             <CTableDataCell>{{ placement.currency_price }}</CTableDataCell>
                             <CTableDataCell><CBadge color="info" class="p-2">{{ placement.section }}</CBadge></CTableDataCell>
-                            <CTableDataCell>{{ placement.postings_count }}</CTableDataCell>
+                            <CTableDataCell>{{ placement.promotions_count }}</CTableDataCell>
                             <CTableDataCell>{{ moment(placement.created_at).format('MMMM Do YYYY') }}</CTableDataCell>
                             <CTableDataCell>
                                 <CDropdown>

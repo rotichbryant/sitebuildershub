@@ -1,176 +1,89 @@
 <template>
     <LandingLayout>
         <Head title="Home" />
-        <!-- Hero Area -->
-        <div class="position-relative bg-squeeze pt-26 dark-mode-texts">
-        <div class="pos-abs-tr h-100">
-            <img src="../../../image/patterns/globe-pattern.png" alt="" class="h-100">
+
+        <div class="col-12 px-0 position-relative">
+            <Swiper 
+                slidesPerView="auto" 
+                :spaceBetween="30" 
+                :modules="$data.modules" 
+                :loop="true" 
+                :pagination="{clickable: true}"
+                :centeredSlides="true"
+                :autoplay="{delay: 2500,disableOnInteraction: false}"  
+                style="z-index: 0;"           
+            >
+                <SwiperSlide v-for="(image,index) in banner_images" :key="index">
+                    <img :src="image.url" :height="image.height" width="100%" >
+                </SwiperSlide>
+            </Swiper>             
+            <!-- Hero Area -->  
         </div>
-        <div class="container position-static">
-            <div class="row position-relative align-items-center position-static">
-            <div class="col-xxl-7 col-xl-8 col-lg-9 pt-lg-23 pb-lg-33 pb-md-28 pb-xs-26 pb-29 pt-md-20" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
-                <div class="row">
-                <div class="col-xxl-8 col-xl-7 col-md-8 col-sm-10">
-                    <h1 class="font-size-11 mb-9 text-black-2">Find what you are looking for.</h1>
-                    <p class="font-size-5">Our list of adverts showcase a wide range of construction products.</p>
-                </div>
-                </div>
-            </div>
-            <!-- Hero Form -->
-            <div class="col-lg-11 col-12 translateY-50 pos-abs-bl" style="z-index: 1;">
-                <form action="/" class="search-form" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
-                <div class="filter-search-form-2 bg-white rounded-sm shadow-7 pr-8 py-7 pl-6">
-                    <div class="filter-inputs">
-                    <div class="form-group position-relative">
-                        <input class="form-control focus-reset pl-13" type="text" id="keyword" placeholder="Type Job title, keywords">
-                        <span class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i class="icon icon-zoom-2 text-primary font-weight-bold"></i></span>
-                    </div>
-                    <!-- .select-city starts -->
-                    <div class="form-group position-relative">
-                        <select name="country" id="country" class="nice-select pl-13 h-100 arrow-3 font-size-4">
-                            <option data-display="City, state, zip code or (Remote)">City</option>
-                            <option value="">United States of America</option>
-                            <option value="">United Arab Emirates</option>
-                            <option value="">Bangladesh</option>
-                            <option value="">Pakistan</option>
-                        </select>
-                        <span class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i class="icon icon-pin-3 text-primary font-weight-bold"></i></span>
-                    </div>
-                    <!-- ./select-city ends -->
-                    </div>
-                    <div class="button-block">
-                    <button class="btn btn-primary line-height-reset h-100 btn-submit w-100 text-uppercase">Search</button>
-                    </div>
-                </div>
-                </form>
-            </div>
-            <!-- End Hero Form -->
-            </div>
-        </div>
-        </div>
-        <!-- Hero Area -->
-        <!-- category Area -->
-        <div class="pb-13 pb-lg-25 bg-gradient-2">
-            <div class="">
-                <div class="container">
-                    <hr class="pt-13 pt-lg-20">
-                    <!-- Section Top -->
-                    <div class="row align-items-center justify-content-center">
-                        <!-- Section Title -->
-                        <div class="col-12 col-xl-6 col-lg-7 col-md-9">
-                            <div class="text-center mb-12 mb-lg-17">
-                                <h2 class="font-size-10 font-weight-bold mb-8">Explore by category</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Section Top -->
-                    <div class="row justify-content-center" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
-                        <!-- Single Category -->
-                        <div class="col-12 col-xl-3 col-lg-4 col-sm-6 col-xs-8" v-for="(category,key) in $props.categories" :key="key">
-                            <a href="#" class="bg-white border border-color-2 rounded-4 pl-5 pt-10 pb-3 px-2 hover-shadow-2 mb-9 d-block w-100 text-center">
-                                <!-- Category Content -->
-                                <div class="col-12">
-                                    <h5 class="font-size-5 font-weight-semibold text-black-2 line-height-1">{{ category.name }}</h5>
-                                    <p class="font-size-4 font-weight-normal text-gray"><span>{{ category.postings_count }}</span> Adverts</p>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- End Single Category -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- category Area -->
-        <!-- ContentOne Area -->
-        <section class="pt-13 pt-lg-30 pb-13 pb-lg-30">
+
+        <div class="col-12 positive-relative px-0">
             <div class="container">
+                <!-- Hero Form -->
+                <div class="col-12 translateY-50 mx-auto" style="z-index: 1;">
+                    <form action="/" class="search-form" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
+                        <div class="filter-search-form-2 bg-white rounded-sm shadow-7 pr-8 py-7 pl-6">
+                            <div class="filter-inputs">
+                                <div class="form-group position-relative">
+                                    <input class="form-control focus-reset pl-13" type="text" id="keyword" placeholder="Type Job title, keywords">
+                                    <span class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i class="icon icon-zoom-2 text-primary font-weight-bold"></i></span>
+                                </div>
+                                <!-- .select-city starts -->
+                                <div class="form-group position-relative">
+                                    <select name="country" id="country" class="nice-select pl-13 h-100 arrow-3 font-size-4">
+                                        <option data-display="City, state, zip code or (Remote)">City</option>
+                                        <option value="">United States of America</option>
+                                        <option value="">United Arab Emirates</option>
+                                        <option value="">Bangladesh</option>
+                                        <option value="">Pakistan</option>
+                                    </select>
+                                    <span class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i class="icon icon-pin-3 text-primary font-weight-bold"></i></span>
+                                </div>
+                                <!-- ./select-city ends -->
+                            </div>
+                            <div class="button-block">
+                                <button class="btn btn-primary line-height-reset h-100 btn-submit w-100 text-uppercase">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- End Hero Form -->       
+            </div>   
+        </div>
+        
+        <div class="col-12 px-0 pt-25">
+            <div class="container">
+                <!-- Section Top -->
                 <div class="row align-items-center justify-content-center">
-                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-11 mb-9 mb-lg-0" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
-                        <!-- content-1 left-content start -->
-                        <div class="position-relative pr-lg-20 pr-xs-15 pr-9 ">
-                        <!-- content img start -->
-                        <img src="../../../image/l2/png/content-2-img1.png" alt="" class="w-100">
-                        <!-- content img end -->
-                        <!-- abs-content start -->
-                        <div class="abs-content pos-abs-br bg-white shadow-2 pl-7 pt-8 pb-1 pr-11 max-width-px-311 rounded mb-15 mb-xs-18 mb-lg-15 mb-xl-18">
-                            <!-- media start -->
-                            <div class="media mb-5">
-                            <!-- check-mark start -->
-                            <span class="check-mark bg-yellow-2 circle-41">
-                                                <i class="fas fa-check text-white  font-size-6"></i>
-                                            </span>
-                            <!-- check-mark end -->
-                            <!-- media body start -->
-                            <div class="media-body pl-5">
-                                <h6 class="mb-0 font-size-3 text-green text-uppercase">Job alert!</h6>
-                                <p class="mb-0 font-size-4 text-black-2">104 new jobs are available in this week!</p>
-                            </div>
-                            <!-- media body start -->
-                            </div>
-                            <!-- media end -->
-                        </div>
-                        <!-- abs-content end -->
-                        </div>
-                        <!-- content-1 left-content end -->
-                    </div>
-                    <div class="col-xl-5 col-lg-6 col-md-8 col-xs-10" data-aos="fade-left" data-aos-duration="800" data-aos-once="true">
-                        <!-- content-1 start -->
-                        <div class="content-1 pl-xl-5 pl-xxl-11 pr-xxl-10">
-                        <!-- content-1 section-title start -->
-                        <h2 class="font-size-9 mb-md-15 mb-13">Help you to get the <br class="d-none d-sm-block">
-                                        best job that fits you</h2>
-                        <!-- content-1 section-title end -->
-                        <!-- media start -->
-                        <div class="media mb-11">
-                            <!-- media icon start -->
-                            <div class="media-icon px-6 py-5 bg-green-opacity-2 rounded-5">
-                            <i class="icon icon-layout-11 text-green"></i>
-                            </div>
-                            <!-- media icon start -->
-                            <!-- media body start -->
-                            <div class="media-body pl-7">
-                            <h5 class="mb-5 h5">#1 Jobs site in UK</h5>
-                            <p class="mb-0 font-size-4 text-default-color">Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative</p>
-                            </div>
-                            <!-- media body start -->
-                        </div>
-                        <!-- media end -->
-                        <!-- media start -->
-                        <div class="media mb-11">
-                            <!-- media icon start -->
-                            <div class="media-icon px-6 py-5 bg-yellow-2-opacity-2 rounded-5">
-                            <i class="fa fa-search text-yellow-2"></i>
-                            </div>
-                            <!-- media icon start -->
-                            <!-- media body start -->
-                            <div class="media-body pl-7">
-                            <h5 class="mb-5 h5">Seamless searching</h5>
-                            <p class="mb-0 font-size-4 text-default-color">Capitalize on low hanging fruit to identify a ballpark value added activity to beta test.</p>
-                            </div>
-                            <!-- media body start -->
-                        </div>
-                        <!-- media end -->
-                        <!-- media start -->
-                        <div class="media">
-                            <!-- media icon start -->
-                            <div class="media-icon px-6 py-5 bg-red-opacity-2 rounded-5">
-                            <i class="fa fa-industry text-red"></i>
-                            </div>
-                            <!-- media icon start -->
-                            <!-- media body start -->
-                            <div class="media-body pl-7">
-                            <h5 class="mb-5 h5">Hired in top companies</h5>
-                            <p class="mb-0 font-size-4 text-default-color">Podcasting operational change management inside of workflows to establish.</p>
-                            </div>
-                            <!-- media body start -->
-                        </div>
-                        <!-- media end -->
+                    <!-- Section Title -->
+                    <div class="col-12 col-xl-6 col-lg-7 col-md-9">
+                        <div class="text-center mb-12 mb-lg-17">
+                            <h2 class="font-size-10 font-weight-bold mb-8">Explore by category</h2>
                         </div>
                     </div>
                 </div>
+                <!-- End Section Top -->
+                <div class="row justify-content-center" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
+                    <!-- Single Category -->
+                    <div class="col-12 col-xl-3 col-lg-4 col-sm-6 col-xs-8" v-for="(category,key) in $props.categories" :key="key">
+                        <a href="#" class="bg-white border border-color-2 rounded-4 pl-5 pt-10 pb-3 px-2 hover-shadow-2 mb-9 d-block w-100 text-center">
+                            <!-- Category Content -->
+                            <div class="col-12">
+                                <h5 class="font-size-5 font-weight-semibold text-black-2 line-height-1">{{ category.name }}</h5>
+                                <p class="font-size-4 font-weight-normal text-gray"><span>{{ category.postings_count }}</span> Adverts</p>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- End Single Category -->
+                </div>
             </div>
-        </section>
-        <!-- ContentOne Area -->
+        </div>
+
+        <!-- Hero Area -->
+
         <!-- featuredJobOne Area -->
         <section class="bg-athens pt-12 pt-lg-24 pb-7 pb-lg-25">
             <div class="container">
@@ -261,17 +174,43 @@
 import { LandingLayout } from '@/Layouts'
 import { Head } from '@inertiajs/vue3';
 import 'vue3-carousel/dist/carousel.css';
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
-import { reactive } from 'vue';
+import { Carousel, Slide } from 'vue3-carousel';
+import { computed, reactive } from 'vue';
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
+// import required modules
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 const $props: any = defineProps({
     categories: Array,
-    postings: Array
+    postings: Array,
+    placements: Array,
 });
 
 const $data: any   = reactive({
     slider: {
         current: 0,
-    }
+    },
+    modules: [Autoplay, Pagination, Navigation],
 });
+
+const banner_images = computed( 
+    () => $props.placements
+                .filter(     (item:any) => item.section == 'top-banner' )
+                .map(        (item:any) => ({ ...item, promotions: item.promotions.map( (promotion:any) => ({ ...promotion, height: item.custom.height, width: item.custom.width  })) }) )
+                .map(        (item:any) => item.promotions )
+                .flat().map( (item:any) => ({ url: item.image, height: item.height, width: item.width }) )
+);
+
+const leader_images = computed( 
+    () => $props.placements
+                .filter(     (item:any) => item.section == 'leader-banner' )
+                .map(        (item:any) => ({ ...item, promotions: item.promotions.map( (promotion:any) => ({ ...promotion, height: item.custom.height, width: item.custom.width })) }) )
+                .map(        (item:any) => item.promotions )
+                .flat().map( (item:any) => ({ url: item.image, height: item.height, width: item.width }) )                
+);
 </script>

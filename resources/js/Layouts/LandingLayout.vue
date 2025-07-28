@@ -1,5 +1,5 @@
 <template>
-  <div class="site-wrapper overflow-hidden bg-light">
+  <div class="site-wrapper overflow-hidden bg-light container-fluid px-0">
       <LandingHeader 
         :modals="$data.modals"
         @update:modals="$data.modals = $event"

@@ -1,6 +1,6 @@
 <template>
   <!-- Header Area -->
-  <header class="site-header site-header--menu-right bg-default py-7 py-lg-0 site-header--absolute site-header--sticky z-index-1">
+  <header class="site-header site-header--menu-right bg-default py-7 py-lg-0" >
     <div class="container">
       <nav class="navbar site-navbar offcanvas-active navbar-expand-lg  px-0 py-0">
         <!-- Brand Logo-->

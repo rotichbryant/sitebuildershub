@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Models\CategoryModel;
+use App\Models\PlacementModel;
 use App\Models\PostingModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,6 +18,7 @@ class PostingController extends Controller
     {
         $postings    = PostingModel::with(['category','subCategory']);
         $categories  = CategoryModel::with(['subCategories'])->get();
+        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['advert'])->filterPromotion()->get();
         $queryParams = $request->query();
         $locations   = config('location');
         $status      = session('status');
@@ -47,7 +49,7 @@ class PostingController extends Controller
             
         }
 
-        return Inertia::render('Landing/Postings',compact('categories','locations','postings','status'));
+        return Inertia::render('Landing/Postings',compact('categories','locations','placements','postings','status'));
     }
 
     /**

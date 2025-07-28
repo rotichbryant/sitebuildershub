@@ -84,6 +84,7 @@ class MyPostingsController extends Controller
                 
                 $promotion = PromotionModel::create([
                     'amount'       => $form['promotion_amount'],
+                    'image'        => $form['promotion_image'],
                     'date_from'    => $form['promotion_date_from'],
                     'date_to'      => $form['promotion_date_to'],
                     'posting_id'   => $posting->id,
@@ -109,7 +110,7 @@ class MyPostingsController extends Controller
      */
     public function show(PostingModel $posting)
     {
-        $posting->load(['category','subCategory']);
+        $posting->load(['category','subCategory','promotions']);
                                
         return Inertia::render('Landing/ViewMyPosting',compact('posting'));
     }

@@ -109,11 +109,14 @@ class TransactionController extends Controller
             return redirect()->route('landing.mypostings');
         }
 
-        $query       = $request->query();
-        $auth        = $pesapal->authenticate();
-        $order       = $pesapal->transactionStatus($query['OrderTrackingId'],$auth->token);     
-        $user        = $promotion->posting->user;
-        $promotion->transaction()->update(Arr::only($order,['status','status_code','reference','confirmation_code','payment_method']));   
+        $query                  = $request->query();
+        $auth                   = $pesapal->authenticate();
+        $order                  = $pesapal->transactionStatus($query['OrderTrackingId'],$auth->token);     
+        $user                   = $promotion->posting->user;
+        $update_data            = Arr::only($order,['status','status_code','reference','confirmation_code','payment_method']);    
+        $update_data['paid_at'] = $order['created_date'];
+
+        $promotion->transaction()->update($update_data);   
         $transaction = $promotion->transaction;
 
         return Inertia::render('Landing/PaymentSuccess',compact('transaction','user'));

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Models\PlacementModel;
 use App\Models\PostingModel;
+use App\Models\PromotionModel;
 use App\Models\SubCategoryModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -15,11 +18,14 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
-        $postings   = PostingModel::with(['category','subCategory'])->orderBy('created_at','desc')->take(10)->get();
-        $session    = session('status');
+        $categories  = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
+        $postings    = PostingModel::with(['category','subCategory'])->orderBy('created_at','desc')->take(10)->get();
+        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['leader-banner','top-banner'])->filterPromotion()->get();
 
-        return Inertia::render('Landing/Home',compact('categories','postings','session'));
+        // $poromotions = PromotionModel::active()->whereBetween()
+        $session     = session('status');
+
+        return Inertia::render('Landing/Home',compact('categories','postings','session','placements'));
     }
 
     /**

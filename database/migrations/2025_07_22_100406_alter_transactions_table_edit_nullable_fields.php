@@ -20,7 +20,9 @@ return new class extends Migration
             $table->integer('status_code')->nullable()->default(null)->change();
             $table->string('reference')->nullable()->default(null)->change();
             $table->string('currency')->nullable()->default('KES')->after('confirmation_code');
-            $table->date('paid_at')->nullable()->default(null)->after('currency');            
+            $table->datetime('paid_at')->nullable()->default(null)->after('currency');     
+            $table->uuid('user_id')->nullable()->default(null);
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');           
         });
     }
 
@@ -39,6 +41,8 @@ return new class extends Migration
             $table->string('reference')->change();
             $table->dropColumn('currency');        
             $table->dropColumn('paid_at');             
+            $table->dropForeign('user_id');
+            $table->dropColumn('user_id');            
         });
     }
 };

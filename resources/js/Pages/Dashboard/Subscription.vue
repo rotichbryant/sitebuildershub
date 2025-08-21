@@ -1,6 +1,6 @@
 <template>
 <AuthenticatedLayout>
-    <Head title="Transactions" />
+    <Head title="Subscriptions" />
     <CRow>
         <CCol xs="12">
         <CCard class="mb-4">

@@ -50,7 +50,7 @@
                                     label="Height"
                                     placeholder="Enter height"
                                     type="number"
-                                    min="480"
+                                    min="240"
                                     :invalid="has($data.errors,'custom.height') ? true : false"
                                 />
                                 <p v-show="has($data.errors,'custom.height')" class="text-danger">{{ $data.errors['custom.height'] }}</p>              
@@ -62,7 +62,7 @@
                                     label="Width"
                                     placeholder="Enter width"
                                     type="number"
-                                    min="640"
+                                    min="480"
                                     :invalid="has($data.errors,'custom.width') ? true : false"
                                 />
                                 <p v-show="has($data.errors,'custom.width')" class="text-danger">{{ $data.errors['custom.width'] }}</p>              
@@ -143,8 +143,8 @@ const $emit = defineEmits(['update:show','fetch']);
 const formSchema: any = computed( 
     () => object().shape({
         custom:  object().shape({
-            height: number().typeError('Amount must be a number').min(480,"Minimum height is 480").required("*Height is required"),
-            width:  number().typeError('Amount must be a number').min(640,"Minimum width is 640").required("*Width is required")
+            height: number().typeError('Amount must be a number').min(240,"Minimum height is 240").required("*Height is required"),
+            width:  number().typeError('Amount must be a number').min(480,"Minimum width is 480").required("*Width is required")
         }),        
         name:    string().required("*Name is required"),
         price:   number().required("*Price is required"),

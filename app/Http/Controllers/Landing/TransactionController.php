@@ -66,6 +66,7 @@ class TransactionController extends Controller
 
             $transaction->sourceable()->associate($promotion->placement);
             $transaction->targetable()->associate($promotion);
+            $transaction->user()->associate($user);
             $transaction->save();
 
             return back()->with('data',compact('order'));

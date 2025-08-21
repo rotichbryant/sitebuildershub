@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="{{ asset('/assets/plugins/slick/slick.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/assets/plugins/ui-range-slider/jquery-ui.css') }}">
         <link rel="stylesheet" href="{{ asset('/assets/css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('/assets/css/custom.css') }}">
         @endif
         <!-- Scripts -->
         @routes

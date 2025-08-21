@@ -25,12 +25,12 @@ class UpdatePlacementRequest extends FormRequest
             'custom.height' => [
                 'required',
                 'integer',
-                'min:480'
+                'min:240'
             ],      
             'custom.width' => [
                 'required',
                 'integer',
-                'min:640'
+                'min:480'
             ],                         
             'name' => [
                 'required',

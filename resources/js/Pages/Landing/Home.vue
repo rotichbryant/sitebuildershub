@@ -23,8 +23,8 @@
         <div class="col-12 positive-relative px-0">
             <div class="container">
                 <!-- Hero Form -->
-                <div class="col-12 translateY-50 mx-auto" style="z-index: 1;">
-                    <form action="/" class="search-form" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
+                <div class="col-12 translateY-50 mx-auto" >
+                    <form action="/" class="search-form">
                         <div class="filter-search-form-2 bg-white rounded-sm shadow-7 pr-8 py-7 pl-6">
                             <div class="filter-inputs">
                                 <div class="form-group position-relative">
@@ -54,7 +54,7 @@
             </div>   
         </div>
         
-        <div class="col-12 px-0 pt-25">
+        <div class="col-12 px-0 pt-25" >
             <div class="container">
                 <!-- Section Top -->
                 <div class="row align-items-center justify-content-center">
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <!-- End Section Top -->
-                <div class="row justify-content-center" data-aos="fade-right" data-aos-duration="800" data-aos-once="true">
+                <div class="row justify-content-center">
                     <!-- Single Category -->
                     <div class="col-12 col-xl-3 col-lg-4 col-sm-6 col-xs-8" v-for="(category,key) in $props.categories" :key="key">
                         <a href="#" class="bg-white border border-color-2 rounded-4 pl-5 pt-10 pb-3 px-2 hover-shadow-2 mb-9 d-block w-100 text-center">

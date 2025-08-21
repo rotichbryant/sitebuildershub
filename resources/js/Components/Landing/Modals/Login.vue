@@ -19,42 +19,10 @@
                 <p class="mb-0 font-size-4 text-white">Log in to continue your account
                   and explore new jobs.</p>
               </div>
-              <!-- <div class="border-top border-default-color-2 mt-auto">
-                <div class="d-flex mx-n9 pt-6 flex-xs-row flex-column">
-                  <div class="pt-5 px-9">
-                    <h3 class="font-size-7 text-white">
-                      295
-                    </h3>
-                    <p class="font-size-3 text-white gr-opacity-5 line-height-1p4">New jobs
-                      posted today</p>
-                  </div>
-                  <div class="pt-5 px-9">
-                    <h3 class="font-size-7 text-white">
-                      14
-                    </h3>
-                    <p class="font-size-3 text-white gr-opacity-5 line-height-1p4">New companies
-                      registered</p>
-                  </div>
-                </div>
-              </div> -->
             </div>
           </div>
           <div class="col-lg-7 col-md-6">
             <div class="bg-white-2 h-100 px-11 pt-11 pb-7">
-              <!-- <div class="row">
-                <div class="col-4 col-xs-12">
-                  <a href="" class="font-size-4 font-weight-semibold position-relative text-white bg-allports h-px-48 flex-all-center w-100 px-6 rounded-5 mb-4"><i class="fab fa-linkedin pos-xs-abs-cl font-size-7 ml-xs-4"></i> <span class="d-none d-xs-block">Log in with LinkedIn</span></a>
-                </div>
-                <div class="col-4 col-xs-12">
-                  <a href="" class="font-size-4 font-weight-semibold position-relative text-white bg-poppy h-px-48 flex-all-center w-100 px-6 rounded-5 mb-4"><i class="fab fa-google pos-xs-abs-cl font-size-7 ml-xs-4"></i> <span class="d-none d-xs-block">Log in with Google</span></a>
-                </div>
-                <div class="col-4 col-xs-12">
-                  <a href="" class="font-size-4 font-weight-semibold position-relative text-white bg-marino h-px-48 flex-all-center w-100 px-6 rounded-5 mb-4"><i class="fab fa-facebook-square pos-xs-abs-cl font-size-7 ml-xs-4"></i> <span class="d-none d-xs-block">Log in with Facebook</span></a>
-                </div>
-              </div>
-              <div class="or-devider">
-                <span class="font-size-3 line-height-reset ">Or</span>
-              </div> -->
               <form @submit.prevent="submit">
                 <div class="form-group">
                   <label for="login-email" class="font-size-4 text-black-2 font-weight-semibold line-height-reset">E-mail</label>
@@ -151,7 +119,7 @@ const pageProps: any = computed( () => usePage().props );
             toast.success(value.props.flash.message);
           }
           resetForm();
-          // modals.value.login = false;
+          modals.value.login = false;
         },
       }
     );
@@ -169,6 +137,7 @@ const resetForm = () => {
 
   // Clear the error state
   $data.errors = cloneDeep({});
+  jQuery.value('.modal-backdrop').hide()
 }
 
 watch(
@@ -182,7 +151,6 @@ watch(
 watch(
   () => $props.modals!.login,
   (show: boolean) => {
-    console.log(show)
     jQuery.value('#login').modal( show ? { backdrop: 'static', keyboard: false, show, focus: true } : 'hide');
     if( !show ) resetForm();
   },

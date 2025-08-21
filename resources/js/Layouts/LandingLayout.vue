@@ -1,9 +1,14 @@
 <template>
-  <div class="site-wrapper overflow-hidden bg-light container-fluid px-0">
+  <div class="site-wrapper bg-light container-fluid px-0">
+
       <LandingHeader 
         :modals="$data.modals"
         @update:modals="$data.modals = $event"
-      />
+      >
+        <template #breadcrumb>
+          <slot name="breadcrumb"></slot>
+        </template>
+      </LandingHeader>
       <slot />
       <LandingFooter />
       <Login

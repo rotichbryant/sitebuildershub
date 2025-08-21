@@ -1,8 +1,15 @@
 <template>
     <LandingLayout>
         <Head title="View Posting" />
+        <template #breadcrumb>
+            <ul class="crumb">
+                <li><h4>Home</h4></li>
+                <li><h4><a :href="route('landing.mypostings')">My Postings</a></h4></li>
+                <li><h4><a :href="route('landing.mypostings.show',{ posting: posting.id })">{{ posting.title }}</a></h4></li>
+            </ul>
+        </template>
         <!-- Main Content Start -->
-        <div class="bg-default-2">
+        <div class="bg-default-2 py-10">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-md-10 mx-auto">

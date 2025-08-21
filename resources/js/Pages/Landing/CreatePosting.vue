@@ -1,7 +1,13 @@
 <template>
     <LandingLayout>
         <Head title="Create Posting" />
-        <div class="container pt-26">
+        <template #breadcrumb>
+            <ul class="crumb">
+                <li><h4><a :href="route('landing.home')">Home</a></h4></li>
+                <li><h4><a :href="route('landing.mypostings.create')">Create Posting</a></h4></li>
+            </ul>
+        </template>          
+        <div class="container py-10">
             <div class="row justify-content-center">
                 <div class="col-xxl-8 col-xl-9 col-lg-10">
                     <h2 class="font-size-7 text-center">Post Advert</h2>
@@ -245,6 +251,8 @@ const $data: any  = reactive({
         method:          'post',
         thumbnailHeight: 480,
         thumbnailWidth:  640,
+        resizeWidth:     640,
+        resizeHeight:    480,
         maxFilesize:     10.0,
     },
     errors: {},
@@ -418,7 +426,9 @@ const select_section = ($event:any) => {
     const days    = moment($data.active_form.promotion_date_to).diff(moment($data.active_form.promotion_date_from),'days');
 
     $data.image_options.thumbnailHeight = section.custom.height;
+    $data.image_options.resizeHeight    = section.custom.height;
     $data.image_options.thumbnailWidth  = section.custom.width;
+    $data.image_options.resizeWidth     = section.custom.width;
 
     $data.active_form.promotion_section = value;
     $data.active_form.promotion_amount  = (section.price * days);

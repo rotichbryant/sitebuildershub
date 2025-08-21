@@ -1,6 +1,12 @@
 <template>
     <LandingLayout>
         <Head title="Postings" />
+        <template #breadcrumb>
+            <ul class="crumb">
+                <li><h4><a :href="route('landing.home')">Home</a></h4></li>
+                <li><h4><a :href="route('landing.postings')">Postings</a></h4></li>
+            </ul>
+        </template>          
         <!-- Main Content Start -->
         <div class="bg-default-1 pt-10">
         <div class="container-fluid">

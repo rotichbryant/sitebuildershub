@@ -1,7 +1,13 @@
 <template>
     <LandingLayout>
         <Head title="My Postings" />
-        <div class="container pt-10">
+        <template #breadcrumb>
+            <ul class="crumb">
+                <li><h4><a :href="route('landing.home')">Home</a></h4></li>
+                <li><h4><a :href="route('landing.mypostings')">My Postings</a></h4></li>
+            </ul>
+        </template>        
+        <div class="container py-10">
             <div class="row">
                 <div class="col-12">
                     <div class="mb-18">

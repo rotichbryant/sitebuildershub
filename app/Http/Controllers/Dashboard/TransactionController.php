@@ -14,12 +14,13 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = TransactionModel::paginate(10);
+        $transactions = TransactionModel::with(['targetable','sourceable','user'])->orderBy('created_at', 'desc')->paginate(10);
+
+        // Retrieve the status message from the session
+        $status = session('status');
 
         // Render the view and pass the data
-        return Inertia::render('Dashboard/Transaction', [
-            'transactions' => $transactions,
-        ]);
+        return Inertia::render('Dashboard/Transactions', compact('status','transactions'));
     }
 
     /**

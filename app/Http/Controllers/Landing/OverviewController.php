@@ -14,7 +14,7 @@ class OverviewController extends Controller
     public function index()
     {
         //
-        $user = auth('landing')->user();
+        $user = auth('client')->user();
 
         $stats = [
             'postings' => $user->postings()->count(),

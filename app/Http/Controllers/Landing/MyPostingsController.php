@@ -25,7 +25,7 @@ class MyPostingsController extends Controller
     public function index()
     {
         //
-        $user     = auth('landing')->user();
+        $user     = auth('client')->user();
         $postings = $user->postings()->with(['category','subCategory'])->paginate(10);
         $status   = session('status');
 
@@ -76,7 +76,7 @@ class MyPostingsController extends Controller
             $form['county']          = explode('-', $form['location'])[0];
             $form['town']            = explode('-', $form['location'])[1];
 
-            $form['user_id']         = auth('landing')->user()->id;
+            $form['user_id']         = auth('client')->user()->id;
 
             $posting                 = PostingModel::create($form);        
             

@@ -34,7 +34,7 @@ class ProfileController extends Controller
             'locations' => config('location'),
         ];
 
-        $user           = auth('landing')->user();
+        $user           = auth('client')->user();
 
         switch($tab){
             case 'personal':
@@ -66,7 +66,7 @@ class ProfileController extends Controller
         //
         $validated = $request->validated();
 
-        $user = auth('landing')->user();
+        $user = auth('client')->user();
 
         if( empty($user->business_profile) ){
             BusinessProfileModel::create(
@@ -94,7 +94,7 @@ class ProfileController extends Controller
         //
         $validated = $request->validated();
 
-        $user = auth('landing')->user();
+        $user = auth('client')->user();
 
         $validated['coords']              = json_encode($validated['coords']);
         $validated['open_from']           = json_encode($validated['open_from']);

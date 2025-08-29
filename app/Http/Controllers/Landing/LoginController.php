@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LandingLoginRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Dotenv\Util\Str;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -11,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class LoginController extends Controller
@@ -20,18 +22,18 @@ class LoginController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Dashboard/Login', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
+        return Inertia::render('Landing/Login', [
+            // 'canResetPassword' => Route::has('password.request'),
+            'status'           => session('status'),
         ]);
     }
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LandingLoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate('client');
 
         $request->session()->regenerate();
 
@@ -67,7 +69,7 @@ class LoginController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('landing')->logout();
+        Auth::guard('client')->logout();
 
         $request->session()->invalidate();
 

@@ -15,7 +15,8 @@ class AdminRedirectIfAuth
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next, $guard = 'admin'): Response
-    {
+    {        
+
         if (!Auth::guard($guard)->check()) {
             return redirect('/dashboard/login');
         }

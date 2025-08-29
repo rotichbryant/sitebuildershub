@@ -14,8 +14,8 @@ class LandingOptionalAuth
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $guard = 'landing'): Response
-    {
+    public function handle(Request $request, Closure $next, $guard = 'client'): Response
+    {   
         if( Auth::guard($guard)->check() ){
             $request->setUserResolver(function () use ($guard) {
                 return Auth::guard($guard)->user();

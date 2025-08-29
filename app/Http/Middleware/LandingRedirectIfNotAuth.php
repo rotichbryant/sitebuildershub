@@ -14,10 +14,10 @@ class LandingRedirectIfNotAuth
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,$guard = 'landing'): Response
+    public function handle(Request $request, Closure $next,$guard = 'client'): Response
     {
         if (!Auth::guard($guard)->check()) {
-            return redirect('/');
+            return redirect(route('landing.login.view', absolute: false));
         }
 
         return $next($request);

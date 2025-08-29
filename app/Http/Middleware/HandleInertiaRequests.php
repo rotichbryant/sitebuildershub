@@ -31,9 +31,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-
+        
         $request->setUserResolver(function () use($request){
-            return Auth::guard(Str::contains($request->url(), 'dashboard') ? 'admin' : 'landing')->user();
+            return Auth::guard(Str::contains($request->url(), 'dashboard') ? 'admin' : 'client')->user();
         });
 
         return [

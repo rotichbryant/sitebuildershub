@@ -112,9 +112,10 @@ const pageProps: any = computed( () => usePage().props );
  */
  const submit = () => {
     form.post(
-      route('landing.login'), 
+      route('landing.login.store'), 
       {
         onSuccess: (value: any) => {
+          console.log(value);
           if( !isEmpty(value.props.flash.message) ){
             toast.success(value.props.flash.message);
           }

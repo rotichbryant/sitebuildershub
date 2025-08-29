@@ -92,7 +92,7 @@ const form = useForm({
  * on success.
  */
 const submit = () => {
-    form.post(route('dashboard.login'), {
+    form.post(route('dashboard.login.store'), {
         onError: (value:any) => {
             console.log(value)
         },

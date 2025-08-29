@@ -36,8 +36,8 @@
           </div>
           <div class="header-btns header-btn-devider ml-auto pr-2 ml-lg-6 d-none d-xs-flex" v-if="isEmpty(auth_user)">
             <a class="btn btn-transparent text-uppercase font-size-3 heading-default-color focus-reset" href="#" @click="modals.login = true">
-              Log in
-            </a>
+              Sign In
+            </a>            
             <a class="btn btn-primary text-uppercase font-size-3" href="#" @click="modals.signup = true">
               Sign up
             </a>
@@ -122,13 +122,13 @@ const modals = computed({
 });
 
 const fetch = () => {
-  try {
+  // try {
     
-    const { data } = router.post(route('landing.logout'));
+  //   const { data } = router.post(route('landing.logout'));
 
-  } catch(error) {
-    console.log('Error fetching data:', error);
-  }
+  // } catch(error) {
+  //   console.log('Error fetching data:', error);
+  // }
 }
 
 onMounted(fetch)

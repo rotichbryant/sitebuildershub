@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard'     => env('AUTH_GUARD', 'landing'),
+        'guard'     => env('AUTH_GUARD', 'client'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -36,7 +36,7 @@ return [
     */
 
     'guards' => [
-        'landing' => [
+        'client' => [
             'driver' => 'session',
             'provider' => 'users',
         ],

@@ -32,13 +32,18 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::name('landing.')->group(function () {
-    Route::get('/',                        [HomeController::class, 'index'])->name('home');
-    Route::get('/postings/view',           [LandingPostingController::class, 'show'])->name('postings.view');
-    Route::get('/postings',                [LandingPostingController::class, 'index'])->name('postings');
-    Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
-    Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
-    Route::get('/places',                  [GoogleMapsController::class, 'create'])->name('maps.places');
+    
+    Route::middleware('landing.auth.optional')->group(function () {
 
+        Route::get('/',                        [HomeController::class, 'index'])->name('home');
+        Route::get('/postings/view',           [LandingPostingController::class, 'show'])->name('postings.view');
+        Route::get('/postings',                [LandingPostingController::class, 'index'])->name('postings');
+        Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
+        Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
+        Route::get('/places',                  [GoogleMapsController::class, 'create'])->name('maps.places');
+
+    });
+    
     Route::middleware('landing.auth')->group(function () {
         Route::get('/overview',                [LandingOverviewController::class, 'index'])->name('overview');
 

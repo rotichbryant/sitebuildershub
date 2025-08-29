@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.guest')->group(function () {
         Route::get('/login',                 [DashboardLoginController::class, 'index'])->name('login');
-        Route::post('/login',                [DashboardLoginController::class, 'store'])->name('store');
+        Route::post('/login',                [DashboardLoginController::class, 'store'])->name('login.store');
     });
     Route::middleware('admin.auth')->group(function () {
         Route::post('/logout',      [DashboardLoginController::class, 'destroy'])->name('logout');
@@ -42,7 +42,8 @@ Route::name('dashboard.')->prefix('dashboard')->group(function () {
 Route::name('landing.')->group(function () {
     Route::middleware('landing.guest')->group(function () {
         Route::get('/verification/{token}', [SignupController::class, 'create'])->name('verification');
-        Route::post('/login',               [LandingLoginController::class, 'store'])->name('login');
+        Route::get('/login',                [LandingLoginController::class, 'index'])->name('login.view');
+        Route::post('/login',               [LandingLoginController::class, 'store'])->name('login.store');
         Route::post('/signup',              [SignupController::class, 'store'])->name('signup');
     });
     Route::middleware('landing.auth')->group(function () {

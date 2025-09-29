@@ -48,7 +48,6 @@ class PostingModel extends Model
     protected $casts = [
         'images'     => 'array',
         'created_at' => 'datetime:M d, Y',
-        // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
     ];    
 
     protected $with = [
@@ -74,27 +73,16 @@ class PostingModel extends Model
 
     /**
      * Get the sub-categories for the category.
+     *
+     * This relationship is defined by the `category_id` foreign key on the `posting_categories` table,
+     * which references the `id` column on the `categories` table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostingCategoryModel>
      */
-    public function category(): BelongsTo
+    public function categories(): HasMany
     {
-        return $this->belongsTo(CategoryModel::class, 'category_id');
-    }
-
-    /**
-     * Get the sub-categories for the category.
-     */
-    public function subCategory(): BelongsTo
-    {
-        return $this->belongsTo(SubCategoryModel::class, 'sub_category_id');
-    } 
-
-    /**
-     * Get the sub-categories for the category.
-     */
-    public function childSubCategory(): BelongsTo
-    {
-        return $this->belongsTo(ChildSubCategoryModel::class, 'child_sub_category_id');
-    }    
+        return $this->hasMany(PostingCategoryModel::class,'posting_id');
+    }  
     
     /**
      * Get the promotions associated with the posting.
@@ -111,12 +99,37 @@ class PostingModel extends Model
     
     /**
      * Get the user that owns the posting.
+     *
+     * This relationship is defined by the `user_id` foreign key on the `postings` table,
+     * which references the `id` column on the `users` table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\User>
+     */
+    /**
+     * @inheritDoc
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
-    }     
+    }
     
+    /**
+     * Get the views associated with the posting.
+     *
+     * This relationship is defined by the `posting_id` foreign key on the `posting_views` table,
+     * which references the `id` column on the `postings` table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostingViewModel>
+     */
+    public function views(): HasMany
+    {
+        /**
+         * Get the views associated with the posting.
+         *
+         * @return \Illuminate\Database\Eloquent\Collection
+         */
+        return $this->hasMany(PostingViewModel::class,'posting_id');
+    }
 
     /**
      * Scope a query to filter the postings by a price range.
@@ -141,9 +154,9 @@ class PostingModel extends Model
      * @param  string  $name
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeName($query, $name)
+    public function scopeTitle($query, $name)
     {
-        return $query->where('name', 'like', "%$name%");
+        return $query->where('title', 'like', "%$name%");
     }
 
     /**
@@ -153,11 +166,15 @@ class PostingModel extends Model
      * @param  array  $sub_categories
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSubCategories($query, array $sub_categories)
+    public function scopeCategories($query, array $categories)
     {
-        return $query->whereHas('subCategory', function ($query) use ($sub_categories) {
-            $query->whereIn('name', $sub_categories);
-        });
+        return $query->whereHas(
+            'categories', 
+            fn($query): object => $query->whereHas(
+                'sub_category',
+                fn($sub_query): object => $sub_query->whereIn('name', $categories)
+            )
+        );
     }
 
     /**

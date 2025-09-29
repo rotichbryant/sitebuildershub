@@ -8,12 +8,14 @@ use App\Http\Requests\Landing\CreatePromotionPostingRequest;
 use App\Http\Requests\Landing\PostingFileUploadRequest;
 use App\Models\CategoryModel;
 use App\Models\PlacementModel;
+use App\Models\PostingCategoryModel;
 use App\Models\PostingModel;
 use App\Models\PromotionModel;
 use App\Models\SubCategoryModel;
 use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -26,7 +28,7 @@ class MyPostingsController extends Controller
     {
         //
         $user     = auth('client')->user();
-        $postings = $user->postings()->with(['category','subCategory'])->paginate(10);
+        $postings = $user->postings()->paginate(10);
         $status   = session('status');
 
         return Inertia::render('Landing/MyPostings',compact('postings','status'));
@@ -69,9 +71,14 @@ class MyPostingsController extends Controller
         
         try {
             $form = $request->validated();
-
-            $form['category_id']     = explode('/', $form['category'])[0];
-            $form['sub_category_id'] = explode('/', $form['category'])[1];
+            
+            if( !empty($form['promotion_image']) ){
+                $base64String = explode(',',$form['promotion_image']);
+                $ext          = explode('/', explode(';',$base64String[0])[0])[1];
+                $name         = Str::uuid().'.'.$ext;
+                $file         = Storage::disk('public')->put('images/'.$name, base64_decode($base64String[1]));
+                $form['promotion_image'] = $name;
+            }
 
             $form['county']          = explode('-', $form['location'])[0];
             $form['town']            = explode('-', $form['location'])[1];
@@ -79,7 +86,21 @@ class MyPostingsController extends Controller
             $form['user_id']         = auth('client')->user()->id;
 
             $posting                 = PostingModel::create($form);        
-            
+    
+
+            PostingCategoryModel::insert(
+                collect($form['categories'])->map( 
+                    fn($value): array => [
+                        'id'              => Str::uuid(),
+                        'posting_id'      => $posting->id,
+                        'category_id'     => $value['category_id'], 
+                        'sub_category_id' => $value['id'],
+                        'created_at'      => now(),
+                        'updated_at'      => now()
+                    ] 
+                )->toArray()
+            );
+
             if( $form['promotion_status'] ){
                 
                 $promotion = PromotionModel::create([
@@ -110,7 +131,7 @@ class MyPostingsController extends Controller
      */
     public function show(PostingModel $posting)
     {
-        $posting->load(['category','subCategory','promotions']);
+        $posting->load(['categories','promotions']);
                                
         return Inertia::render('Landing/ViewMyPosting',compact('posting'));
     }

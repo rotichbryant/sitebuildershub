@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Landing;
 use App\Http\Controllers\Controller;
 use App\Models\PlacementModel;
 use App\Models\PostingModel;
+use App\Models\PostingViewModel;
 use App\Models\PromotionModel;
 use App\Models\SubCategoryModel;
 use Carbon\Carbon;
@@ -19,8 +20,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $categories  = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
-        $postings    = PostingModel::with(['category','subCategory'])->orderBy('created_at','desc')->take(10)->get();
-        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['leader-banner','top-banner'])->filterPromotion()->get();
+        $postings    = PostingViewModel::with(['posting'])->whereDate('created_at',now()->format('Y-m-d'))->orderBy('views','desc')->get()->map( fn($visited): object => $visited->posting );
+        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['top-banner'])->filterPromotion()->get();
 
         // $poromotions = PromotionModel::active()->whereBetween()
         $session     = session('status');
@@ -34,6 +35,11 @@ class HomeController extends Controller
     public function create()
     {
         //
+
+        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['leader-banner'])->filterPromotion()->get();
+
+        return response()->json(compact('placements'),200);
+
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -64,9 +65,11 @@ class PesaPalService {
     public function order(array $data, string $auth)
     {
         try {
-
-            return $this->client
-                        ->withHeaders(['Authorization' => "Bearer {$auth}"])
+            return Http::baseUrl(config("services.pesapal.base_url.".config('services.pesapal.configuration.status')))
+                        ->withHeaders([
+                            'Accept'       => 'application/json',
+                            'Content-Type' => 'application/json',
+                            'Authorization' => "Bearer {$auth}"])
                         ->post(
                             config('services.pesapal.endpoints.orderRequest'),
                             Arr::only($data, [
@@ -80,9 +83,12 @@ class PesaPalService {
                             ])
                         )
                         ->throw()
-                        ->json();                ;
+                        ->json();            
 
         } catch (HttpException $error) {
+            Log::error('PesaPal Order Error: ' . $error->getMessage());
+            throw $error;
+        } catch(RequestException $error){
             Log::error('PesaPal Order Error: ' . $error->getMessage());
             throw $error;
         }

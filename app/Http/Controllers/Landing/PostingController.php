@@ -16,7 +16,7 @@ class PostingController extends Controller
      */
     public function index(Request $request)
     {
-        $postings    = PostingModel::with(['category','subCategory']);
+        $postings    = PostingModel::with(['categories']);
         $categories  = CategoryModel::with(['subCategories'])->get();
         $placements  = PlacementModel::with(['promotions'])->whereIn('section',['advert'])->filterPromotion()->get();
         $queryParams = $request->query();
@@ -30,7 +30,7 @@ class PostingController extends Controller
         if( !empty($queryParams) ){
 
             if( !empty($queryParams['categories']) ){
-                $postings = $postings->subCategories(explode(',',$queryParams['categories']));
+                $postings = $postings->categories(explode(',',$queryParams['categories']));
             }
             
             if( !empty($queryParams['cities']) ){
@@ -42,7 +42,7 @@ class PostingController extends Controller
             }
 
             if( !empty($queryParams['name']) ){
-                $postings = $postings->name($queryParams['name']);
+                $postings = $postings->title($queryParams['name']);
             }
             
             $postings   = $postings->orderBy('created_at', 'desc')->paginate(10);
@@ -73,19 +73,18 @@ class PostingController extends Controller
      */
     public function show(Request $request)
     {
-        $title        = $request->query('title');
-        $category     = $request->query('category');
-        $sub_category = $request->query('sub_category');
+        $title   = $request->query('title');
+        $posting = PostingModel::with(['categories'])->where('title', $title)->first();
+        $visited = $posting->views()->whereDate('created_at', '=',now()->format('Y-m-d'))->first();
+        $count   = empty($visited) ? 1 : ++$visited->views;
 
-        $posting = PostingModel::with(['category','subCategory'])
-                                ->where('title', $title)
-                                ->whereHas('category',function($query) use($category){
-                                    return $query->where('name', $category);
-                                })
-                                ->whereHas('subCategory',function($query) use($sub_category){
-                                    return $query->where('name', $sub_category);
-                                })                                
-                                ->first();
+        if( empty($visited) ){
+            $posting->views()->create([ 'views' =>  $count ]);
+        }
+
+        if( !empty($visited) ){
+            $visited->update([ 'views' => $count ]);
+        }        
                                 
         return Inertia::render('Landing/ViewPosting',compact('posting'));
     }

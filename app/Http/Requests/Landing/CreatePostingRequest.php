@@ -23,8 +23,8 @@ class CreatePostingRequest extends FormRequest
     {
         return [
             //
-            'category' => [
-                'string',
+            'categories' => [
+                'array',
                 'required'
             ],
             'description' => [

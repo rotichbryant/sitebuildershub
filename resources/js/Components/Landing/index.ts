@@ -7,3 +7,7 @@ export { default as LandingFooter } from './Footer.vue';
 // Tabs
 export { default as BusinessDetailsTab } from './Tabs/BusinessDetails.vue';
 export { default as PersonalDetailsTab } from './Tabs/PersonalDetails.vue';
+
+
+// Components
+export { default as TrendingPosting } from './TrendingPosting.vue';

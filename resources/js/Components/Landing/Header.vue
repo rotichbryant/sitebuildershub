@@ -80,21 +80,40 @@
         </nav>
       </div>
     </header>
-    <div class="bg-default p-15" v-if="component != 'Landing/Home'">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <slot name="breadcrumb"></slot>
-          </div>
-        </div>
-      </div>
+    <div class="bg-default" v-if="!isEmpty($data.placements) && component != 'Landing/Home'">
+      <Swiper 
+          slidesPerView="auto" 
+          :spaceBetween="30" 
+          :modules="$data.modules" 
+          :loop="true" 
+          :pagination="{clickable: false}"
+          :centeredSlides="true"
+          :autoplay="{delay: 0,disableOnInteraction: true}"                
+      >
+          <SwiperSlide v-for="(image,index) in advert_images" :key="index">
+              <img :src="image.url" :height="image.height" width="100%" />
+          </SwiperSlide>
+      </Swiper>     
     </div>
   </div>
 </template>
+<style>
+.swiper {
+  z-index: 0;
+}
+</style>
 <script setup>
 import { isEmpty } from 'lodash'
 import { router, usePage } from '@inertiajs/vue3'
-import { computed, onMounted } from 'vue';
+import { reactive, computed, onMounted } from 'vue';
+import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+// import required modules
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 const logout    = async () => router.post(route('landing.logout'));
 
@@ -104,6 +123,18 @@ const logout    = async () => router.post(route('landing.logout'));
  * @return {Object} - The authenticated user object.
  */
 const auth_user = computed( () => usePage().props.auth.user )
+
+const advert_images = computed( 
+    () => $data.placements
+                .map(        (item) => ({ ...item, promotions: item.promotions.map( (promotion) => ({ ...promotion, height: item.custom.height, width: item.custom.width  })) }) )
+                .map(        (item) => item.promotions )
+                .flat().map( (item) => ({ url: item.image, height: item.height, width: item.width }) )
+);
+
+const $data  = reactive({
+  modules: [Autoplay, Pagination, Navigation],
+  placements: []
+});
 
 const $props = defineProps({
     modals: {
@@ -121,14 +152,22 @@ const modals = computed({
     set: (value) => $emit('update:modals', value),
 });
 
-const fetch = () => {
-  // try {
-    
-  //   const { data } = router.post(route('landing.logout'));
-
-  // } catch(error) {
-  //   console.log('Error fetching data:', error);
-  // }
+/**
+ * Fetch the header data from the server.
+ * 
+ * @return {Promise<void>} - A promise that resolves when the data has been fetched.
+ */
+const fetch = async () => {
+  if(component.value === 'Landing/Home') return;
+  try {
+    // Fetch the header data from the server.
+    const { data:{ placements } } = await axios.get(route('landing.header'));
+    // Set the placements data on the component.
+    $data.placements = placements;
+  } catch (error) {
+    // Log the error to the console.
+    console.error('Error fetching data:', error);
+  }
 }
 
 onMounted(fetch)

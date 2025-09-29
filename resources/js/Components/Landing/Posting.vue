@@ -1,36 +1,25 @@
 <template>
-    <div class="col-lg-4 col-md-6">
-        <a :href="route('landing.postings.view', { 
-            title:        decodeURIComponent(posting.title), 
-            category:     decodeURIComponent(posting.category.name), 
-            sub_category: decodeURIComponent(posting.sub_category.name) 
-        })">
+    <div class="col-lg-4 col-md-6" data-aos="fade-up" :data-aos-duration="props.delay" data-aos-once="true">
+        <a :href="route('landing.postings.view', { title: decodeURIComponent(posting.title) })">
             <!-- Start Feature One -->
             <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
-                <div class="d-block mb-7"><img :src="posting.images[0]" :alt="posting.title" width="100%"></div>
-                <h3 class="mt-n4">{{ posting.title }}</h3>
-                <ul class="list-unstyled mb-1 card-tag-list">
-                    <li>
-                        <a href="javascript:void(0);" class="bg-regent-opacity-15 text-denim font-size-3 rounded-3">
-                            <i class="far fa-folder mr-2"></i> {{ posting.category.name }}
+                <div class="d-block mb-7" style="height: 30vh;">
+                    <img :src="posting.images[0]" :alt="posting.title" style="object-fit: cover; width: 100%; height: 100%;"/>
+                </div>
+                <h4 class="mt-n4">{{ posting.title }}</h4>
+                <p class="mb-7 font-size-4 text-gray"> {{ posting.description.substring(0, 50) }}... </p>
+                <!-- <ul class="list-unstyled mb-1 card-tag-list">
+                    <li v-for="(value, index) in posting.categories" :key="index" class="mr-3 mb-2 d-inline-block">
+                        <a :href="route('landing.postings')" class="bg-regent-opacity-15 text-muted font-size-2 rounded-3">
+                            {{ value.sub_category.name }}
                         </a>
                     </li>
-                    <li>
-                        <a href="javascript:void(0);" class="bg-regent-opacity-15 text-orange font-size-3 rounded-3">
-                            <i class="fas fa-indent mr-2"></i> {{ posting.sub_category.name }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="bg-regent-opacity-15 text-primary font-size-3 rounded-3">
-                            KSH {{ posting.price }}
-                        </a>
-                    </li>
-                </ul>
-                <p class="mb-7 font-size-4 text-gray"> {{ posting.description.substring(0, 200) }}... </p>
+                </ul> -->
                 <p class="mb-7 font-size-4 text-gray">  
                     <i class="fas fa-map-marker-alt mr-2"></i> 
                     {{ posting.town }}, {{ posting.county }}
                 </p>
+                <a class="btn btn-outline-green text-uppercase btn-medium rounded-3 w-100" :href="route('landing.postings.view', { title: decodeURIComponent(posting.title) })">View</a>
             </div>
         </a>
         <!-- End Feature One -->
@@ -44,6 +33,11 @@ const props: any = defineProps({
         default:  Object(),
         type:     Object,
         required: true
+    },
+    delay: {
+        default:  0,
+        type:     Number,
+        required: false
     }
 });
 

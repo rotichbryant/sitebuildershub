@@ -14,8 +14,8 @@
                 </p>
             </div>
             <div class="col-12 px-0">
-                <p v-if="!isEmpty(filters.price_range)" class="badge badge-warning p-3">
-                    {{ filters.price_range.map( (price: any) => `KSH ${price}` ).join(' to ') }}
+                <p v-if="!isEmpty(filters.name)" class="badge badge-warning p-3">
+                    {{ filters.name }}
                     <a href="#" class="text-white ml-3"  @click.prevent=""><i class="fa fa-close"></i></a>
                 </p>
             </div>
@@ -53,47 +53,17 @@
                 v-model="filters.categories"
             />
         </div>
-        <div class="widgets mb-4">
-            <div class="d-flex align-items-center flex-column pr-15 pr-xs-0 pr-md-0 pr-xl-22">
-                <h4 class="font-size-6 font-weight-semibold mb-0 w-100">Price Range</h4>                
-            </div>
-            <div class="graph text-center mx-0 mt-5 position-relative chart-postion">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="range-slider">
-                <div class="pm-range-slider"></div>
-            </div>
-            <div class="slider-price w-100 text-center my-4">
-                <input 
-                    class="text-primary font-weight-semibold font-size-4 focus-reset" 
-                    type="text" 
-                    id="amount" 
-                    data-currency="KSH" 
-                    data-min="1" 
-                    data-max="100000" 
-                    data-lower="2500" 
-                    data-upper="40000" 
-                />
-            </div>            
-        </div>
         <!-- Sidebar End -->        
         <div class="col-12 px-0 py-3">
             <button class="btn btn-primary text-uppercase font-size-3 w-100" type="button" @click="$emit('filter')">
                 Apply Filter
             </button>
         </div>
+        <div class="col-12 px-0 py-3">
+            <button class="btn btn-primary text-uppercase font-size-3 w-100" type="button" @click="reset">
+                Reset Filters
+            </button>
+        </div>        
     </div>
 </template>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
@@ -107,7 +77,7 @@ import { computed, onMounted, defineProps } from 'vue';
 import { isEmpty, keyBy, map } from 'lodash';
 import Multiselect from 'vue-multiselect'
 import { options } from 'dropzone-vue3';
-import { usePage } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 
 const props: any     = defineProps({ 
     categories: {
@@ -139,6 +109,8 @@ const locations: any = computed(
 );
 
 const $emit:      any = defineEmits(['update:filters','filter']);
+
+const reset = () => window.location.href = route('landing.postings');
 
 const categories: any = computed( 
     () => props.categories.map( 

@@ -11,6 +11,9 @@ import toast from './toast';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
 const { VITE_APP_NAME, VITE_APP_URL } = import.meta.env || 'Laravel';
 
 createInertiaApp({
@@ -22,6 +25,13 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         const app     = createApp({ render: () => h(App, props) });
 
+        //  Initialize AOS
+        app.use(
+            AOS.init({
+                startEvent: 'DOMContentLoaded',
+                once: false                
+            })
+        );       
         app.use(plugin);
         app.use(toast);
         app.use(CoreuiVue)

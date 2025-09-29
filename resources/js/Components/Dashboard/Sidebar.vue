@@ -1,5 +1,5 @@
 <template>
-<CSidebar position="fixed">
+<CSidebar position="fixed" colorScheme="dark"">
   <CSidebarHeader class="border-bottom">
     <CSidebarBrand>CoreUI</CSidebarBrand>
   </CSidebarHeader>
@@ -39,14 +39,7 @@
     </CNavItem> 
     <CNavItem :href="route('dashboard.placements')">
       <CIcon  customClassName="nav-icon" icon="cil-bookmark"/> Advert Placements
-    </CNavItem>        
-    <CNavTitle>Support</CNavTitle>
-    <CNavItem :href="route('dashboard.notifications')">
-      <CIcon  customClassName="nav-icon" icon="cil-bell"/> Notifications
-    </CNavItem>
-    <CNavItem :href="route('dashboard.chat')">
-      <CIcon  customClassName="nav-icon" icon="cil-envelope-open"/> Chat
-    </CNavItem>    
+    </CNavItem>          
     <CNavTitle>Settings</CNavTitle>
     <CNavItem :href="route('dashboard.profile')">
       <CIcon  customClassName="nav-icon" icon="cil-user"/> Profile

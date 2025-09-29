@@ -36,6 +36,7 @@ Route::name('landing.')->group(function () {
     Route::middleware('landing.auth.optional')->group(function () {
 
         Route::get('/',                        [HomeController::class, 'index'])->name('home');
+        Route::get('/header',                  [HomeController::class, 'create'])->name('header');
         Route::get('/postings/view',           [LandingPostingController::class, 'show'])->name('postings.view');
         Route::get('/postings',                [LandingPostingController::class, 'index'])->name('postings');
         Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');

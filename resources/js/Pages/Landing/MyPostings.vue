@@ -47,12 +47,12 @@
                                                     <a href="jobdetails.html" class="font-size-4 mb-0 font-weight-semibold text-black-2">{{ post.title }}</a>
                                                 </div>
                                             </th>
-                                            <td class="table-y-middle py-7 min-width-px-135">
+                                            <!-- <td class="table-y-middle py-7 min-width-px-135">
                                                 <h3 class="font-size-4 font-weight-normal text-black-2 mb-0">
                                                     {{ post.category.name }} <br>
                                                     <span class="badge badge-success badge-outline">{{ post.sub_category.name }}</span>
                                                 </h3>
-                                            </td>
+                                            </td> -->
                                             <td class="table-y-middle py-7 min-width-px-125">
                                                 <h3 class="font-size-4 font-weight-normal text-black-2 mb-0">
                                                     {{ post.town }} <br>

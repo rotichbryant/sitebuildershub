@@ -1,46 +1,45 @@
 <template>
     <LandingLayout>
         <Head title="Home" />
-
-        <div class="col-12 px-0 position-relative">
+        <div class="position-relative z-index-0 dark-mode-texts" v-bind:class="{ 'bg-squeeze':isEmpty(banner_images) }">
+            <div class="d-flex justify-content-between h-100" v-if="isEmpty(banner_images)">
+                <div class="container d-flex align-items-center justify-content-center py-15 py-lg-23">
+                    <div class="">
+                        <div class="text-primary font-size-5 font-weight-semibold mb-7">
+                        #4923 adverts posted right now
+                        </div>
+                        <h1 class="font-size-11 mb-9 text-black-2">Find what you are looking for ?</h1>
+                        <p class="font-size-5">Here we give you the best construction products readily available for you to pick.</p>
+                    </div>  
+                </div>              
+                <picture >
+                    <img :src="placeholder_image" type="image/png"> 
+                </picture>                   
+            </div>   
             <Swiper 
                 slidesPerView="auto" 
                 :spaceBetween="30" 
                 :modules="$data.modules" 
                 :loop="true" 
-                :pagination="{clickable: true}"
+                :pagination="{clickable: false}"
                 :centeredSlides="true"
-                :autoplay="{delay: 2500,disableOnInteraction: false}"  
-                style="z-index: 0;"           
+                :autoplay="{delay: 1000,disableOnInteraction: false}"  
+                style="z-index: 0;"      
+                v-if="!isEmpty(banner_images)"     
             >
                 <SwiperSlide v-for="(image,index) in banner_images" :key="index">
                     <img :src="image.url" :height="image.height" width="100%" >
                 </SwiperSlide>
-            </Swiper>             
-            <!-- Hero Area -->  
-        </div>
-
-        <div class="col-12 positive-relative px-0">
+            </Swiper>              
             <div class="container">
                 <!-- Hero Form -->
-                <div class="col-12 translateY-50 mx-auto" >
+                <div class="col-12 mx-auto" v-bind:class="{ 'translateY-50': !isEmpty(banner_images) }">
                     <form action="/" class="search-form">
-                        <div class="filter-search-form-2 bg-white rounded-sm shadow-7 pr-8 py-7 pl-6">
+                        <div class="filter-search-form-2 bg-white rounded-sm shadow-8 pr-8 py-7 pl-6">
                             <div class="filter-inputs">
                                 <div class="form-group position-relative">
-                                    <input class="form-control focus-reset pl-13" type="text" id="keyword" placeholder="Type Job title, keywords">
+                                    <input class="form-control focus-reset pl-13" type="text" id="keyword" placeholder="Search by name, category or location">
                                     <span class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i class="icon icon-zoom-2 text-primary font-weight-bold"></i></span>
-                                </div>
-                                <!-- .select-city starts -->
-                                <div class="form-group position-relative">
-                                    <select name="country" id="country" class="nice-select pl-13 h-100 arrow-3 font-size-4">
-                                        <option data-display="City, state, zip code or (Remote)">City</option>
-                                        <option value="">United States of America</option>
-                                        <option value="">United Arab Emirates</option>
-                                        <option value="">Bangladesh</option>
-                                        <option value="">Pakistan</option>
-                                    </select>
-                                    <span class="h-100 w-px-50 pos-abs-tl d-flex align-items-center justify-content-center font-size-6"><i class="icon icon-pin-3 text-primary font-weight-bold"></i></span>
                                 </div>
                                 <!-- ./select-city ends -->
                             </div>
@@ -51,9 +50,8 @@
                     </form>
                 </div>
                 <!-- End Hero Form -->       
-            </div>   
-        </div>
-        
+            </div>               
+        </div>   
         <div class="col-12 px-0 pt-25" >
             <div class="container">
                 <!-- Section Top -->
@@ -83,97 +81,52 @@
         </div>
 
         <!-- Hero Area -->
-
         <!-- featuredJobOne Area -->
-        <section class="bg-athens pt-12 pt-lg-24 pb-7 pb-lg-25">
+        <div class="pt-11 pt-lg-27 pb-7 pb-lg-26 bg-black-2 dark-mode-texts">
             <div class="container">
-                <!-- Section Title -->
-                <div class="row justify-content-center mb-lg-16 mb-11">
-                    <div class="col-xxl-5 col-xl-6 col-lg-7 col-md-10 text-center">
-                        <h2 class="mb-6 mb-lg-7 text-black-2 font-size-10">Featured Adverts</h2>
-                        <p class="px-xs-3 px-md-12 px-lg-8 px-xl-8 px-xxl-6 font-size-5 mb-0">
-                            Discover our top featured adverts showcasing a wide range of construction products.
-                        </p>
+                <!-- Section Top -->
+                <div class="row align-items-center pb-14">
+                    <!-- Section Title -->
+                    <div class="col-12 text-white text-center">
+                        <h2 class="font-size-9 font-weight-bold">Trending Adverts</h2>
+                        <h6>Browse through the most popular adverts on our platform. Find the best deals and offers from trusted sellers.</h6>
                     </div>
                 </div>
-                <!-- Section Title End -->
+                <!-- End Section Top -->
                 <div class="row justify-content-center">
-                    <div class="col-xxl-9 col-xl-9 col-lg-10 mb-8" data-aos="fade-right" data-aos-duration="800" data-aos-once="true" v-for="(advert,index) in $props.postings">
-                        <!-- Single Featured Job -->
-                        <div class="pt-9 px-xl-9 px-lg-7 px-7 pb-7 light-mode-texts bg-white rounded hover-shadow-3 ">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="media align-items-center">
-                                        <div class="square-72 d-block mr-8" :key="`slider_${index}`">
-                                            <Carousel
-                                                id="thumbnails"
-                                                :itemsToShow="1"
-                                                :wrap-around="false"
-                                                :autoPlay="true"
-                                                ref="carousel"
-                                                v-model="$data.slider.current"
-                                            >
-                                                <Slide v-for="(image,index) in advert.images" :key="index">
-                                                    <img :src="image" alt="" width="150px">
-                                                </Slide>
-                                            </Carousel>                                             
-                                            <!-- <img src="../../../image/l2/png/featured-job-logo-1.png" alt=""> -->
-                                        </div>
-                                        <div>
-                                            <h3 class="mb-0"><a class="font-size-6 heading-default-color" href="#">{{advert.title}}</a></h3>
-                                            <a href="#" class="font-size-3 text-default-color line-height-2">{{ advert.user.name }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 text-right pt-7 pt-md-5">
-                                    <div class="media justify-content-md-end">
-                                        <p class="font-weight-bold font-size-7 text-hit-gray mb-0">
-                                            <span class="text-black-2 text-success mr-2"><i class="fa fa-money-bill"></i></span>
-                                            <span class="text-black-2">{{ advert.price }}</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row pt-8">
-                                <div class="col-md-7">
-                                <ul class="d-flex list-unstyled mr-n3 flex-wrap">
-                                    <li>
-                                        <a class="bg-regent-opacity-15 min-width-px-96 mr-3 text-center rounded-3 px-6 py-1 font-size-3 text-black-2 mt-2" href="#">Visual Design</a>
-                                    </li>
-                                    <li>
-                                        <a class="bg-regent-opacity-15 min-width-px-96 mr-3 text-center rounded-3 px-6 py-1 font-size-3 text-black-2 mt-2" href="#">Wireframing</a>
-                                    </li>
-                                    <li>
-                                        <a class="bg-regent-opacity-15 min-width-px-96 mr-3 text-center rounded-3 px-6 py-1 font-size-3 text-black-2 mt-2" href="#">Scrum</a>
-                                    </li>
-                                </ul>
-                                </div>
-                                <div class="col-md-5">
-                                <ul class="d-flex list-unstyled mr-n3 flex-wrap mr-n8 justify-content-md-end">
-                                    <li class="mt-2 mr-8 font-size-small text-black-2 d-flex">
-                                        <span class="mr-4" style="margin-top: -2px"><img src="../../../image/svg/icon-loaction-pin-black.svg" alt=""></span>
-                                        <span class="font-weight-semibold">{{ }}</span>
-                                    </li>
-                                    <li class="mt-2 mr-8 font-size-small text-black-2 d-flex">
-                                        <span class="mr-4" style="margin-top: -2px"><img src="../../../image/svg/icon-clock.svg" alt=""></span>
-                                        <span class="font-weight-semibold">{{ advert.created_at }}</span>
-                                    </li>
-                                </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Featured Job -->
-                    </div>
+                    <WhenVisible data="postings">
+                        <template #fallback>
+                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;">
+                                <h6 class="text-primary">
+                                    <i class="fa fa-spinner fa-spin mr-2"></i>
+                                    <span>Loading...</span>
+                                </h6>
+                            </div>  
+                        </template>    
+                        <template v-for="(posting,index) in $props.postings" :key="posting.id" >
+                            <TrendingPosting :data="posting" :delay="(index + 1 ) * 800" />
+                        </template>
+                        <template v-if="isEmpty($props.postings)">
+                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" v-if="isEmpty($props.postings)">
+                                <h6 class="text-primary">
+                                    <i class="fa fa-exclamation-circle mr-2"></i>
+                                    <span>Nothing Found Here</span>
+                                </h6>
+                            </div>                                              
+                        </template>                        
+                    </WhenVisible>  
                 </div>
             </div>
-        </section>
-        <!-- featuredJobOne Area -->
+        </div>
+        <!-- featuredJobOne Area --> 
+
     </LandingLayout>
 </template>
 <script lang="ts" setup>
 import { LandingLayout } from '@/Layouts'
 import { Head } from '@inertiajs/vue3';
 import 'vue3-carousel/dist/carousel.css';
+import { WhenVisible  } from '@inertiajs/vue3'
 import { Carousel, Slide } from 'vue3-carousel';
 import { computed, reactive } from 'vue';
 // Import Swiper Vue.js components
@@ -182,9 +135,10 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-
-// import required modules
+import placeholder_image from '../../../images/globe-pattern.png';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { isEmpty } from 'lodash';
+import { TrendingPosting } from '@/Components/Landing';
 const $props: any = defineProps({
     categories: Array,
     postings: Array,

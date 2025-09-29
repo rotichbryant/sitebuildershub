@@ -1,7 +1,7 @@
 <template>
     <LandingLayout>
         <Head title="Overview" />
-        <div class="container py-26">
+        <div class="container py-10">
             <div class="row">
                 <div class="col-12">
                     <div class="row mb-7">
@@ -15,48 +15,6 @@
                             <div class="">
                                 <h5 class="font-size-8 font-weight-semibold text-black-2 line-height-reset font-weight-bold mb-1"><span class="counter">{{ stats.postings }}</span></h5>
                                 <p class="font-size-4 font-weight-normal text-gray mb-0">Postings</p>
-                            </div>
-                            </a>
-                            <!-- End Single Category -->
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-sm-6">
-                            <!-- Single Category -->
-                            <a href="#" class="media bg-white rounded-4 pl-8 pt-9 pb-9 pr-7 hover-shadow-1 mb-9 shadow-8">
-                            <div class="text-pink bg-pink-opacity-1 circle-56 font-size-6 mr-7">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <!-- Category Content -->
-                            <div class="">
-                                <h5 class="font-size-8 font-weight-semibold text-black-2 line-height-reset font-weight-bold mb-1"><span class="counter">0</span></h5>
-                                <p class="font-size-4 font-weight-normal text-gray mb-0">Total Applicants</p>
-                            </div>
-                            </a>
-                            <!-- End Single Category -->
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-sm-6">
-                            <!-- Single Category -->
-                            <a href="#" class="media bg-white rounded-4 pl-8 pt-9 pb-9 pr-7 hover-shadow-1 mb-9 shadow-8">
-                            <div class="text-orange bg-orange-opacity-1 circle-56 font-size-6 mr-7">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <!-- Category Content -->
-                            <div class="">
-                                <h5 class="font-size-8 font-weight-semibold text-black-2 line-height-reset font-weight-bold mb-1"><span class="counter">0</span></h5>
-                                <p class="font-size-4 font-weight-normal text-gray mb-0">Posting Views</p>
-                            </div>
-                            </a>
-                            <!-- End Single Category -->
-                        </div>
-                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-sm-6">
-                            <!-- Single Category -->
-                            <a href="#" class="media bg-white rounded-4 pl-8 pt-9 pb-9 pr-7 hover-shadow-1 mb-9 shadow-8">
-                            <div class="text-egg-blue bg-egg-blue-opacity-1 circle-56 font-size-6 mr-7">
-                                <i class="fas fa-mouse-pointer"></i>
-                            </div>
-                            <!-- Category Content -->
-                            <div class="">
-                                <h5 class="font-size-8 font-weight-semibold text-black-2 line-height-reset font-weight-bold mb-1"><span class="counter">0</span></h5>
-                                <p class="font-size-4 font-weight-normal text-gray mb-0">Applied Rate</p>
                             </div>
                             </a>
                             <!-- End Single Category -->

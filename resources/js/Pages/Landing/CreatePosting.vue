@@ -29,17 +29,19 @@
                                                     </select>
                                                     <p v-show="has($data.errors,'location')" class="text-danger">{{ $data.errors.location }}</p>              
                                                 </div>                                
-                                                <div class="col-12">
+                                                <div class="col-12 mb-4">
                                                     <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Category</label>
-                                                    <select class="form-control w-100" v-model="$data.active_form.category">
-                                                        <option value="">Select Category*</option>
-                                                        <template v-for="(category,key) in categories">
-                                                            <optgroup :label="category.name">
-                                                                <option v-for="(sub_category) in category.sub_categories" :value="`${category.id}/${sub_category.id}`">{{ sub_category.name }}</option>
-                                                            </optgroup>
-                                                        </template>   
-                                                    </select>
-                                                    <p v-show="has($data.errors,'category')" class="text-danger">{{ $data.errors.category }}</p>              
+                                                    <Multiselect 
+                                                        :group-select="true"
+                                                        group-values="sub_categories" 
+                                                        group-label="name"
+                                                        :options="categories"
+                                                        :multiple="true"
+                                                        track-by="name" 
+                                                        label="name"
+                                                        v-model="$data.active_form.categories"
+                                                    />                                                    
+                                                    <p v-show="has($data.errors,'categories')" class="text-danger">{{ $data.errors.categories }}</p>              
                                                 </div>
                                                 <div class="col-12">
                                                     <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Photo</label>
@@ -153,13 +155,27 @@
                                                         </div>  
                                                         <div class="col-12">
                                                             <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Photo</label>
-                                                            <vue-dropzone
-                                                                ref="images" 
-                                                                id="images" 
-                                                                :options="$data.image_options"
-                                                                @vdropzone-sending="addExtraFormData"
-                                                                @vdropzone-success="successPromotionImageUpload"
-                                                            />    
+                                                            <CFormInput type="file" id="formFile" v-if="isEmpty($data.active_form.promotion_image) && isEmpty($data.readers.advert_image)" @change="addPromotionImage"/>
+                                                            <div class="col-12 px-0" v-if="!isEmpty($data.readers.advert_image)">
+                                                                <VuePictureCropper                                
+                                                                    :boxStyle="$data.crop_image.borderStyle"
+                                                                    :img="$data.readers.advert_image"
+                                                                    :options="$data.crop_image.options"
+                                                                    :presetMode="$data.crop_image.presetMode"                                                                    
+                                                                />  
+                                                                <div class="col-12 d-flex justify-content-between my-2 px-0">
+                                                                    <button type="button" class="btn btn-primary text-uppercase h-px-48" @click="selectCrop">Crop</button>          
+                                                                    <button type="button" class="btn btn-danger text-uppercase h-px-48" @click="removeCrop">Cancel</button>          
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 px-0" v-if="!isEmpty($data.readers.advert_crop_image) && !isEmpty($data.active_form.promotion_image)">
+                                                                <picture>
+                                                                    <img :src="$data.readers.advert_crop_image"/>
+                                                                </picture>
+                                                                <div class="col-12 d-flex justify-content-center my-2 px-0">
+                                                                    <button type="button" class="btn btn-danger text-uppercase h-px-48" @click="deselectCrop">Remove</button>          
+                                                                </div>                                                                
+                                                            </div>
                                                             <p v-show="has($data.errors,'images')" class="text-danger">{{ $data.errors.images }}</p>              
                                                         </div>                                                        
                                                         <div class="col-12 mb-2"> 
@@ -185,7 +201,7 @@
                                                                 <input type="number" class="form-control" placeholder="Cost" v-model="$data.active_form.promotion_amount">
                                                             </div>
                                                             <p v-show="has($data.errors,'promotion_amount')" class="text-danger">{{ $data.errors.promotion_amount }}</p>              
-                                                        </div>                                                                                                              
+                                                        </div>                                                                                                            
                                                     </div>                                                     
                                                 </div>                                               
                                             </div>
@@ -230,10 +246,11 @@ import { computed, reactive, watch } from 'vue';
 import vueDropzone from 'dropzone-vue3';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import { object, string, number, date, InferType, array, boolean, ref } from 'yup';
-import { isEmpty, has, cloneDeep, each, flatten, keys, set, flattenDeep, flattenDepth } from 'lodash';
+import { object, string, number, date, InferType, array, mixed, boolean, ref } from 'yup';
+import { isEmpty, has, cloneDeep, get, each, flatten, keys, set, flattenDeep, flattenDepth, add } from 'lodash';
 import moment from 'moment';
-import { data } from 'jquery';
+import VuePictureCropper, { cropper } from 'vue-picture-cropper'
+import Multiselect from 'vue-multiselect'
 
 const $data: any  = reactive({
     active_form:   {},
@@ -257,9 +274,35 @@ const $data: any  = reactive({
     },
     errors: {},
     form:   {},
+    modals: {
+        crop_image: false
+    },
+    readers: {
+        advert_image: "",
+        advert_crop_image: ""
+    },
+    crop_image: {
+        options: {
+            viewMode: 1,
+            dragMode: 'move',
+            aspectRatio: 1,
+            cropBoxResizable: false
+        },
+        borderStyle: {
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#f8f8f8',
+            margin: 'auto',
+        },
+        presetMode: {
+            mode: 'fixedSize',
+            width: 200,
+            height: 300,
+        }
+    },
     tab_forms: [
         {
-            category:     String(),
+            categories:   Array(),
             location:     String(),     
             images:       Array(),
         },
@@ -275,13 +318,14 @@ const $data: any  = reactive({
             promotion_amount:       Number(),
             promotion_status:       Boolean(),
             promotion_section:      String(),
+            promotion_image:        {},
             promotion_date_from:    moment().format('YYYY-MM-DD'),
             promotion_date_to:      moment().add(1,'days').format('YYYY-MM-DD'),
         }
     ],
     schemas: [
         {
-            category:     string().required("*Category is required"),
+            categories:   array().min(1,'*At least one category is needed.').required("*Category is required"),
             location:     string().required("*Location is required"),
             images:       array().min(1,'*Please select at least one image').required("*Please select at least one image"),
         },
@@ -301,7 +345,7 @@ const $data: any  = reactive({
             }),
             promotion_image: string().when("promotion_status",{
                 is:        true,
-                then:      (schema)      => schema.required("*Promotion Image is required"),
+                then:      (schema) => schema.required("*Promotion Image is required"),
                 otherwise: (schema) => schema.nullable()
             }),            
             promotion_date_from: string().when("promotion_status",{
@@ -325,6 +369,31 @@ const $data: any  = reactive({
     tab: 1,
 });
 
+/**
+ * Asynchronously reads the contents of a file as a data URL and returns it.
+ *
+ * @param {Object} target - The target input element containing the file to be read.
+ * @return {Promise} A Promise that resolves to the data URL of the file.
+ */
+const getImageFile = (target: any) => {
+    // Check if files are empty
+    if( target.files.length == 0) return "";
+
+    // Create a new FileReader instance
+    return new Promise(resolve => {
+        const reader = new FileReader()
+
+        // Define the onload callback function
+        reader.onload = function () {
+            // Resolve the Promise with the data URL of the file
+            resolve(reader.result)
+        }
+
+        // Read the contents of the file as a data URL
+        reader.readAsDataURL(target.files[0])
+    })        
+}
+
 const formSchema: any = computed( () => object().shape($data.active_schema) );
 
 /**
@@ -346,6 +415,31 @@ const validateForm = async (field:string) => {
         // Update the isDisabled property based on the presence of errors
         $data.isDisabled = !isEmpty($data.errors);
     }
+}
+
+/**
+ * Calculates the aspect ratio of an image.
+ *
+ * The aspect ratio of an image is calculated by finding the greatest common divisor (GCD) of the width and height of the image.
+ * The GCD is then used to divide the width and height of the image to find the aspect ratio.
+ *
+ * @param {number} width - The width of the image.
+ * @param {number} height - The height of the image.
+ * @returns {string} The aspect ratio of the image in the format "width:height".
+ */
+const aspectRatio = (width: number, height: number): any => {
+  // Function to find the Greatest Common Divisor (GCD)
+  const gcd = (a: number, b: number): number => b === 0 ? a : gcd(b, a % b);
+
+  const commonDivisor     = gcd(width, height);
+  const aspectRatioWidth  = width / commonDivisor;
+  const aspectRatioHeight = height / commonDivisor;
+
+  return `${aspectRatioWidth} / ${aspectRatioHeight}`;
+}
+
+const addPromotionImage = async ({ target }: any) => {
+    $data.readers.advert_image = await getImageFile(target);
 }
 
 const categories: any = computed( () => usePage().props.categories );
@@ -416,14 +510,70 @@ const calculate_promotion_cost = (value: any) => {
     $data.active_form.promotion_amount  = (section.price * days);
 }
 
+const removeCrop = () => {
+    $data.readers.advert_crop_image   = "";
+}
+
+const deselectCrop = () => {
+    $data.readers.advert_crop_image   = "";
+    $data.readers.advert_image        = "";
+    $data.active_form.promotion_image = {};
+}
+
+
+/**
+ * Asynchronously selects a cropped image from the picture cropper and updates the form with its path.
+ *
+ * @return {Promise<void>} Resolves when the cropped image is selected and the form is updated.
+ */
+const selectCrop = async () => {
+    try {
+        console.log('Selecting crop...');
+        // Check if the cropper is available
+        if (!cropper) return;
+
+        // Get the cropped image as a blob
+        const blob: any = await cropper.getBlob();
+        const reader    = new FileReader()        
+
+        console.log(blob);
+
+        // Define the onload callback function
+        reader.onload = function () {
+            // Resolve the Promise with the data URL of the file
+            $data.readers.advert_crop_image   = reader.result;
+            $data.readers.advert_image        = "";
+            $data.active_form.promotion_image = reader.result;        
+        }
+
+        // Read the contents of the file as a data URL
+        reader.readAsDataURL(blob);
+        
+        console.log('Selecting crop...');
+
+    } catch (error) {
+        toast.error("An error occurred while processing the image. Please try again.");
+        console.log(error);
+        $data.crop = false;
+
+        // Handle any errors that occur during the process
+    }
+}
+
 const select_section = ($event:any) => {
 
     $data.active_form.promotion_date_from = moment().format('YYYY-MM-DD');
     $data.active_form.promotion_date_to   = moment().add(1,'days').format('YYYY-MM-DD');
 
-    const value   = $event.target.value;
-    const section = pageProps.value.placements.find( (item: any) => item.section == value );
-    const days    = moment($data.active_form.promotion_date_to).diff(moment($data.active_form.promotion_date_from),'days');
+    const value    = $event.target.value;
+    const section  = pageProps.value.placements.find( (item: any) => item.section == value );
+    const days     = moment($data.active_form.promotion_date_to).diff(moment($data.active_form.promotion_date_from),'days');
+
+    console.log(section);
+    $data.crop_image.options.aspectRatio = aspectRatio(section.custom.width,section.custom.height);
+
+    $data.crop_image.presetMode.height  = section.custom.height;
+    $data.crop_image.presetMode.width   = section.custom.width;
 
     $data.image_options.thumbnailHeight = section.custom.height;
     $data.image_options.resizeHeight    = section.custom.height;

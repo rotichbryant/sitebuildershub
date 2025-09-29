@@ -9,10 +9,10 @@
             </ul>
         </template>        
         <!-- Main Content Start -->
-        <div class="bg-default-2 py-10">
+        <div class="bg-default-2 py-8">
             <div class="container-fluid">
                 <div class="row justify-content-center">
-                    <div class="col-md-10 col-xs-12">                
+                    <div class="col-md-9 col-xs-12">                
                         <!-- back Button -->
                         <div class="row justify-content-center">
                             <div class="col-12 dark-mode-texts">
@@ -27,111 +27,40 @@
                         <!-- back Button End -->
                         <div class="row">
                             <!-- Middle Content -->
-                            <div class="col-12 col-xxl-9 col-lg-9 col-md-8">
-                                <div class="bg-white rounded-4 shadow-9">
-                                <!-- Tab Section Start -->
-                                <ul class="nav border-bottom border-mercury pl-12" id="myTab" role="tablist">
-                                    <li class="tab-menu-items nav-item pr-12">
-                                    <a class="active text-uppercase font-size-3 font-weight-bold text-default-color py-3" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Overview</a>
-                                    </li>
-                                    <li class="tab-menu-items nav-item pr-12">
-                                    <a class="text-uppercase font-size-3 font-weight-bold text-default-color py-3" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Contact</a>
-                                    </li>
-                                </ul>
-                                <!-- Tab Content -->
-                                <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                        <div class="pr-xl-0 pr-xxl-14 p-5 px-xs-12 pt-7 pb-5">
-                                            <h4 class="font-size-6 text-black-2 font-weight-semibold">{{ posting.title }}</h4>
-                                            <ul class="list-unstyled d-flex flex-wrap">
-                                                <li><a :href="route('landing.postings',{category: posting.category.name})">{{ posting.category.name }}</a></li>
-                                                <li><i class="fa fa-chevron-right mx-2 fa-sm"></i></li>
-                                                <li><a :href="route('landing.postings',{sub_category: posting.sub_category.name})">{{ posting.sub_category.name }}</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="pr-xl-0 pr-xxl-14 p-5 px-xs-12 pt-7 pb-5">
-                                            <Carousel  
-                                                :itemsToShow="1" 
-                                                :wrap-around="false" 
-                                                v-model="$data.slider.current"
-                                            >
-                                                <Slide v-for="(image,index) in posting.images" :key="index">
-                                                    <div class="p-4">
-                                                        <InnerImageZoom :src="image" :zoomScale="2" /> 
-                                                    </div>                                    
-                                                </Slide>
-                                            </Carousel>
-                                            <Carousel
-                                                id="thumbnails"
-                                                :itemsToShow="2"
-                                                :wrap-around="true"
-                                                ref="carousel"
-                                                v-model="$data.slider.current"
-                                            >
-                                                <Slide v-for="(image,index) in posting.images" :key="index">
-                                                    <img :src="image" alt="" width="70%">
-                                                </Slide>
-                                                <template #addons>
-                                                    <navigation />
-                                                    <pagination />
-                                                </template>
-                                            </Carousel>                                     
-                                        </div>
-                                        <!-- Excerpt Start -->
-                                        <div class="pr-xl-0 pr-xxl-14 p-5 px-xs-12 pt-7 pb-5">
-                                            <h4 class="font-size-6 mb-7 mt-5 text-black-2 font-weight-semibold">Description</h4>
-                                            <p class="font-size-4 mb-8">{{ posting.description }}</p>
-                                        </div>
-                                        <!-- Excerpt End -->
+                            <div class="col-12 col-md-9">
+                                <div class="bg-white rounded-4 shadow-9 p-0">
+                                    <Carousel  
+                                        :itemsToShow="1" 
+                                        :wrap-around="false" 
+                                        v-model="$data.slider.current"
+                                    >
+                                        <Slide v-for="(image,index) in posting.images" :key="index">
+                                            <InnerImageZoom :src="image" :zoomScale="4" />                                
+                                        </Slide>
+                                    </Carousel>                                                                      
+                                    <div class="col-12 p-9">
+                                        <h3 class="font-size-8 text-black-2 font-weight-semibold">{{ posting.title }}</h3>
+                                        <ul class="list-unstyled d-flex flex-wrap">
+                                            <li v-for="(value,index) in posting.categories">
+                                                <a class="badge badge-primary p-4 mr-2" :href="route('landing.postings',{category: value.sub_category.name})">{{ value.sub_category.name }}</a>
+                                            </li>
+                                        </ul>
+                                        <h4 class="font-size-6 mt-5 text-black-2 font-weight-semibold">Description</h4>
+                                        <p class="font-size-4 mb-8">{{ posting.description }}</p>                                          
                                     </div>
-                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <!-- Excerpt Start -->
-                                    <div class="pr-xl-11 p-5 pl-xs-12 pt-9 pb-11">
-                                        <form action="/">
-                                        <div class="row">
-                                            <div class="col-12 mb-7">
-                                            <label for="name3" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Your Name</label>
-                                            <input id="name3" type="text" class="form-control" placeholder="Jhon Doe">
-                                            </div>
-                                            <div class="col-lg-6 mb-7">
-                                            <label for="email3" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">E-mail</label>
-                                            <input id="email3" type="email" class="form-control" placeholder="example@gmail.com">
-                                            </div>
-                                            <div class="col-lg-6 mb-7">
-                                            <label for="subject3" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Subject</label>
-                                            <input id="subject3" type="text" class="form-control" placeholder="Special contract">
-                                            </div>
-                                            <div class="col-lg-12 mb-7">
-                                            <label for="message3" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Message</label>
-                                            <textarea name="message" id="message3" placeholder="Type your message" class="form-control h-px-144"></textarea>
-                                            </div>
-                                            <div class="col-lg-12 pt-4">
-                                            <button class="btn btn-primary text-uppercase w-100 h-px-48">Send Now</button>
-                                            </div>
-                                        </div>
-                                        </form>
-                                    </div>
-                                    <!-- Excerpt End -->
-                                    </div>
-                                </div>
-                                <!-- Tab Content End -->
-                                <!-- Tab Section End -->
                                 </div>
                             </div>
                             <!-- Middle Content -->
                             <!-- Right Sidebar Start -->
-                            <div class="col-12 col-xxl-3 col-lg-3 col-md-3 px-0">
+                            <div class="col-12 col-md-3 px-0">
                                 <!-- Top Start -->
-                                <div class="bg-white shadow-9 rounded-4 mb-6">
-                                    <div class="px-5 py-4 border-bottom border-mercury">
-                                        <h4>KSH {{ posting.price }}</h4>
-                                        <p>
-                                            <span class="badge badge-primary" v-if="posting.negotiate == 'yes'">Negotiable</span>
-                                            <span class="badge badge-primary" v-if="posting.negotiate == 'no'">Fixed</span>
-                                        </p>
-                                        <button class="btn btn-outline-primary w-100">Request Call Back</button>
-                                    </div>
-                                    <!-- Top End -->
+                                <div class="bg-white shadow-9 rounded-4 mb-6 p-8">
+                                    <h3>KSH {{ posting.price }}</h3>
+                                    <p class="badge badge-primary p-4 w-100">
+                                        <template v-if="posting.negotiate == 'yes'">Negotiable</template>
+                                        <template v-if="posting.negotiate == 'no'">Fixed</template>
+                                    </p>
+                                    <button class="btn btn-outline-primary w-100">Request Call Back</button>
                                 </div>
                                 <!-- Top Start -->
                                 <div class="bg-white shadow-9 rounded-4 mb-6">
@@ -145,16 +74,25 @@
                                     </div>
                                     <!-- Top End -->
                                 </div>
-                                <!-- Top Start -->
-                                <div class="bg-white shadow-9 rounded-4 mb-6">
-                                    <div class="px-5 py-4 border-bottom border-mercury">
-                                        <h4>Comments</h4>
-                                        <div class="text-center col-12">
-                                            <span class="badge badge-info p-4"><i class="fa fa-exclamation-circle fa-lg mr-2"></i>Nothing Found Here</span>
-                                        </div>                            
-                                    </div>
-                                    <!-- Top End -->
-                                </div>                                              
+                                <div class="bg-white shadow-9 rounded-4 mb-6 py-3" v-if="posting.images.length > 1">
+                                    <div class="col-12 my-6">
+                                        <Carousel
+                                            id="thumbnails"
+                                            :itemsToShow="3"
+                                            :wrap-around="true"
+                                            ref="carousel"
+                                            v-model="$data.slider.current"
+                                        >
+                                            <Slide v-for="(image,index) in posting.images" :key="index">
+                                                <img :src="image" alt="" width="60%">
+                                            </Slide>
+                                            <template #addons>
+                                                <navigation />
+                                                <pagination />
+                                            </template>
+                                        </Carousel>    
+                                    </div>                                                                       
+                                </div>                                             
                             </div>
                             <!-- Right Sidebar End -->
                         </div>

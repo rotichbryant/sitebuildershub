@@ -13,7 +13,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-10 col-xs-12">
                     <div class="row">
-                        <div class="col-md-3 col-xs-8" data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
+                        <div class="col-md-3 col-xs-8">
                             <div class="bg-white shadow-9 rounded-4 mb-6">
                                 <PostingSidebar
                                     :locations="$data.locations"
@@ -23,7 +23,7 @@
                                     @update-filters="$data.filters = $event"
                                 />
                             </div>
-                            <div class="bg-white shadow-9 rounded-4 mb-6 py-2" v-if="!isEmpty(advert_images)">
+                            <div class="bg-white shadow-9 mb-6 p-5" v-if="!isEmpty(advert_images)">
                                 <Swiper 
                                     slidesPerView="auto" 
                                     :spaceBetween="30" 
@@ -39,7 +39,7 @@
                                 </Swiper>    
                             </div>                            
                         </div>
-                        <div class="col-md-9 col-xs-12 " data-aos="fade-up" data-aos-duration="800" data-aos-once="true">
+                        <div class="col-md-9 col-xs-12 ">
                             <!-- form -->
                             <!-- <PostingFilter /> -->
                             <div class="ml-lg-0 ml-md-15">
@@ -56,6 +56,7 @@
                                         <template v-for="(posting,index) in $data.postings.data" :key="posting.id" >
                                             <Posting 
                                                 :data="posting" 
+                                                :delay="(index + 1) * 800"
                                             />
                                         </template>
                                         <template v-if="isEmpty($data.postings.data)">
@@ -76,8 +77,6 @@
                                                     <a class="page-link" href="#" tabindex="-1">Previous</a>
                                                 </li>
                                                 <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
                                                 <li class="page-item">
                                                     <a class="page-link" href="#">Next</a>
                                                 </li>
@@ -102,7 +101,7 @@ import { Head, router, usePage } from '@inertiajs/vue3';
 import { Posting, PostingFilter, PostingSidebar } from '../../Components/Landing';
 import { WhenVisible  } from '@inertiajs/vue3'
 import { computed, inject, onMounted, reactive, ref } from 'vue';
-import { isEmpty, get, keys, set, forEach, intersection, intersectionBy, map } from 'lodash';
+import { isEmpty, get, keys, set, forEach, intersection, intersectionBy, map, delay } from 'lodash';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 // Import Swiper styles
 import 'swiper/css';

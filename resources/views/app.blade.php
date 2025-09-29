@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="{{ asset('/assets/css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('/assets/css/theme.css') }}">
-        <link rel="stylesheet" href="{{ asset('/assets/plugins/aos/aos.min.css') }}">
+        <!-- <link rel="stylesheet" href="{{ asset('/assets/plugins/aos/aos.min.css') }}"> -->
         <link rel="stylesheet" href="{{ asset('/assets/plugins/fancybox/jquery.fancybox.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/assets/plugins/nice-select/nice-select.min.css') }}">
         <link rel="stylesheet" href="{{ asset('/assets/plugins/slick/slick.min.css') }}">
@@ -35,7 +35,7 @@
         <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
         <script src="{{ asset('assets/plugins/fancybox/jquery.fancybox.min.js') }}" ></script>
         <script src="{{ asset('assets/plugins/nice-select/jquery.nice-select.min.js') }}" ></script>
-        <script src="{{ asset('assets/plugins/aos/aos.min.js') }}"></script>
+        <!-- <script src="{{ asset('assets/plugins/aos/aos.min.js') }}"></script> -->
         <script src="{{ asset('assets/plugins/slick/slick.min.js') }}" ></script>
         <script src="{{ asset('assets/plugins/counter-up/jquery.counterup.min.js') }}" ></script>
         <script src="{{ asset('assets/plugins/counter-up/jquery.waypoints.min.js') }}" ></script>

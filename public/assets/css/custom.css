@@ -1,0 +1,38 @@
+#app {
+    height: 100%;
+    overflow-y: auto;
+}
+/* 
+.footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+} */
+
+/* .site-wrapper {
+    height: 100%;
+} */
+
+.crumb {
+  list-style: none;
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+}
+
+.crumb li {
+  display: flex;
+  align-items: center;
+}
+
+.crumb li + li::before {
+  content: "/";
+  margin: 0 6px;
+}
+
+[data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}

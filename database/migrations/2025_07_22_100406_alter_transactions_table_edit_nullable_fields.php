@@ -39,10 +39,10 @@ return new class extends Migration
             $table->string('status')->change();
             $table->integer('status_code')->change();
             $table->string('reference')->change();
-            $table->dropColumnIfExists('currency');        
-            $table->dropColumnIfExists('paid_at');             
+            $table->dropIfExists('currency');        
+            $table->dropIfExists('paid_at');             
             $table->dropForeign('user_id');
-            $table->dropColumnIfExists ('user_id');            
+            $table->dropIfExists('user_id ');      
         });
     }
 };

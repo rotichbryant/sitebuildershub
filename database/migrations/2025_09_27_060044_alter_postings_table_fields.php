@@ -25,6 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('postings', function (Blueprint $table) {
+            $table->uuid('category_id');
+            $table->uuid('sub_category_id');            
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade');       
         });

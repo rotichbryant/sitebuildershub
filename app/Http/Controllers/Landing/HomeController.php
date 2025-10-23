@@ -20,7 +20,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $categories  = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
-        $postings    = PostingViewModel::with(['posting'])->whereDate('created_at',now()->format('Y-m-d'))->orderBy('views','desc')->get()->map( fn($visited): object => $visited->posting );
+        $postings    = PostingModel::get()->sortBy('views_count');
         $placements  = PlacementModel::with(['promotions'])->whereIn('section',['top-banner'])->filterPromotion()->get();
 
         // $poromotions = PromotionModel::active()->whereBetween()
@@ -41,6 +41,32 @@ class HomeController extends Controller
         return response()->json(compact('placements'),200);
 
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function footer()
+    {
+        //
+
+        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['footer'])->filterPromotion()->get();
+
+        return response()->json(compact('placements'),200);
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function security()
+    {
+        //
+
+        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['signup','login'])->filterPromotion()->get();
+
+        return response()->json(compact('placements'),200);
+
+    }    
 
     /**
      * Store a newly created resource in storage.

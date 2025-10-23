@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\CreatePostingRequest;
 use App\Http\Requests\Landing\CreatePromotionPostingRequest;
 use App\Http\Requests\Landing\PostingFileUploadRequest;
+use App\Http\Requests\Landing\QuotationUploadRequest;
 use App\Models\CategoryModel;
 use App\Models\PlacementModel;
 use App\Models\PostingCategoryModel;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Intervention\Image\Laravel\Facades\Image;  // facade
 
 class MyPostingsController extends Controller
 {
@@ -52,15 +54,33 @@ class MyPostingsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function upload(PostingFileUploadRequest $request)
+    public function imageUpload(PostingFileUploadRequest $request)
     {
         //
-        $image = $request->file('image');
-        $name  = Str::uuid().'.'.$image->getClientOriginalExtension();
-        $image->move(storage_path('app/public/images'), $name);
+        $uploaded = $request->file('image');
+        $name     = Str::uuid().'.'.$uploaded->getClientOriginalExtension();
+
+        $image = Image::read($uploaded)->resize(1024, 480, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $image->save(storage_path('app/public/images'), $name);
 
         return response()->json(array('name' => $name ));
     }    
+
+    /**
+     * Display the specified resource.
+     */
+    public function quotationUpload(QuotationUploadRequest $request)
+    {
+        //
+        $image = $request->file('quotation');
+        $name  = Str::uuid().'.'.$image->getClientOriginalExtension();
+        $image->move(storage_path('app/public/quotation'), $name);
+
+        return response()->json(array('name' => $name ));
+    }        
 
     /**
      * Store a newly created resource in storage.

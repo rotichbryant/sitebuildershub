@@ -72,7 +72,7 @@ class TransactionController extends Controller
             return back()->with('data',compact('order'));
 
         } catch(PesapalException $error){
-
+            dd($error);
         }
     }
 

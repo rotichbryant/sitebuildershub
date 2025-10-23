@@ -75,16 +75,11 @@ class PostingController extends Controller
     {
         $title   = $request->query('title');
         $posting = PostingModel::with(['categories'])->where('title', $title)->first();
-        $visited = $posting->views()->whereDate('created_at', '=',now()->format('Y-m-d'))->first();
-        $count   = empty($visited) ? 1 : ++$visited->views;
+        $visited = $posting->views()->where('ip',$request->ip())->whereDate('created_at', '=',now()->format('Y-m-d'))->first();
 
         if( empty($visited) ){
-            $posting->views()->create([ 'views' =>  $count ]);
+            $posting->views()->create([ 'ip' => $request->getClientIp() ]);
         }
-
-        if( !empty($visited) ){
-            $visited->update([ 'views' => $count ]);
-        }        
                                 
         return Inertia::render('Landing/ViewPosting',compact('posting'));
     }

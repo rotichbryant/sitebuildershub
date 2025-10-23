@@ -23,7 +23,7 @@ class PostingController extends Controller
     {
         // Retrieve the postings with their category and subcategory
         // and paginate them
-        $postings = PostingModel::with(['category','subCategory','user'])
+        $postings = PostingModel::with(['categories','user'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -58,7 +58,7 @@ class PostingController extends Controller
     public function show(PostingModel $posting)
     {
         // Load the related category, subcategory, and user for the posting
-        $posting->load(['category', 'subCategory', 'childSubCategory', 'user']);
+        $posting->load(['categories','user']);
 
         // Retrieve the status message from the session
         $status = session('status');

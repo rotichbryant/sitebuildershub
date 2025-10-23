@@ -37,6 +37,8 @@ Route::name('landing.')->group(function () {
 
         Route::get('/',                        [HomeController::class, 'index'])->name('home');
         Route::get('/header',                  [HomeController::class, 'create'])->name('header');
+        Route::get('/footer',                  [HomeController::class, 'footer'])->name('footer');
+        Route::get('/security',                 [HomeController::class, 'security'])->name('security');
         Route::get('/postings/view',           [LandingPostingController::class, 'show'])->name('postings.view');
         Route::get('/postings',                [LandingPostingController::class, 'index'])->name('postings');
         Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
@@ -51,7 +53,8 @@ Route::name('landing.')->group(function () {
         Route::get('/mypostings/{posting}/view',      [MyPostingsController::class, 'show'])->name('mypostings.show');    
         Route::get('/mypostings/create',              [MyPostingsController::class, 'create'])->name('mypostings.create');
         Route::get('/mypostings',                     [MyPostingsController::class, 'index'])->name('mypostings');
-        Route::post('/mypostings/upload',             [MyPostingsController::class, 'upload'])->name('mypostings.upload');
+        Route::post('/mypostings/quotation/upload',   [MyPostingsController::class, 'quotationUpload'])->name('mypostings.quotation.upload');
+        Route::post('/mypostings/images/upload',      [MyPostingsController::class, 'imageUpload'])->name('mypostings.image.upload');
         Route::post('/mypostings/promote',            [MyPostingsController::class, 'promote'])->name('mypostings.promote');
         Route::post('/mypostings',                    [MyPostingsController::class, 'store'])->name('mypostings.store');
         Route::delete('/mypostings/{posting}/delete', [MyPostingsController::class, 'destroy'])->name('mypostings.delete');

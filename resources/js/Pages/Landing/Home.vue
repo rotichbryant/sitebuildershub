@@ -23,7 +23,7 @@
                 :loop="true" 
                 :pagination="{clickable: false}"
                 :centeredSlides="true"
-                :autoplay="{delay: 1000,disableOnInteraction: false}"  
+                :autoplay="{delay: 2000,disableOnInteraction: false}"  
                 style="z-index: 0;"      
                 v-if="!isEmpty(banner_images)"     
             >
@@ -139,6 +139,7 @@ import placeholder_image from '../../../images/globe-pattern.png';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { isEmpty } from 'lodash';
 import { TrendingPosting } from '@/Components/Landing';
+
 const $props: any = defineProps({
     categories: Array,
     postings: Array,

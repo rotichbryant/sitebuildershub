@@ -66,7 +66,7 @@
                                                     <p v-show="has($data.errors,'title')" class="text-danger">{{ $data.errors.title }}</p>              
                                                 </div>
                                                 <div class="col-md-6 col-xs-12">
-                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Phone Number</label>
+                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Whatsapp Number</label>
                                                     <input type="text" class="form-control" placeholder="Phone Number" v-model="$data.active_form.phone_number">
                                                     <p v-show="has($data.errors,'phone_number')" class="text-danger">{{ $data.errors.phone_number }}</p>              
                                                 </div>
@@ -75,54 +75,23 @@
                                                     <textarea type="text" class="form-control" placeholder="Description" rows="10" v-model="$data.active_form.description"></textarea>
                                                     <p v-show="has($data.errors,'description')" class="text-danger">{{ $data.errors.description }}</p>              
                                                 </div>
+                                                <div class="col-12">
+                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Quotation</label>
+                                                    <vue-dropzone
+                                                        ref="quotation" 
+                                                        id="quotation" 
+                                                        :options="$data.quotation_options"
+                                                        @vdropzone-sending="addExtraFormData"
+                                                        @vdropzone-success="successQuotationUpload"
+                                                    />    
+                                                    <p v-show="has($data.errors,'quotation')" class="text-danger">{{ $data.errors.quotation }}</p>              
+                                                </div>                                                
                                             </div>
                                         </div>
                                     </Transition>
                                     <Transition name="slide-fade">
                                         <div class="tab-pane fade show active" v-if="$data.tab == 3" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                            <div class="row">
-                                                <div class="col-md-6 col-xs-12">
-                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Quantity</label>
-                                                    <input type="number" min="1" class="form-control" placeholder="Quantity" v-model="$data.active_form.quantity">
-                                                    <p v-show="has($data.errors,'quantity')" class="text-danger">{{ $data.errors.quantity }}</p>              
-                                                </div>
-                                                <div class="col-md-6 col-xs-12">
-                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Price</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text p-2 bg-success text-white">Kshs</span>
-                                                        </div> 
-                                                        <input type="number" min="1" class="form-control" placeholder="Phone Number" v-model="$data.active_form.price">
-                                                    </div>
-                                                    <p v-show="has($data.errors,'price')" class="text-danger">{{ $data.errors.price }}</p>              
-                                                </div>
-                                                <div class="col-12 mb-2">
-                                                    <label class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Are you open to negotiate ?</label>
-                                                    <div class="btn-group col-12 px-0">
-                                                        <button 
-                                                            type="button"
-                                                            :class="`btn btn-primary btn-variants-outline ${$data.active_form.negotiate == 'yes' ? 'active' : ''}`"
-                                                            @click="$data.active_form.negotiate = 'yes'"
-                                                        >
-                                                            Yes
-                                                        </button>
-                                                        <button 
-                                                            type="button"
-                                                            :class="`btn btn-primary btn-variant-outline ${$data.active_form.negotiate == 'no' ? 'active' : ''}`"
-                                                            @click="$data.active_form.negotiate = 'no'"
-                                                        >
-                                                            No
-                                                        </button>
-                                                        <button 
-                                                            type="button"
-                                                            :class="`btn btn-primary btn-variant-outline ${$data.active_form.negotiate == 'notsure' ? 'active' : ''}`"
-                                                            @click="$data.active_form.negotiate = 'notsure'"
-                                                        >
-                                                            Not Sure
-                                                        </button>
-                                                    </div>  
-                                                    <p v-show="has($data.errors,'negotiate')" class="text-danger">{{ $data.errors.negotiate }}</p>              
-                                                </div>
+                                            <div class="row">                                            
                                                 <div class="col-12 mb-2">
                                                     <label class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Promote Advert</label>
                                                     <div class="btn-group col-12 px-0">
@@ -257,14 +226,21 @@ const $data: any  = reactive({
     active_schema: {},
     logo_options: {
         paramName:      'image',
-        url:            route('landing.mypostings.upload'),
+        url:            route('landing.mypostings.image.upload'),
         method:         'post',
-        thumbnailWidth: 150,
-        maxFilesize:    10.0,
+        acceptedFiles:  'image/*',
+        headers:        {'Content-Type': 'multipart/form-data'}
     },
+    quotation_options: {
+        paramName:      'quotation',
+        url:            route('landing.mypostings.quotation.upload'),
+        method:         'post',
+        acceptedFiles:  'application/pdf',
+        // headers:        {'Content-Type': 'multipart/form-data'}
+    },    
     image_options: {
         paramName:       'image',
-        url:             route('landing.mypostings.upload'),
+        url:             route('landing.mypostings.image.upload'),
         method:          'post',
         thumbnailHeight: 480,
         thumbnailWidth:  640,
@@ -309,12 +285,10 @@ const $data: any  = reactive({
         {
             title:        String(),
             description:  String(),
+            quotation:    String(),
             phone_number: String()
         },
         {
-            quantity:               Number(),
-            price:                  Number(),
-            negotiate:              String('notsure'),
             promotion_amount:       Number(),
             promotion_status:       Boolean(),
             promotion_section:      String(),
@@ -333,11 +307,9 @@ const $data: any  = reactive({
             title:        string().required("*Title is required"),
             description:  string().required("*Description is required"),
             phone_number: string().required("*Phone Number is required"),
+            quotation:    string().required("*Quotation is required"),
         },
         {
-            negotiate:      string().required("*Negotiate is required"),
-            quantity:       number().min(1).required("*Quantity is required"),     
-            price:          number().min(1).required("*Price is required"),
             promotion_amount: number().when("promotion_status",{
                 is:   true,
                 then: (schema) => schema.min(1, "*Promotion Cost cannot be 0" ).required("*Promotion Cost is required"),
@@ -601,6 +573,18 @@ const successFileUpload = (_: any, { name }: any) => {
  * @param {Object} _ - The file object.
  * @param {Object} { name } - The file name.
  */
+const successQuotationUpload = (_: any, { name }: any) => {
+    console.log(name)
+    // Add the file name to the images array
+    $data.active_form.quotation = name;
+}
+
+/**
+ * Called when a file is successfully uploaded.
+ * 
+ * @param {Object} _ - The file object.
+ * @param {Object} { name } - The file name.
+ */
 const successPromotionImageUpload = (_: any, { name }: any) => {
     // Add the file name to the images array
     $data.active_form.promotion_image = name;
@@ -635,9 +619,6 @@ const resetForm = () => {
             phone_number: String()
         },
         {
-            quantity:            Number(),
-            price:               Number(),
-            negotiate:           String('notsure'),
             promotion_image:     String(),
             promotion_amount:    Number(),
             promotion_status:    Boolean(),

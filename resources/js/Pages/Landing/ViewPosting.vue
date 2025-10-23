@@ -37,7 +37,24 @@
                                         <Slide v-for="(image,index) in posting.images" :key="index">
                                             <InnerImageZoom :src="image" :zoomScale="4" />                                
                                         </Slide>
-                                    </Carousel>                                                                      
+                                    </Carousel>     
+                                    <div class="col-12 my-6" v-if="posting.images.length > 1">
+                                        <Carousel
+                                            id="thumbnails"
+                                            :itemsToShow="3"
+                                            :wrap-around="true"
+                                            ref="carousel"
+                                            v-model="$data.slider.current"
+                                        >
+                                            <Slide v-for="(image,index) in posting.images" :key="index">
+                                                <img :src="image" alt="" width="100%" >
+                                            </Slide>
+                                            <template #addons>
+                                                <navigation />
+                                                <pagination />
+                                            </template>
+                                        </Carousel>    
+                                    </div>                                                                                                        
                                     <div class="col-12 p-9">
                                         <h3 class="font-size-8 text-black-2 font-weight-semibold">{{ posting.title }}</h3>
                                         <ul class="list-unstyled d-flex flex-wrap">
@@ -54,44 +71,25 @@
                             <!-- Right Sidebar Start -->
                             <div class="col-12 col-md-3 px-0">
                                 <!-- Top Start -->
-                                <div class="bg-white shadow-9 rounded-4 mb-6 p-8">
-                                    <h3>KSH {{ posting.price }}</h3>
-                                    <p class="badge badge-primary p-4 w-100">
-                                        <template v-if="posting.negotiate == 'yes'">Negotiable</template>
-                                        <template v-if="posting.negotiate == 'no'">Fixed</template>
-                                    </p>
-                                    <button class="btn btn-outline-primary w-100">Request Call Back</button>
-                                </div>
+                                <button class="btn btn-primary w-100 btn-lg mb-4" @click="getQuote" :disabled="$data.loaders.fetch">
+                                    <i class="fa fa-spinner fa-spin" v-if="$data.loaders.fetch"></i>
+                                    Get Quotation
+                                </button>  
                                 <!-- Top Start -->
                                 <div class="bg-white shadow-9 rounded-4 mb-6">
-                                    <div class="px-5 py-9 text-center border-bottom border-mercury">
+                                    <div class="p-5 text-center border-bottom border-mercury">
                                         <div class="mb-6">
                                             <i class="fa fa-circle-user fa-xl circle-40 font-size-12 text-center font-weight-bold shadow-8 mx-auto"></i>
                                         </div>
                                         <h4 class="mb-0"><a class="text-black-2 font-size-6 font-weight-semibold" href="#">{{ posting.user.name }}</a></h4>
                                         <h5 class="font-size-4 font-weight-semibold mb-0 text-black-2 text-break">{{ posting.town }}, {{ posting.county }}</h5>
-                                        <h5 class="font-size-4 font-weight-semibold mb-0" v-if="!isEmpty(posting.user.phone_number)"><a class="text-black-2 text-break" :href="`tel:${posting.user.phone_number}`">{{ posting.user.phone_number }}</a></h5>
+                                        <h5 class="font-size-4 font-weight-semibold mb-3" v-if="!isEmpty(posting.user.phone_number)"><a class="text-black-2 text-break" :href="`tel:${posting.user.phone_number}`">{{ posting.user.phone_number }}</a></h5>
+                                        <a :href="`https://wa.me/${posting.user.phone_number}`" v-if="!isEmpty(posting.user.phone_number)" target="_blank" class="btn btn-outline-primary w-100">Chat on Whatsapp</a>                                
                                     </div>
                                     <!-- Top End -->
                                 </div>
-                                <div class="bg-white shadow-9 rounded-4 mb-6 py-3" v-if="posting.images.length > 1">
-                                    <div class="col-12 my-6">
-                                        <Carousel
-                                            id="thumbnails"
-                                            :itemsToShow="3"
-                                            :wrap-around="true"
-                                            ref="carousel"
-                                            v-model="$data.slider.current"
-                                        >
-                                            <Slide v-for="(image,index) in posting.images" :key="index">
-                                                <img :src="image" alt="" width="60%">
-                                            </Slide>
-                                            <template #addons>
-                                                <navigation />
-                                                <pagination />
-                                            </template>
-                                        </Carousel>    
-                                    </div>                                                                       
+                                <div class="bg-white shadow-9 rounded-4 p-6" >
+                                    <h4>Feedback</h4>                       
                                 </div>                                             
                             </div>
                             <!-- Right Sidebar End -->
@@ -111,13 +109,53 @@ import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import { isEmpty } from 'lodash';
 import InnerImageZoom from 'vue-inner-image-zoom';
 // import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css';
-import { reactive } from 'vue';
+import { inject, reactive } from 'vue';
+import moment from 'moment';
 
+const $toast: any = inject('$toast');
 const posting: any = usePage().props.posting;
-
 const $data: any   = reactive({
     slider: {
         current: 0,
+    },
+    loaders: {
+        fetch: false
     }
 });
+
+const getQuote = async () => {
+    try{ 
+        $data.loaders.fetch = true;
+
+        const response = await fetch(posting.quotation);
+        const blob     = await response.blob(); // binary form of file
+
+        // Create a URL for the blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Create a temporary link
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${moment().unix()} - Quotation.pdf`); // file name
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup
+        link.remove();
+        window.URL.revokeObjectURL(url);
+
+        // Toast show message
+        $toast.success('Quotaion has been created');   
+
+        $data.loaders.fetch = false;
+
+    } catch(error){
+
+        $toast.error('Error in fetching quotation. Please try again later.');   
+    
+        $data.loaders.fetch = false;
+    
+    }
+
+}
 </script>

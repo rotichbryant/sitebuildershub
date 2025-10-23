@@ -27,7 +27,7 @@
                         <!-- back Button End -->
                         <div class="row">
                             <!-- Middle Content -->
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-8">
                                 <div class="bg-white rounded-4 shadow-9">
                                     <Carousel  
                                         :itemsToShow="1" 
@@ -52,10 +52,11 @@
                             </div>
                             <!-- Middle Content -->
                             <!-- Right Sidebar Start -->
-                            <div class="col-12 col-md-3 px-0">
+                            <div class="col-12 col-md-4 px-0">
                                 <!-- Top Start -->
                                 <div class="bg-white shadow-9 rounded-4 mb-6 p-8">
-                                    <h3>KSH {{ posting.price }}</h3>
+                                    <h5>Quotation</h5>
+                                    <iframe :src="posting.quotation" style="height: 50vh; width: 100%;"></iframe>
                                 </div>
                             </div>
                             <!-- Right Sidebar End -->

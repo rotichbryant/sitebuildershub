@@ -12,13 +12,26 @@
         <div class="row no-gutters">
           <div class="col-lg-5 col-md-6">
             <div class="pt-10 pb-6 pl-11 pr-12 bg-black-2 h-100 d-flex flex-column dark-mode-texts">
-              <div class="pb-9">
+              <div class="col-12 p-0" v-if="!isEmpty(advert_images)">
+                <Swiper 
+                    slidesPerView="auto" 
+                    :spaceBetween="30" 
+                    :modules="$data.modules" 
+                    :loop="true" 
+                    :pagination="{clickable: false}"
+                    :centeredSlides="true"
+                    :autoplay="{delay: 1500,disableOnInteraction: true}"                
+                >
+                    <SwiperSlide v-for="(image,index) in advert_images" :key="index">
+                        <img :src="image.url" :height="image.height" width="100%" style="object-fit: cover;"/>
+                    </SwiperSlide>
+                </Swiper>     
                 <h3 class="font-size-8 text-white line-height-reset pb-4 line-height-1p4">
                   Welcome Back
                 </h3>
                 <p class="mb-0 font-size-4 text-white">Log in to continue your account
                   and explore new jobs.</p>
-              </div>
+              </div>                
             </div>
           </div>
           <div class="col-lg-7 col-md-6">
@@ -70,16 +83,28 @@ import { computed, defineEmits, defineProps, reactive, watch } from 'vue';
 import { cloneDeep, isEmpty, has, get } from 'lodash'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+// import required modules
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 const $emit  = defineEmits(['update:modals']);
 const $data  = reactive({
+  modules: [Autoplay, Pagination, Navigation],
   errors: Object(),  
 });
 const $props = defineProps({
   modals: {
     default: Object(),
     type:    Object,
-  } 
+  },
+  placements: {
+    default: Array(),
+    type:    Array,
+  }   
 });
 const jQuery: any  = computed( () => get(window,'jQuery') );
 const modals: any  = computed({
@@ -87,6 +112,12 @@ const modals: any  = computed({
   set: (value:any) => $emit('update:modals', value),
 });
 const pageProps: any = computed( () => usePage().props );
+const advert_images = computed( 
+    () => $props.placements
+                .map(        (item) => ({ ...item, promotions: item.promotions.map( (promotion) => ({ ...promotion, height: item.custom.height, width: item.custom.width  })) }) )
+                .map(        (item) => item.promotions )
+                .flat().map( (item) => ({ url: item.image, height: item.height, width: item.width }) )
+);
 
 
 // const $data: any = 

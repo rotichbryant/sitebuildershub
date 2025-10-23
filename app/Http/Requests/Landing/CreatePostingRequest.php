@@ -39,20 +39,12 @@ class CreatePostingRequest extends FormRequest
                 'string',
                 'required'
             ],
-            'negotiate' => [
+            'quotation' => [
                 'string',
                 'required'
             ],
             'phone_number' => [
                 'string',
-                'required'
-            ],
-            'price' => [
-                'integer',
-                'required'
-            ],
-            'quantity' => [
-                'integer',
                 'required'
             ],
             'promotion_status' => [

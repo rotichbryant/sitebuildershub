@@ -5,7 +5,7 @@ namespace App\Http\Requests\Landing;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\File;
 
-class PostingFileUploadRequest extends FormRequest
+class QuotationUploadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class PostingFileUploadRequest extends FormRequest
     {
         return [
             //
-            'image' => [
+            'quotation' => [
                 'required',
-                File::image()->types(['jpeg,png,jpg'])->max(10000)
+                File::types(['pdf'])->max(10000)
             ],
         ];
     }

@@ -64,19 +64,31 @@ const $data: any  = reactive({
         name:    String(),
         price:   Number()
     },
-    sections: [
-        {
-            name: 'Leader Banner',
-            value: 'leader-banner'
-        },
-        {
-            name: 'Top Banner',
-            value: 'top-banner'
-        },                
+    sections: [               
         {
             name: 'Advert',
             value: 'advert'
-        },                     
+        },   
+        {
+            name: 'Footer',
+            value: 'footer'
+        },         
+        {
+            name: 'Leader Banner',
+            value: 'leader-banner'
+        },         
+        {
+            name:  'Login',
+            value: 'login'
+        },              
+        {
+            name: 'Signup',
+            value: 'signup'
+        },          
+        {
+            name: 'Top Banner',
+            value: 'top-banner'
+        },                                               
     ],
     isDisabled: false,
     loaders: {

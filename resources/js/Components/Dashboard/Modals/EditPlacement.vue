@@ -104,17 +104,29 @@ const $data: any  = reactive({
     },
     sections: [
         {
+            name: 'Advert',
+            value: 'advert'
+        },   
+        {
+            name: 'Footer',
+            value: 'footer'
+        },         
+        {
             name: 'Leader Banner',
             value: 'leader-banner'
-        },
+        },         
+        {
+            name:  'Login',
+            value: 'login'
+        },              
+        {
+            name: 'Signup',
+            value: 'signup'
+        },          
         {
             name: 'Top Banner',
             value: 'top-banner'
-        },                
-        {
-            name: 'Advert',
-            value: 'advert'
-        },                     
+        },                    
     ],
     isDisabled: false,
     loaders: {

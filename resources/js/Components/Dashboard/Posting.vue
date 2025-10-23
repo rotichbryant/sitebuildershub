@@ -15,10 +15,6 @@
                         <CAvatar color="primary" size="xl" class="text-white">{{ $props.data.title.charAt(0) }}</CAvatar>
                         <h4 class="my-2">{{ $props.data.title }}</h4>
                         <CListGroup>
-                            <CListGroupItem>
-                                {{ $props.data.category.name }},
-                                {{ $props.data.sub_category.name }}
-                            </CListGroupItem>
                             <CListGroupItem>{{ $props.data.user.name }}</CListGroupItem>
                             <CListGroupItem>{{ $props.data.created_at }}</CListGroupItem>
                         </CListGroup>

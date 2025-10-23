@@ -162,6 +162,28 @@ class User extends Authenticatable
     } 
 
     /**
+     * Get the postings that belong to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostingModel>
+     */
+    public function projects(): HasMany
+    {
+        /**
+         * Define the relationship using the PostingModel class.
+         * 
+         * @return HasMany<\App\Models\PostingModel>
+         */
+        return $this->hasMany(
+            related: PostingModel::class,
+            /**
+             * The foreign key on the `users` table that references the `id` column
+             * on the `postings` table.
+             */
+            foreignKey: 'user_id',
+        );
+    }     
+
+    /**
      * Get the business profile that belongs to the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\BusinessProfileModel>

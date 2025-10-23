@@ -24,7 +24,7 @@ class PostingViewModel extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'views'
+        'ip'
     ];
 
     /**

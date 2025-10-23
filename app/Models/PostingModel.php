@@ -12,6 +12,10 @@ class PostingModel extends Model
 {
     use HasFactory, HasUuids;
     
+    protected $append = [
+        'views_count'
+    ];
+        
     /**
      * The table associated with the model.
      *
@@ -31,10 +35,8 @@ class PostingModel extends Model
         'description',
         'images',
         'location',
-        'negotiate',
+        'quotation',
         'phone_number',
-        'price',
-        'quantity',
         'title',
         'town',
         'user_id'
@@ -51,6 +53,7 @@ class PostingModel extends Model
     ];    
 
     protected $with = [
+        'views',
         'user'
     ];
     
@@ -70,6 +73,32 @@ class PostingModel extends Model
                 return asset('storage/images/' . $image);
             });
     }
+
+    /**
+     * Accessor to convert the stored images from JSON to a collection.
+     * 
+     * The images are stored in the database as a JSON string. This accessor
+     * will convert the JSON string to a collection of image paths.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getQuotationAttribute()
+    {
+        return asset('storage/quotation/'.$this->attributes['quotation']);
+    }
+
+    /**
+     * Accessor to convert the stored images from JSON to a collection.
+     * 
+     * The images are stored in the database as a JSON string. This accessor
+     * will convert the JSON string to a collection of image paths.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getViewsCountAttribute()
+    {
+        return $this->views()->where('created_at',now()->format('Y-m-d'))->count();
+    }    
 
     /**
      * Get the sub-categories for the category.

@@ -1,5 +1,5 @@
 <template>
-    <div class="col-12 col-md-4" data-aos="fade-up" :data-aos-delay="$props.delay" data-aos-once="false">
+    <div class="col-12 col-md-4">
         <!-- Start Feature One -->
         <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9">
             <div class="d-block mb-7" style="height: 30vh;">
@@ -8,7 +8,6 @@
             <h2 class="mt-n4">
                 <a class="font-size-7 text-black-2 font-weight-bold mb-4" href="">{{ posting.title }}</a>
             </h2>
-            <p class="mb-7 font-size-4 text-gray">{{ posting.description.substring(0, 50) }}...</p>
             <p class="mb-7 font-size-4 text-gray">  
                 <i class="fas fa-map-marker-alt mr-2"></i> 
                 {{ posting.town }}, {{ posting.county }}

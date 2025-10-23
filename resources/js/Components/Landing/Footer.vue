@@ -29,7 +29,7 @@
         </div>
         <div class="col-lg-8 col-md-6">
           <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
+            <div class="col-md-6 col-sm-12 col-xs-6 d-flex justify-content-between">
               <div class="footer-widget widget2 mb-md-0 mb-13">
                 <!-- footer widget title start -->
                 <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Company</p>
@@ -43,8 +43,6 @@
                 </ul>
                 <!-- widget social menu end -->
               </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-3 col-xs-6">
               <div class="footer-widget widget4">
                 <!-- footer widget title start -->
                 <p class="widget-title font-size-4 text-gray mb-md-8 mb-7">Legal</p>
@@ -56,6 +54,21 @@
                 </ul>
               </div>
             </div>
+            <div class="col-md-6 col-sm-12 col-xs-12" v-if="!isEmpty($data.placements)">
+              <Swiper 
+                  slidesPerView="auto" 
+                  :spaceBetween="30" 
+                  :modules="$data.modules" 
+                  :loop="true" 
+                  :pagination="{clickable: false}"
+                  :centeredSlides="true"
+                  :autoplay="{delay: 2500,disableOnInteraction: true}"                
+              >
+                  <SwiperSlide v-for="(image,index) in advert_images" :key="index">
+                      <img :src="image.url" :height="image.height" width="100%" />
+                  </SwiperSlide>
+              </Swiper>     
+            </div>            
           </div>
         </div>
       </div>
@@ -63,6 +76,72 @@
   </footer>
   <!-- footer area function end -->
 </template>
-<scrip setup lang="ts">
+<script setup>
+import { isEmpty } from 'lodash'
+import { router, usePage } from '@inertiajs/vue3'
+import { reactive, computed, onMounted } from 'vue';
+import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+// import required modules
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
-</scrip>
+const logout    = async () => router.post(route('landing.logout'));
+
+/**
+ * The computed property for the authenticated user.
+ * 
+ * @return {Object} - The authenticated user object.
+ */
+const auth_user = computed( () => usePage().props.auth.user )
+
+const advert_images = computed( 
+    () => $data.placements
+                .map(        (item) => ({ ...item, promotions: item.promotions.map( (promotion) => ({ ...promotion, height: item.custom.height, width: item.custom.width  })) }) )
+                .map(        (item) => item.promotions )
+                .flat().map( (item) => ({ url: item.image, height: item.height, width: item.width }) )
+);
+
+const $data  = reactive({
+  modules: [Autoplay, Pagination, Navigation],
+  placements: []
+});
+
+const $props = defineProps({
+    modals: {
+        type: Object,
+        default: () => {}
+    }
+});
+
+const component = computed(() => usePage().component );
+
+const $emit = defineEmits(['update:modals']);
+
+const modals = computed({
+    get: ()      => $props.modals,
+    set: (value) => $emit('update:modals', value),
+});
+
+/**
+ * Fetch the header data from the server.
+ * 
+ * @return {Promise<void>} - A promise that resolves when the data has been fetched.
+ */
+const fetch = async () => {
+  try {
+    // Fetch the header data from the server.
+    const { data:{ placements } } = await axios.get(route('landing.footer'));
+    // Set the placements data on the component.
+    $data.placements = placements;
+  } catch (error) {
+    // Log the error to the console.
+    console.error('Error fetching data:', error);
+  }
+}
+
+onMounted(fetch)
+</script>

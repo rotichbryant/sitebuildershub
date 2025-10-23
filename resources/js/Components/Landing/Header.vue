@@ -88,10 +88,10 @@
           :loop="true" 
           :pagination="{clickable: false}"
           :centeredSlides="true"
-          :autoplay="{delay: 0,disableOnInteraction: true}"                
+          :autoplay="{delay: 2500,disableOnInteraction: true}"                
       >
           <SwiperSlide v-for="(image,index) in advert_images" :key="index">
-              <img :src="image.url" :height="image.height" width="100%" />
+              <img :src="image.url" :height="image.height" width="100%" style="object-fit: cover;" />
           </SwiperSlide>
       </Swiper>     
     </div>

@@ -21,7 +21,7 @@
                                         </Slide>
                                     </Carousel>
                                 </CCol>
-                                <CCol md="12" class="mt-4">
+                                <CCol md="12" class="mt-4" v-if="$props.posting.images.length > 1">
                                     <Carousel  id="thumbnails" v-bind="thumbnailsConfig" v-model="currentSlide">
                                         <Slide v-for="(image,index) in $props.posting.images" :key="`thumbnail_${index}`">
                                             <template #default="{ currentIndex, isActive }">
@@ -42,14 +42,8 @@
                                 </CCol>   
                                 <CCol md="12" class="mt-4">
                                     <h4>{{ $props.posting.title }}</h4>
-                                    <h6>
-                                        Tags:
-                                        <CBadge color="primary" class="mx-2">{{ $props.posting.category.name }}</CBadge>
-                                        <CBadge color="primary">{{ $props.posting.sub_category.name }}</CBadge>
-                                        <CBadge color="primary" v-if="!isNull($props.posting.child_sub_category)">
-                                            {{ $props.posting.child_sub_category.name }}
-                                        </CBadge>
-                                    </h6> 
+                                    <h6>Tags</h6>
+                                    <CBadge color="primary" class="ml-2 p-2" v-for="(tag, index) in $props.posting.categories">{{ tag.sub_category.name }}</CBadge>
                                     <p>{{ $props.posting.description }}</p>
                                 </CCol>
                             </CCardBody>

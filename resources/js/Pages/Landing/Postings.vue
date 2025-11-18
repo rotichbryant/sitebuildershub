@@ -44,7 +44,7 @@
                             <!-- <PostingFilter /> -->
                             <div class="ml-lg-0 ml-md-15">
                                 <div class="row">
-                                    <WhenVisible data="$data.postings">
+                                    <WhenVisible data="$data.postings" :buffer="500">
                                         <template #fallback>
                                             <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;">
                                                 <h6 class="text-primary">
@@ -53,30 +53,13 @@
                                                 </h6>
                                             </div>  
                                         </template>
-                                        <template v-for="(posting,index) in $data.postings.data" :key="posting.id" v-if="!isEmpty($data.postings.data)">
+                                        <template v-for="(posting,index) in $data.postings.data" :key="posting.id" >
                                             <Posting 
                                                 :data="posting" 
                                                 :delay="(index + 1) * 800"
-                                            />
-
-                                            <div class="col-12 mx-0">
-                                                <div class="d-flex justify-content-center">
-                                                    <nav aria-label="Page navigation">
-                                                        <ul class="pagination">
-                                                            <li class="page-item" v-for="(page,key) in $data.postings.links" :key="key">
-                                                                <a 
-                                                                    class="page-link" 
-                                                                    :href="page.url" 
-                                                                    v-bind:class="{ 'disabled': !page.active, 'active': page.active }"
-                                                                    v-html="page.label"
-                                                                ></a>
-                                                            </li>
-                                                        </ul>
-                                                    </nav>
-                                                </div>
-                                            </div>                                            
+                                            />                                        
                                         </template>
-                                        <template v-if="isEmpty($data.postings.data)">
+                                        <template v-if="isEmpty($data.postings.data)" >
                                             <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" >
                                                 <h6 class="text-primary">
                                                     <i class="fa fa-exclamation-circle mr-2"></i>
@@ -84,7 +67,23 @@
                                                 </h6>
                                             </div>                                              
                                         </template>
-                                    </WhenVisible >                                  
+                                        <template v-if="!isEmpty($data.postings.data)" >
+                                            <div class="d-flex justify-content-center">
+                                                <nav aria-label="Page navigation">
+                                                    <ul class="pagination">
+                                                        <li class="page-item" v-for="(page,key) in $data.postings.links" :key="key">
+                                                            <a 
+                                                                class="page-link" 
+                                                                :href="page.url" 
+                                                                v-bind:class="{ 'disabled': !page.active, 'active': page.active }"
+                                                                v-html="page.label"
+                                                            ></a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </div>                                            
+                                        </template>
+                                    </WhenVisible >                                                                         
                                 </div>                                
                             </div>
                             <!-- form end -->

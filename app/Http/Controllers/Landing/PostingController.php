@@ -49,6 +49,8 @@ class PostingController extends Controller
             
         }
 
+        print_r($postings);
+
         return Inertia::render('Landing/Postings',compact('categories','locations','placements','postings','status'));
     }
 

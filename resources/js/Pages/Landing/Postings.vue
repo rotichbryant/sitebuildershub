@@ -23,7 +23,7 @@
                                     @update-filters="$data.filters = $event"
                                 />
                             </div>
-                            <div class="bg-white shadow-9 mb-6 p-5" v-if="!isEmpty(advert_images)">
+                            <!-- <div class="bg-white shadow-9 mb-6 p-5" v-if="!isEmpty(advert_images)">
                                 <Swiper 
                                     slidesPerView="auto" 
                                     :spaceBetween="30" 
@@ -37,7 +37,7 @@
                                         <img :src="image.url" :height="image.height" style="display:">
                                     </SwiperSlide>
                                 </Swiper>    
-                            </div>                            
+                            </div>                             -->
                         </div>
                         <div class="col-md-9 col-xs-12 ">
                             <!-- form -->

@@ -68,7 +68,7 @@
                                             </div>                                              
                                         </template>
                                         <template v-if="!isEmpty($data.postings.data)" >
-                                            <div class="d-flex justify-content-center">
+                                            <div class="col-md-12 d-flex justify-content-center">
                                                 <nav aria-label="Page navigation">
                                                     <ul class="pagination">
                                                         <li class="page-item" v-for="(page,key) in $data.postings.links" :key="key">

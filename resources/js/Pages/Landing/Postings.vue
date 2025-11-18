@@ -179,6 +179,7 @@ const applyFilter = () => {
 
 onMounted(
     () => {
+        console.log(usePage().props)
         forEach(
             $data.queryParams,
             (value,key) => {
@@ -206,8 +207,6 @@ onMounted(
                 }
             }
         )
-        console.log($data.queryParams);
-        // const router = 
     }
 )
 

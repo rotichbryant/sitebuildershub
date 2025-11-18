@@ -58,6 +58,23 @@
                                                 :data="posting" 
                                                 :delay="(index + 1) * 800"
                                             />
+
+                                            <div class="col-12 mx-0">
+                                                <div class="d-flex justify-content-center">
+                                                    <nav aria-label="Page navigation">
+                                                        <ul class="pagination">
+                                                            <li class="page-item" v-for="(page,key) in $data.postings.links" :key="key">
+                                                                <a 
+                                                                    class="page-link" 
+                                                                    :href="page.url" 
+                                                                    v-bind:class="{ 'disabled': !page.active, 'active': page.active }"
+                                                                    v-html="page.label"
+                                                                ></a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>                                            
                                         </template>
                                         <template v-if="isEmpty($data.postings.data)">
                                             <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" v-if="isEmpty($data.postings.data)">
@@ -69,21 +86,6 @@
                                         </template>
                                     </WhenVisible >                                  
                                 </div>                                
-                                <div class="col-12 mx-0" v-if="!isEmpty($data.postings.data)">
-                                    <div class="d-flex justify-content-center">
-                                        <nav aria-label="Page navigation">
-                                            <ul class="pagination">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
                             </div>
                             <!-- form end -->
                         </div>
@@ -97,11 +99,10 @@
 </template>
 <script lang="ts" setup>
 import { LandingLayout } from '@/Layouts'
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { Head, router, usePage, WhenVisible } from '@inertiajs/vue3';
 import { Posting, PostingFilter, PostingSidebar } from '../../Components/Landing';
-import { WhenVisible  } from '@inertiajs/vue3'
 import { computed, inject, onMounted, reactive, ref } from 'vue';
-import { isEmpty, get, keys, set, forEach, intersection, intersectionBy, map, delay } from 'lodash';
+import { isEmpty, get, keys, set, forEach, intersection, intersectionBy, map, delay, times } from 'lodash';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 // Import Swiper styles
 import 'swiper/css';
@@ -179,7 +180,6 @@ const applyFilter = () => {
 
 onMounted(
     () => {
-        console.log(usePage().props)
         forEach(
             $data.queryParams,
             (value,key) => {

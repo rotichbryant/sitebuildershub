@@ -53,7 +53,7 @@
                                                 </h6>
                                             </div>  
                                         </template>
-                                        <template v-for="(posting,index) in $data.postings.data" :key="posting.id" >
+                                        <!-- <template v-for="(posting,index) in $data.postings.data" :key="posting.id" >
                                             <Posting 
                                                 :data="posting" 
                                                 :delay="(index + 1) * 800"
@@ -75,7 +75,7 @@
                                                     </nav>
                                                 </div>
                                             </div>                                            
-                                        </template>
+                                        </template> -->
                                         <template v-if="isEmpty($data.postings.data)">
                                             <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" v-if="isEmpty($data.postings.data)">
                                                 <h6 class="text-primary">

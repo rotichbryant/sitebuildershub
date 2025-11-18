@@ -91,7 +91,8 @@
           :autoplay="{delay: 2500,disableOnInteraction: true}"                
       >
           <SwiperSlide v-for="(image,index) in advert_images" :key="index">
-              <img :src="image.url" :height="image.height" width="100%" style="object-fit: cover;" />
+            <div :style="`width: 100%; height: ${image.height}px; background-image: url('${image.url}'); background-repeat: no-repeat; background-size: cover;`" ></div>
+              <!-- <img :src="image.url" :height="image.height" width="100%" style="object-fit: cover;" /> -->
           </SwiperSlide>
       </Swiper>     
     </div>

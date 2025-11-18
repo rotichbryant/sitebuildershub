@@ -31,6 +31,13 @@
                 </h3>
                 <p class="mb-0 font-size-4 text-white">Log in to continue your account
                   and explore new jobs.</p>
+              </div>
+              <div v-if="isEmpty(advert_images)">
+                <h3 class="font-size-8 text-white line-height-reset pb-4 line-height-1p4">
+                  Welcome Back
+                </h3>
+                <p class="mb-0 font-size-4 text-white">Log in to continue your account
+                  and explore new jobs.</p>                
               </div>                
             </div>
           </div>

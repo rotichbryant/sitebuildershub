@@ -85,7 +85,7 @@
           slidesPerView="auto" 
           :spaceBetween="30" 
           :modules="$data.modules" 
-          :loop="true" 
+          :loop="advert_images.length > 1" 
           :pagination="{clickable: false}"
           :centeredSlides="true"
           :autoplay="{delay: 2500,disableOnInteraction: true}"                

@@ -16,6 +16,7 @@ use App\Models\SubCategoryModel;
 use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -60,11 +61,10 @@ class MyPostingsController extends Controller
         $uploaded = $request->file('image');
         $name     = Str::uuid().'.'.$uploaded->getClientOriginalExtension();
 
-        $image = Image::read($uploaded)->resize(1024, 480, function ($constraint) {
-            $constraint->aspectRatio();
-        });
+        $image = Image::read($uploaded);
+        $cropped = $image->cover(1024,720,50,50);
 
-        $image->save(storage_path('app/public/images'), $name);
+        $cropped->save(storage_path('app/public/images/'.$name));
 
         return response()->json(array('name' => $name ));
     }    
@@ -96,7 +96,9 @@ class MyPostingsController extends Controller
                 $base64String = explode(',',$form['promotion_image']);
                 $ext          = explode('/', explode(';',$base64String[0])[0])[1];
                 $name         = Str::uuid().'.'.$ext;
-                $file         = Storage::disk('public')->put('images/'.$name, base64_decode($base64String[1]));
+
+                Storage::disk('public')->put('images/'.$name, base64_decode($base64String[1]));
+                
                 $form['promotion_image'] = $name;
             }
 

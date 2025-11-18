@@ -48,7 +48,7 @@
                                                     <vue-dropzone
                                                         ref="images" 
                                                         id="images" 
-                                                        :options="$data.logo_options"
+                                                        :options="$data.photo_options"
                                                         @vdropzone-sending="addExtraFormData"
                                                         @vdropzone-success="successFileUpload"
                                                     />    
@@ -224,12 +224,12 @@ import Multiselect from 'vue-multiselect'
 const $data: any  = reactive({
     active_form:   {},
     active_schema: {},
-    logo_options: {
+    photo_options: {
         paramName:      'image',
         url:            route('landing.mypostings.image.upload'),
         method:         'post',
         acceptedFiles:  'image/*',
-        headers:        {'Content-Type': 'multipart/form-data'}
+        // headers:        {'Content-Type': 'multipart/form-data'}
     },
     quotation_options: {
         paramName:      'quotation',

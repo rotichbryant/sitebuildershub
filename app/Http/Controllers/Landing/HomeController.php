@@ -8,6 +8,7 @@ use App\Models\PostingModel;
 use App\Models\PostingViewModel;
 use App\Models\PromotionModel;
 use App\Models\SubCategoryModel;
+use App\Models\SubscriptionModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,14 +20,15 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $categories  = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
-        $postings    = PostingModel::get()->sortBy('views_count');
-        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['top-banner'])->filterPromotion()->get();
+        $categories     = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
+        $subscriptions  = SubscriptionModel::get();
+        $postings       = PostingModel::get()->sortBy('views_count');
+        $placements     = PlacementModel::with(['promotions'])->whereIn('section',['top-banner'])->filterPromotion()->get();
 
         // $poromotions = PromotionModel::active()->whereBetween()
         $session     = session('status');
 
-        return Inertia::render('Landing/Home',compact('categories','postings','session','placements'));
+        return Inertia::render('Landing/Home',compact('categories','postings','session','subscriptions','placements'));
     }
 
     /**

@@ -94,7 +94,7 @@
                 </div>
                 <!-- End Section Top -->
                 <div class="row justify-content-center">
-                    <WhenVisible data="postings">
+                    <WhenVisible data="$props.postings">
                         <template #fallback>
                             <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;">
                                 <h6 class="text-primary">
@@ -119,6 +119,7 @@
             </div>
         </div>
         <!-- featuredJobOne Area --> 
+        <!-- Hero Area -->         
 
     </LandingLayout>
 </template>
@@ -141,9 +142,10 @@ import { isEmpty } from 'lodash';
 import { TrendingPosting } from '@/Components/Landing';
 
 const $props: any = defineProps({
-    categories: Array,
-    postings: Array,
-    placements: Array,
+    categories:    Array,
+    postings:      Array,
+    placements:    Array,
+    subscriptions: Array,
 });
 
 const $data: any   = reactive({

@@ -35,6 +35,16 @@ class CreateSubscriptionRequest extends FormRequest
                 'required',
                 'integer'
             ],
+            'features.for_professionals' => [
+                'sometimes',
+                'nullable',
+                'boolean'
+            ],
+            'features.for_businesses' => [
+                'sometimes',
+                'nullable',
+                'boolean'
+            ],              
             'name' => [
                 'string',
                 'required'

@@ -71,7 +71,17 @@
                                     text="Set 0 to disable this feature"
                                 />
                                 <p v-show="has($data.errors,'features.max_posts')" class="text-danger">{{ $data.errors['features.max_posts'] }}</p>              
-                            </CCol>                                                                                               
+                            </CCol>      
+                            <CCol md="12" class="mt-2">
+                                <CFormLabel for="active">For Businesses</CFormLabel>
+                                <CFormSwitch size="xl" v-model="$data.form.features.for_businesses" :label="$data.form.features.for_businesses ? 'Active' : 'Inactive'" id="active"/>
+                                <p v-show="has($data.errors,'features.for_businesses')" class="text-danger">{{ $data.errors['features.for_businesses'] }}</p>              
+                            </CCol>
+                            <CCol md="12" class="mt-2">
+                                <CFormLabel for="active">For Professionals</CFormLabel>
+                                <CFormSwitch size="xl" v-model="$data.form.features.for_professionals" :label="$data.form.features.for_professionals ? 'Active' : 'Inactive'" id="for_professionals"/>
+                                <p v-show="has($data.errors,'features.for_professionals')" class="text-danger">{{ $data.errors['features.for_professionals'] }}</p>              
+                            </CCol>                                                                                                                      
                         </CRow>
                     </CCol>
                 </CRow>
@@ -91,7 +101,7 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
 import { computed, inject, reactive, ref, watch } from 'vue';
-import { each, has, isEmpty, set, unset } from 'lodash';
+import { cloneDeep, each, has, isEmpty, set, unset } from 'lodash';
 import { boolean, number, object, string } from 'yup';
 
 const $data: any  = reactive({
@@ -100,7 +110,9 @@ const $data: any  = reactive({
         default:     Boolean(),
         description: String(),
         features:    {
-            max_posts: Number()
+            max_posts: Number(),
+            for_businesses: false,
+            for_professionals: false             
         },
         name:  String(),
         price: Number()
@@ -134,7 +146,9 @@ const formSchema: any = computed(
         description: string().required("*Description is required"),
         name:        string().required("*Name is required"),
         features:    object().shape({
-            max_posts: number().required("*Max of posts is required")
+            max_posts: number().required("*Max of posts is required"),
+            for_businesses:    boolean().nullable(),
+            for_professionals: boolean().nullable()            
         }),
         price:        number().required("*Price is required"),
     }) 
@@ -147,14 +161,19 @@ const formSchema: any = computed(
  *
  * @param {string} field - The name of the field to validate.
  */
-const validateForm = async (field:string) => {
+const validateForm = async (form:any) => {
     try {
         // Validate the field using the formSchema
-        await formSchema.value.validateAt(field, $data.form);
-		delete $data.errors[field];
-    } catch(error: any) {
+        await formSchema.value.validate(form,{ abortEarly: false, recursive: true});
+        // Validated ite
+        $data.errors  = {};
+    } catch({ inner }:any){
+        // Define data errors
+        let data:any = {};
+        // Walk through errors
+        inner.forEach( ({ path, message }:any) => { data[path] = message });
         // If the field is invalid, update the errors object with the error message
-        $data.errors[error.path] = error.message;
+        $data.errors = cloneDeep(data)
     } finally {
         // Update the isDisabled property based on the presence of errors
         $data.isDisabled = !isEmpty($data.errors);
@@ -180,7 +199,9 @@ const resetForm = () => {
     $data.form =  {
         description: String(), // Description of the subscription
         features:    {
-            max_posts: Number() // The maximum number of posts allowed
+            max_posts: Number(), // The maximum number of posts allowed
+            for_businesses: false,
+            for_professionals: false            
         },
         name:  String(), // Name of the subscription
         price: Number() // Price of the subscription
@@ -213,12 +234,7 @@ watch(
   () => $data.form, 
   (form) => {
     // Iterate over each field in the form and validate it
-    each(
-      form,
-      (value, key) => {
-        validateForm(key); // Validate the individual form field
-      }
-    );
+    validateForm(form);
   },
   { 
     deep: true, // Set to true to observe nested properties

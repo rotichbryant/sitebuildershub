@@ -25,6 +25,7 @@ use App\Http\Controllers\Landing\ChatController;
 use App\Http\Controllers\Landing\DashboardController;
 use App\Http\Controllers\Landing\MyPostingsController;
 use App\Http\Controllers\Landing\ProfileController as LandingProfileController;
+use App\Http\Controllers\Landing\SubscriptionController as LandingSubscriptionController;
 use App\Http\Controllers\Landing\TransactionController as LandingTransactionController;
 use App\Models\TransactionModel;
 use Illuminate\Foundation\Application;
@@ -44,6 +45,9 @@ Route::name('landing.')->group(function () {
         Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
         Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
         Route::get('/places',                  [GoogleMapsController::class, 'create'])->name('maps.places');
+        
+        Route::get('/subscriptions/{subscription}/checkout',[LandingSubscriptionController::class, 'create'])->name('subscription.checkout');
+        Route::get('/subscriptions',           [LandingSubscriptionController::class, 'index'])->name('subscription');
 
     });
     

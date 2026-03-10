@@ -8,6 +8,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -28,6 +29,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $appends = [
+        'activeSubscription',
         'name' // The full name of the user, based on first_name and last_name.
     ];
 
@@ -68,13 +70,18 @@ class User extends Authenticatable
         // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
     ];       
     
-    protected $with = [
-        'subscription'
-    ];
 
     public function getNameAttribute() {
         return "$this->first_name $this->last_name";
     }
+
+    public function getActiveSubscriptionAttribute() {
+        try {
+            return $this->subscription()->where('active',true)->firstOrFail()->subscription;
+        } catch(ModelNotFoundException $e){
+            return null;
+        }
+    }    
 
     /**
      * Get the attributes that should be cast.
@@ -164,17 +171,17 @@ class User extends Authenticatable
     /**
      * Get the postings that belong to the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostingModel>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\ProjectModel>
      */
     public function projects(): HasMany
     {
         /**
          * Define the relationship using the PostingModel class.
          * 
-         * @return HasMany<\App\Models\PostingModel>
+         * @return HasMany<\App\Models\ProjectModel>
          */
         return $this->hasMany(
-            related: PostingModel::class,
+            related: ProjectModel::class,
             /**
              * The foreign key on the `users` table that references the `id` column
              * on the `postings` table.
@@ -204,21 +211,26 @@ class User extends Authenticatable
             foreignKey: 'user_id',
         );
     }
-      
-    public function subscription(): HasOneThrough
+
+    public function subscription()
     {
-        /**
-         * Define the relationship using the BusinessProfileModel class.
-         * 
-         * @return HasMany<\App\Models\UserSubscriptionModel>
-         */
-        return $this->hasOneThrough(
-            related: SubscriptionModel::class,
-            through: UserSubscriptionModel::class,
-            firstKey: 'user_id',
-            secondKey: 'id',
-            localKey: 'id',
-            secondLocalKey: 'subscription_id',
-        );
-    }
+        return $this->hasOne(UserSubscriptionModel::class);
+    }   
+
+    // public function subscription(): HasOneThrough
+    // {
+    //     /**
+    //      * Define the relationship using the BusinessProfileModel class.
+    //      * 
+    //      * @return HasMany<\App\Models\UserSubscriptionModel>
+    //      */
+    //     return $this->hasOneThrough(
+    //         related: SubscriptionModel::class,
+    //         through: UserSubscriptionModel::class,
+    //         firstKey: 'user_id',
+    //         secondKey: 'id',
+    //         localKey: 'id',
+    //         secondLocalKey: 'subscription_id',
+    //     );
+    // }
 }

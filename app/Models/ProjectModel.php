@@ -26,6 +26,7 @@ use HasFactory, HasUuids;
     protected $fillable = [
         'content',
         'end_date',
+        'files',
         'title',
         'start_date',
         'user_id'
@@ -40,6 +41,23 @@ use HasFactory, HasUuids;
         'created_at' => 'datetime:M d, Y',
     ];       
     
+    /**
+     * Accessor to convert the stored images from JSON to a collection.
+     * 
+     * The images are stored in the database as a JSON string. This accessor
+     * will convert the JSON string to a collection of image paths.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getFilesAttribute(): \Illuminate\Support\Collection
+    {
+        return collect(json_decode($this->attributes['files']))
+            ->map(function ($file) {
+                // Convert the image path to an absolute URL
+                return asset('storage/images/' . $file);
+            });
+    }
+
     /**
      * Get the user that owns the posting.
      *

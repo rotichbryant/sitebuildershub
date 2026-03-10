@@ -1,9 +1,9 @@
 <template>
-    <CCard class="mb-4" id="mail">
+    <CCard class="mb-4 shadow-0 border-0" id="mail">
         <CCardBody>
             <CCol md="12">
                 <CCardTitle>SMTP Settings</CCardTitle>
-                <CCol md="4 ">
+                <CCol md="6">
                     <CFormInput
                         type="text"
                         label="Mail Host"

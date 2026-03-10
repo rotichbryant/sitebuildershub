@@ -1,5 +1,5 @@
 <template>
-    <CCard class="mb-4" id="logo-icon">
+    <CCard class="mb-4 shadow-sm border-0" id="logo-icon">
         <CCardBody>
             <CCol md="12">
                 <CCol md="6">

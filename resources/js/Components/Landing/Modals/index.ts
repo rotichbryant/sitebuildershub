@@ -1,4 +1,5 @@
 export { default as CreateAdvert } from './CreateAdvert.vue'
+export { default as CreateProject } from './CreateProject.vue'
 export { default as CreateStore } from './CreateStore.vue'
 export { default as CropImage } from './CropImage.vue'
 export { default as Login } from './Login.vue'

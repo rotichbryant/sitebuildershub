@@ -89,6 +89,7 @@ class SignupController extends Controller
             ]);
             
             UserSubscriptionModel::create([
+                'active'          => true,
                 'subscription_id' => $subscription->id,
                 'user_id'         => $user->id,
             ]);        

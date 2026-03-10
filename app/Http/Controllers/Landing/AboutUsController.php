@@ -13,6 +13,7 @@ class AboutUsController extends Controller
     public function index()
     {
         //
+        phpinfo();
     }
 
     /**

@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Landing;
 
 use App\Exceptions\PesapalException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Landing\SubscriptionCheckoutRequest;
 use App\Models\PlacementModel;
 use App\Models\PostingModel;
 use App\Models\PromotionModel;
+use App\Models\SubscriptionModel;
 use App\Models\TransactionModel;
+use App\Models\UserSubscriptionModel;
 use App\Services\PesaPalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class TransactionController extends Controller
@@ -76,6 +80,76 @@ class TransactionController extends Controller
         }
     }
 
+    public function subscription_complete(Request $request, UserSubscriptionModel $user_subscription,PesaPalService $pesapal){
+       
+        $query                  = $request->query();
+        $auth                   = $pesapal->authenticate();
+        $order                  = $pesapal->transactionStatus($query['OrderTrackingId'],$auth->token);     
+        $update_data            = Arr::only($order,['status','status_code','reference','confirmation_code','payment_method']);    
+        $update_data['paid_at'] = $order['created_date'];
+
+        $user_subscription->transaction()->update($update_data);   
+        $transaction = $user_subscription->transaction;
+
+        $user_subscription->update(['active' => true]);
+
+        return Inertia::render('Landing/PaymentSuccess',compact('transaction','user_subscription'));    
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function subscription(PesaPalService $pesapal, SubscriptionCheckoutRequest $request)
+    {
+        try {
+
+            $validated            = $request->validated();
+            $user_subscription    = UserSubscriptionModel::find($validated['user_subscription']);
+            $subscription         = $user_subscription->subscription;
+
+            $ipn_data             = [
+                'ipn_notification_type' => 'GET',
+                'url'                   => route('landing.transactions.subscription.complete',['user_subscription' => $user_subscription->id])
+            ];
+            
+            $auth                 = $pesapal->authenticate();
+            $ipn                  = $pesapal->registerIPN($ipn_data,$auth->token);
+            $order_data           = [
+                'id'              => Str::random(10),
+                'currency'        => 'KES',
+                'amount'          => ($subscription->price * $validated['months']),
+                'description'     => $subscription->description,
+                'callback_url'    => route('landing.transactions.subscription.complete',['user_subscription' => $user_subscription->id]),
+                'notification_id' => $ipn['ipn_id'],
+                'billing_address' => [
+                    'first_name'   => $user_subscription->user->first_name,
+                    'last_name'    => $user_subscription->user->last_name,
+                    'phone_number' => $user_subscription->user->phone_number,
+                    'email'        => $user_subscription->user->email
+                ]
+            ];
+
+            $order       = $pesapal->order($order_data,$auth->token);
+
+            print_r($order);
+
+            $transaction = new TransactionModel([
+                'amount'            => $order_data['amount'],
+                'tracking_id'       => $order['order_tracking_id'],
+            ]);
+
+            $transaction->sourceable()->associate($subscription);
+            $transaction->targetable()->associate($user_subscription);
+            $transaction->user()->associate($user_subscription->user);
+            $transaction->save();
+
+            return back()->with('data',compact('order'));
+
+        } catch(PesapalException $error){
+            dd($error);
+        }
+    }
+    
     /**
      * Store a newly created resource in storage.
      */

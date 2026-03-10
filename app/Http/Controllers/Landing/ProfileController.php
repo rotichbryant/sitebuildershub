@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\BusinessProfileRequest;
+use App\Http\Requests\Landing\CreateProjectRequest;
 use App\Http\Requests\Landing\CreateStoreRequest;
+use App\Http\Requests\Landing\ProfileFileUploadRequest;
 use App\Models\BusinessProfileModel;
 use App\Models\BusinessStoreModel;
+use App\Models\ProjectModel;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Intervention\Image\Laravel\Facades\Image;  // facade
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -35,11 +40,19 @@ class ProfileController extends Controller
         ];
 
         $user           = auth('client')->user();
+        $subscription   = $user->activeSubscription;
+
+        if( !$subscription->features->for_professionals && $tab == 'projects'){
+            return redirect(route('landing.subscription'));
+        }
 
         switch($tab){
             case 'personal':
-                $data['user']             = $user;
+                $data['user']     = $user;
             break;
+            case 'projects':
+                $data['projects'] = $user->projects;
+            break;            
             case 'business':
                 $data['maps']              = config('services.google');
                 $data['business_profile']  = $user->business_profile;
@@ -107,6 +120,52 @@ class ProfileController extends Controller
         return back()->with([
             'message' => 'Business Store Created Successfully'
         ]);
+    }
+
+        /**
+     * Store a newly created resource in storage.
+     */
+    public function project_store(CreateProjectRequest $request)
+    {
+        //
+        $validated = $request->validated();
+        $user       = auth('client')->user();
+
+        $validated['user_id'] = $user->id;
+        $validated['files']   = json_encode($validated['files']);
+        
+        ProjectModel::create($validated);
+
+        return back()->with([
+            'message' => 'Project has been added'
+        ]);
+    }
+
+    
+    /**
+     * Display the specified resource.
+     */
+    public function project_store_file(ProfileFileUploadRequest $request)
+    {
+        //
+        $uploaded = $request->file('file');
+        $name     = Str::uuid().'.'.$uploaded->getClientOriginalExtension();
+
+        $image = Image::read($uploaded);
+        $cropped = $image->cover(1024,720,50,50);
+
+        $cropped->save(storage_path('app/public/images/'.$name));
+
+        return response()->json(array('name' => $name ));
+    } 
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function forbidden()
+    {
+        return Inertia::render('Landing/Forbidden');
     }
 
     /**

@@ -2,18 +2,18 @@
 <AuthenticatedLayout>
     <Head title="Advert Placement" />
     <CRow>
+        <CCol md="6">
+            <h4>Advert Placements</h4>
+            <p class="text-muted">This section specifies areas where adverts can be placed and how much those sections cost.</p>
+        </CCol>
+        <CCol md="6">
+            <CButton color="primary" class="float-end" @click="showModal = true">Create placement</CButton>
+        </CCol>                    
+    </CRow>    
+    <CRow>
         <CCol xs="12">
-        <CCard class="mb-4">
+        <CCard class="mb-4 border-0 shadow-sm">
             <CCardBody> 
-                <CRow>
-                    <CCol md="6">
-                        <h4>Advert Placements</h4>
-                        <p class="text-muted">This section specifies areas where adverts can be placed and how much those sections cost.</p>
-                    </CCol>
-                    <CCol md="6">
-                        <CButton color="primary" class="float-end" @click="showModal = true">Create placement</CButton>
-                    </CCol>                    
-                </CRow>
                 <CTable>
                     <CTableHead>
                         <CTableRow>

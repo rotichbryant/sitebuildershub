@@ -8,10 +8,10 @@
             </CCol>
             <CCol md="12"> 
                 <CRow>
-                    <CCol md="12">
-                        <CCard class="mb-4" id="logo-icon">
+                    <CCol md="6" xs="12">
+                        <CCard class="mb-4 shadow-sm border-0" id="logo-icon">
                             <CCardBody>
-                                <CCol md="4">
+                                <CCol md="6">
                                     <CRow>
                                         <CCol md="12">
                                             <CFormInput

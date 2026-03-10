@@ -1,23 +1,46 @@
 <template>
     <LandingLayout>
         <Head title="Profile" />
-        <div class="container-fluid pt-26 pb-15">
+        <div class="container-fluid pt-18 pb-15">
             <div class="row justify-content-center">
                     <div class="col-md-8 col-xs-12">
                         <div class="row">
                             <div class="col-md-3 col-xs-8">
-                                <ul class="list-group mb-4">
+                                <ul class="list-group mb-4 border-0 shadow-sm">
                                     <li :class="`list-group-item ${$props.tab == 'personal' ? 'active' : '' }`">
                                         <a :href="route('landing.profile', { tab: 'personal' })" :class="`${$props.tab == 'personal' ? 'text-white' : '' }`">Personal Details</a>
                                     </li>
+                                    <li :class="`list-group-item ${$props.tab == 'projects' ? 'active' : '' }`">
+                                        <a 
+                                            :href="`${ subscription.features.for_professionals ? route('landing.profile', { tab: 'projects' }) : '#'}`" 
+                                            :class="{ 'text-white': $props.tab == 'projects', 'text-muted': !subscription.features.for_professionals }" 
+                                            :disabled="!subscription.features.for_professionals"
+                                        >
+                                            <i class="fa fa-lock" v-if="!subscription.features.for_professionals"></i>
+                                            Project Detail
+                                            <i class="fa fa-question-circle" v-if="!subscription.features.for_businesses"></i>
+                                        </a>
+                                    </li>
                                     <li :class="`list-group-item ${$props.tab == 'business' ? 'active' : '' }`">
+                                        <a 
+                                            :href="`${ subscription.features.for_businesses ? route('landing.profile', { tab: 'business' }) : '#'}`" 
+                                            :class="{ 'text-white': $props.tab == 'projects', 'text-muted': !subscription.features.for_businesses }" 
+                                            :disabled="!subscription.features.for_businesses"
+                                        >
+                                            <i class="fa fa-lock" v-if="!subscription.features.for_businesses"></i>
+                                            Business Details
+                                            <i class="fa fa-question-circle" v-if="!subscription.features.for_businesses"></i>
+                                        </a>
+                                    </li>                                    
+                                    <li :class="`list-group-item ${$props.tab == 'business' ? 'active' : '' }`" v-if="subscription.features.for_businesses">
                                         <a :href="route('landing.profile', { tab: 'business' })" :class="`${$props.tab == 'business' ? 'text-white' : '' }`">Business Details</a>
                                     </li>
                                 </ul>                                
                             </div>
                             <div class="col-md-9 col-xs-12 ">
                                 <PersonalDetailsTab v-if="$props.tab == 'personal'" />
-                                <BusinessDetailsTab v-if="$props.tab == 'business'" />
+                                <ProjectDetailsTab v-if="$props.tab == 'projects' && subscription.features.for_professionals" />
+                                <BusinessDetailsTab v-if="$props.tab == 'business' && subscription.features.for_businesses" />
                             </div>
                     </div>
                 </div>
@@ -60,10 +83,12 @@
     } */
 </style>
 <script lang="ts" setup>
-import { BusinessDetailsTab, PersonalDetailsTab } from '@/Components/Landing';
+import { BusinessDetailsTab, PersonalDetailsTab, ProjectDetailsTab } from '@/Components/Landing';
 import { LandingLayout } from '@/Layouts';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-const $props = computed( () => usePage().props );
+const $props: any = computed( () => usePage().props );
+
+const subscription: any = computed( () => $props.value.auth.user.activeSubscription );
 </script>

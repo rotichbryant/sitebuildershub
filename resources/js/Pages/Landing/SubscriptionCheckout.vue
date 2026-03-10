@@ -41,11 +41,11 @@
                                             <ul class="list-unstyled"> 
                                                 <li class="mb-2 text-black-2 d-flex font-size-4 justify-content-between">                                        
                                                     <span><i class="fas fa-check font-size-3 text-black-2 mr-3"></i>Start Date:</span>
-                                                    <span><strong>{{ $data.selection.start_date }}</strong></span>
+                                                    <span><strong>{{ $data.form.start_date }}</strong></span>
                                                 </li>
                                                 <li class="mb-2 text-black-2 d-flex font-size-4 justify-content-between">                                        
                                                     <span><i class="fas fa-check font-size-3 text-black-2 mr-3"></i>End Date:</span>
-                                                    <span><strong>{{ $data.selection.end_date }}</strong></span>
+                                                    <span><strong>{{ $data.form.end_date }}</strong></span>
                                                 </li>                                                                                                
                                                 <li class="mb-2 text-black-2 d-flex font-size-4 justify-content-between">                                        
                                                     <span><i class="fas fa-check font-size-3 text-black-2 mr-3"></i>Price:</span>
@@ -53,18 +53,18 @@
                                                 </li>
                                                 <li class="mb-2 text-black-2 d-flex font-size-4 justify-content-between">                                        
                                                     <span><i class="fas fa-check font-size-3 text-black-2 mr-3"></i>Months:</span>
-                                                    <span><strong>{{ $data.selection.months }}</strong></span>
+                                                    <span><strong>{{ $data.form.months }}</strong></span>
                                                 </li>
                                                 <li class="mb-2 text-black-2 d-flex font-size-4 justify-content-between">                                        
                                                     <span><i class="fas fa-check font-size-3 text-black-2 mr-3"></i>Total:</span>
-                                                    <span><strong>{{ subscription.price * $data.selection.months }}</strong></span>
+                                                    <span><strong>{{ subscription.price * $data.form.months }}</strong></span>
                                                 </li>                                                                                                                                                                                                                                            
                                             </ul>  
                                         </div>
                                     </div>                                  
                                 </div>
 
-                                <button type="button" class="btn btn-primary w-100" id="checkoutBtn">
+                                <button type="button" class="btn btn-primary w-100" id="checkoutBtn" @click="submit">
                                 Complete Checkout
                                 </button>
                             </form>
@@ -119,8 +119,8 @@ const $data: any  = reactive({
         months:            1
     },
     form: {
-        subscription_id:   String(),
         subscription_type: String(),
+        user_id:           !isEmpty(pageProps.value.auth.user) ? pageProps.value.auth.user.id : ""
     }
 });
 
@@ -133,27 +133,34 @@ const $data: any  = reactive({
 const submit = async () => {
     const form    = { 
         ...$data.form, 
+        subscription_id: subscription.value.id,
         _token: pageProps.value.csrf_token
     };
 
     useForm(form).post(
-        route('landing.subscription.store'), 
+        route('landing.subscriptions.store'), 
         {
+
             onSuccess: ({ props}: any) => {
-                toast.success(props.flash.message);
-                create_transaction()
+                let { user_subscription } = props.data;
+                create_transaction(user_subscription)
             },
         }
     );        
 };
 
-const create_transaction = async () => {
-    router.put(
-        route('landing.transactions.subscription.create',{ subscription: pageProps.subscription.id }),
-        {},
+const create_transaction = async (subscription:any) => {
+    router.post(
+        route('landing.transactions.subscription.create'),
+        { 
+            user_subscription: subscription.id ,
+            months:            $data.form.months,
+            type:              $data.form.subscription_type,
+            _token:            pageProps.value.csrf_token 
+        },
         {
-            onSuccess: ({ props: { data: { subscription } } }: any) => {
-                window.location.href = subscription.redirect_url;
+            onSuccess: ({ props: { data: { order } } }: any) => {
+                window.location.href = order.redirect_url;
             }
         }
     );
@@ -161,8 +168,8 @@ const create_transaction = async () => {
 
 const subscription_type = (type: string) => {
     $data.form.subscription_type = type;
-    $data.selection.months       = type == 'yearly' ? 12 : 1;
-    $data.selection.start_date   = moment().format('Do MMMM YYYY');
-    $data.selection.end_date     = type == 'yearly' ? moment().add(12,'months').format('Do MMMM YYYY') : moment().add(1,'months').format('Do MMMM YYYY')
+    $data.form.months      = type == 'yearly' ? 12 : 1;
+    $data.form.start_date  = moment().format('Do MMMM YYYY');
+    $data.form.end_date    = type == 'yearly' ? moment().add(12,'months').format('Do MMMM YYYY') : moment().add(1,'months').format('Do MMMM YYYY')
 }
 </script>

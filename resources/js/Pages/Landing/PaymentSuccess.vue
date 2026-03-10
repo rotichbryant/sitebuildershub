@@ -49,12 +49,26 @@
 <script lang="ts" setup>
 import { LandingLayout } from '@/Layouts'
 import { Head } from '@inertiajs/vue3';
+import { has } from 'lodash';
 import { onMounted } from 'vue';
 
 const $props: any = defineProps({
     transaction: Object,
-    user:        Object
+    user:        Object,
+    user_subscription: Object
 });
 
-onMounted( () => setTimeout( () => { window.location.href = route('landing.mypostings') },1500) );
+onMounted( 
+    () => setTimeout( 
+        () => { 
+            if( has($props,'user') ){
+                window.location.href = route('landing.mypostings') 
+            }
+            if( has($props,'user_subscription') ){
+                window.location.href = route('landing.profile') 
+            }            
+        },
+        1500
+    ) 
+);
 </script>

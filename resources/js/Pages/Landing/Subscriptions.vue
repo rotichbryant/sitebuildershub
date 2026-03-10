@@ -100,5 +100,5 @@ import { isEmpty, isNull } from 'lodash';
 import { computed } from 'vue';
 
 const $props: any       = defineProps({ auth: Object, subscriptions: Array });
-const auth_subscription = computed( () => !isEmpty($props.auth) ? $props.auth.user.subscription : null )
+const auth_subscription = computed( () => !isEmpty($props.auth.user) ? $props.auth.user.activeSubscription : null )
 </script>

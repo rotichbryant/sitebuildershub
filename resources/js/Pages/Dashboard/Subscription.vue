@@ -2,18 +2,18 @@
 <AuthenticatedLayout>
     <Head title="Subscriptions" />
     <CRow>
+        <CCol md="6">
+            <h4>Subscriptions</h4>
+            <p class="text-muted">This page shows a list of all subscriptions on the platform. You can view the subscription details and search for specific subscriptions using the search bar.</p>
+        </CCol>
+        <CCol md="6">
+            <CButton color="primary" class="float-end" @click="showModal = true">Create Subscription</CButton>
+        </CCol>                    
+    </CRow>    
+    <CRow>
         <CCol xs="12">
-        <CCard class="mb-4">
+        <CCard class="mb-4 shadow-sm border-0">
             <CCardBody> 
-                <CRow>
-                    <CCol md="6">
-                        <h4>Subscriptions</h4>
-                        <p class="text-muted">This page shows a list of all subscriptions on the platform. You can view the subscription details and search for specific subscriptions using the search bar.</p>
-                    </CCol>
-                    <CCol md="6">
-                        <CButton color="primary" class="float-end" @click="showModal = true">Create Subscription</CButton>
-                    </CCol>                    
-                </CRow>
                 <CTable>
                     <CTableHead>
                         <CTableRow>
@@ -159,6 +159,6 @@ const $delete = async (value:any) => {
 }
 
 onMounted( () => {
-  $data.subscriptions = $props.subscription
+//   $data.subscriptions = $props.subscription
 })
 </script>

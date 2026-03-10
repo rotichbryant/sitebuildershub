@@ -8,13 +8,10 @@
             </CCol>
             <CCol md="12"> 
                 <CRow>
-                    <CCol md="12">
+                    <CCol md="6" xs="12">
                         <CCard class="mb-4" id="logo-icon">
-                            <CCardHeader>
-                                <strong>Profile</strong>
-                            </CCardHeader>
                             <CCardBody>
-                                <CCol md="4">
+                                <CCol md="12">
                                     <CRow>
                                         <CCol md="12">
                                             <label>Avatar</label>

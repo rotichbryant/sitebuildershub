@@ -32,6 +32,7 @@
         "vue-tsc": "^2.0.24"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^41.4.2",
         "@coreui/chartjs": "^4.0.0",
         "@coreui/coreui": "^5.2.0",
         "@coreui/icons": "^3.0.1",
@@ -39,9 +40,11 @@
         "@coreui/utils": "^2.0.2",
         "@coreui/vue": "^5.4.1",
         "@coreui/vue-chartjs": "^3.0.0",
+        "@mayasabha/ckeditor4-vue3": "^1.0.9",
         "@popperjs/core": "^2.11.8",
         "@types/dropzone": "^5.7.9",
         "@types/jquery": "^3.5.32",
+        "@vueup/vue-quill": "^1.2.0",
         "animate.css": "^4.1.1",
         "aos": "^3.0.0-beta.6",
         "chart.js": "^4.4.4",

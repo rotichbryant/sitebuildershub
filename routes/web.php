@@ -48,6 +48,10 @@ Route::name('landing.')->group(function () {
         
         Route::get('/subscriptions/{subscription}/checkout',[LandingSubscriptionController::class, 'create'])->name('subscription.checkout');
         Route::get('/subscriptions',           [LandingSubscriptionController::class, 'index'])->name('subscription');
+        Route::post('/subscriptions',          [LandingSubscriptionController::class, 'store'])->name('subscriptions.store');
+        
+        Route::get('/transactions/subscription/{user_subscription}/complete', [LandingTransactionController::class, 'subscription_complete'])->name('transactions.subscription.complete');
+        Route::post('/transactions/subscription/create',                      [LandingTransactionController::class, 'subscription'])->name('transactions.subscription.create');
 
     });
     
@@ -69,8 +73,12 @@ Route::name('landing.')->group(function () {
         Route::get('/chat',                    [ChatController::class, 'index'])->name('chat');
         Route::get('/profile/{tab}',           [LandingProfileController::class, 'create'])->name('profile');
         Route::post('/profile/business/store', [LandingProfileController::class, 'business_store'])->name('profile.business.store');
+        Route::post('/profile/project/store',  [LandingProfileController::class, 'project_store'])->name('profile.project.store');
+        Route::post('/profile/project/file',   [LandingProfileController::class, 'project_store_file'])->name('profile.project.file');
         Route::post('/profile/business',       [LandingProfileController::class, 'business'])->name('profile.business');
+        Route::post('/profile/projects',       [LandingProfileController::class, 'projects'])->name('profile.project');
         Route::post('/profile/personal',       [LandingProfileController::class, 'personal'])->name('profile.personal');
+        Route::post('/forbidden',              [LandingProfileController::class, 'forbidden'])->name('forbidden');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
     });
 });

@@ -36,3 +36,20 @@
   opacity: 1 !important;
   transform: none !important;
 } */
+
+.glass-card {
+  /* 1. Semi-transparent background using rgba() */
+  background: rgba(255, 255, 255, 0.2); 
+  
+  /* 2. Apply the blur effect to the background */
+  backdrop-filter: blur(10px);
+  /* Include -webkit- prefix for maximum compatibility */
+  -webkit-backdrop-filter: blur(10px); 
+  
+  /* 3. Add other stylistic properties */
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 20px;
+  color: white; /* Ensure text is readable */
+}

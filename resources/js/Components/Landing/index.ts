@@ -9,6 +9,7 @@ export { default as BusinessDetailsTab } from './Tabs/BusinessDetails.vue';
 export { default as PersonalDetailsTab } from './Tabs/PersonalDetails.vue';
 export { default as ProjectDetailsTab } from './Tabs/ProjectDetails.vue';
 
+export { default as Comment } from './Comment.vue';
 
 // Components
 export { default as TrendingPosting } from './TrendingPosting.vue';

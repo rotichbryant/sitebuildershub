@@ -24,7 +24,9 @@ class CommentModel extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'message'
+        'message',
+        'posting_id',
+        'user_id'
     ];
 
     /**

@@ -74,13 +74,13 @@ class PostingController extends Controller
     public function show(Request $request)
     {
         $title   = $request->query('title');
-        $posting = PostingModel::with(['categories'])->where('title', $title)->first();
+        $posting = PostingModel::with(['categories','comments.user'])->where('title', $title)->first();
         $visited = $posting->views()->where('ip',$request->ip())->whereDate('created_at', '=',now()->format('Y-m-d'))->first();
 
         if( empty($visited) ){
             $posting->views()->create([ 'ip' => $request->getClientIp() ]);
         }
-                                
+
         return Inertia::render('Landing/ViewPosting',compact('posting'));
     }
 

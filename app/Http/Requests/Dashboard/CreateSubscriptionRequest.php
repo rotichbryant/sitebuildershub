@@ -44,7 +44,12 @@ class CreateSubscriptionRequest extends FormRequest
                 'sometimes',
                 'nullable',
                 'boolean'
-            ],              
+            ],     
+            'features.can_comment' => [
+                'sometimes',
+                'nullable',
+                'boolean'
+            ],                         
             'name' => [
                 'string',
                 'required'

@@ -112,6 +112,16 @@ class PostingModel extends Model
     {
         return $this->hasMany(PostingCategoryModel::class,'posting_id');
     }  
+
+    /**
+     * Retrieve the comments associated with the posting.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\CommentModel>
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(CommentModel::class,'posting_id');
+    }
     
     /**
      * Get the promotions associated with the posting.

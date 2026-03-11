@@ -86,7 +86,12 @@
                                 <CFormLabel for="active">For Professionals</CFormLabel>
                                 <CFormSwitch size="xl" v-model="$data.form.features.for_professionals" :label="$data.form.features.for_professionals ? 'Active' : 'Inactive'" id="for_professionals"/>
                                 <p v-show="has($data.errors,'features.for_professionals')" class="text-danger">{{ $data.errors['features.for_professionals'] }}</p>              
-                            </CCol>                                                                                                                                                     
+                            </CCol> 
+                            <CCol md="12" class="mt-2">
+                                <CFormLabel for="active">Can Comment ?</CFormLabel>
+                                <CFormSwitch size="xl" v-model="$data.form.features.can_comment" :label="$data.form.features.can_comment ? 'Active' : 'Inactive'" id="can_comment"/>
+                                <p v-show="has($data.errors,'features.can_comment')" class="text-danger">{{ $data.errors['features.can_comment'] }}</p>              
+                            </CCol>                                                                                                                                                                                 
                         </CRow>
                     </CCol>
                 </CRow>
@@ -116,9 +121,10 @@ const $data: any  = reactive({
         default:     Boolean(),
         description: String(),
         features:    {
-            max_posts: Number(),
-            for_businesses: false,
-            for_professionals: false
+            can_comment:       false,
+            max_posts:         Number(),
+            for_businesses:    false,
+            for_professionals: false   
         },
         name:  String(),
         price: Number()
@@ -159,7 +165,8 @@ const formSchema: any = computed(
         features:    object().shape({
             max_posts:         number().required("*Max of posts is required"),
             for_businesses:    boolean().nullable(),
-            for_professionals: boolean().nullable()
+            for_professionals: boolean().nullable(),
+            can_comment:       boolean().nullable()
         }),
         price:        number().required("*Price is required"),
     }) 

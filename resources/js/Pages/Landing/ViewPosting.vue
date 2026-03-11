@@ -66,6 +66,8 @@
                                         <p class="font-size-4 mb-8">{{ posting.description }}</p>                                          
                                     </div>
                                 </div>
+                                <Comments />                                
+                                <Comment v-if="!isEmpty(props.auth.user)" />
                             </div>
                             <!-- Middle Content -->
                             <!-- Right Sidebar Start -->
@@ -87,9 +89,6 @@
                                         <a :href="`https://wa.me/${posting.user.phone_number}`" v-if="!isEmpty(posting.user.phone_number)" target="_blank" class="btn btn-outline-primary w-100">Chat on Whatsapp</a>                                
                                     </div>
                                     <!-- Top End -->
-                                </div>
-                                <div class="bg-white shadow-9 rounded-4 p-6" >
-                                    <h4>Feedback</h4>                       
                                 </div>                                             
                             </div>
                             <!-- Right Sidebar End -->
@@ -111,6 +110,8 @@ import InnerImageZoom from 'vue-inner-image-zoom';
 // import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css';
 import { inject, reactive } from 'vue';
 import moment from 'moment';
+import Comment from '@/Components/Landing/Comment.vue';
+import Comments from '@/Components/Landing/Comments.vue';
 
 const $toast: any = inject('$toast');
 const posting: any = usePage().props.posting;
@@ -122,6 +123,11 @@ const $data: any   = reactive({
         fetch: false
     }
 });
+const props: any = defineProps({
+    auth: {
+        type: Object
+    }
+})
 
 const getQuote = async () => {
     try{ 

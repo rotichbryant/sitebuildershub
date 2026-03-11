@@ -22,6 +22,7 @@ use App\Http\Controllers\Dashboard\SystemController;
 use App\Http\Controllers\Dashboard\TransactionController;
 use App\Http\Controllers\GoogleMapsController;
 use App\Http\Controllers\Landing\ChatController;
+use App\Http\Controllers\Landing\CommentController;
 use App\Http\Controllers\Landing\DashboardController;
 use App\Http\Controllers\Landing\MyPostingsController;
 use App\Http\Controllers\Landing\ProfileController as LandingProfileController;
@@ -69,6 +70,8 @@ Route::name('landing.')->group(function () {
         
         Route::get('transactions/{promotion}/complete',[LandingTransactionController::class, 'update'])->name('transactions.promotion.complete');
         Route::put('transactions/{promotion}/create',  [LandingTransactionController::class, 'create'])->name('transactions.promotion.create');
+
+        Route::post('/comments/{posting}/store',[CommentController::class, 'store'])->name('comments.store');
 
         Route::get('/chat',                    [ChatController::class, 'index'])->name('chat');
         Route::get('/profile/{tab}',           [LandingProfileController::class, 'create'])->name('profile');

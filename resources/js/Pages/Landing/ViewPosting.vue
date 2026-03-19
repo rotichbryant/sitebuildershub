@@ -81,7 +81,8 @@
                                 <div class="bg-white shadow-9 rounded-4 mb-6">
                                     <div class="p-5 text-center border-bottom border-mercury">
                                         <div class="mb-6">
-                                            <i class="fa fa-circle-user fa-xl circle-40 font-size-12 text-center font-weight-bold shadow-8 mx-auto"></i>
+                                            <i class="fa fa-circle-user fa-xl circle-40 font-size-12 text-center font-weight-bold shadow-8 mx-auto" v-if="isEmpty(posting.user.picture)"></i>
+                                            <img v-if="!isEmpty(posting.user.picture)" :src="posting.user.pictureUrl" width="200" class="avatar" />
                                         </div>
                                         <h4 class="mb-0"><a class="text-black-2 font-size-6 font-weight-semibold" href="#">{{ posting.user.name }}</a></h4>
                                         <h5 class="font-size-4 font-weight-semibold mb-0 text-black-2 text-break">{{ posting.town }}, {{ posting.county }}</h5>

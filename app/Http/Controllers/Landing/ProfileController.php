@@ -7,9 +7,11 @@ use App\Http\Requests\Landing\BusinessProfileRequest;
 use App\Http\Requests\Landing\CreateProjectRequest;
 use App\Http\Requests\Landing\CreateStoreRequest;
 use App\Http\Requests\Landing\ProfileFileUploadRequest;
+use App\Http\Requests\Landing\StorePersonalProfile;
 use App\Models\BusinessProfileModel;
 use App\Models\BusinessStoreModel;
 use App\Models\ProjectModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Intervention\Image\Laravel\Facades\Image;  // facade
@@ -66,9 +68,21 @@ class ProfileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function personal(StorePersonalProfile $request)
     {
         //
+
+        $validated = $request->validated();
+
+        print_r($validated);
+        
+        $user = auth()->user();
+
+        User::find($user->id)->update($validated);
+
+        return back()->with([
+            'message' => 'Profile Updated Successfully'
+        ]);        
     }
 
     /**
@@ -140,6 +154,25 @@ class ProfileController extends Controller
             'message' => 'Project has been added'
         ]);
     }
+
+        
+    /**
+     * Display the specified resource.
+     */
+    public function personal_store_image(ProfileFileUploadRequest $request)
+    {
+        //
+        $uploaded = $request->file('file');
+        $name     = Str::uuid().'.'.$uploaded->getClientOriginalExtension();
+
+        $image = Image::read($uploaded);
+        $cropped = $image->cover(1200,720,50,50);
+
+        $cropped->save(storage_path('app/public/images/'.$name));
+
+        return response()->json(array('name' => $name ));
+    } 
+
 
     
     /**

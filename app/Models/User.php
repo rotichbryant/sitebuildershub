@@ -30,6 +30,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'activeSubscription',
+        'pictureUrl',
         'name' // The full name of the user, based on first_name and last_name.
     ];
 
@@ -46,6 +47,8 @@ class User extends Authenticatable
         'email_verified_at',
         'password',
         'role_id',
+        'picture',
+        'phone_number',
         'token'
     ];
 
@@ -74,6 +77,10 @@ class User extends Authenticatable
     public function getNameAttribute() {
         return "$this->first_name $this->last_name";
     }
+
+    public function getPictureUrlAttribute() {
+        return !empty($this->picture) ? asset('storage/images/' . $this->picture) : null; 
+    }    
 
     public function getActiveSubscriptionAttribute() {
         try {

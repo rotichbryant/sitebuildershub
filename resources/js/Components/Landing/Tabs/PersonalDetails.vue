@@ -169,7 +169,7 @@ const getPhoneNumber = ($event) => {
     // Check if the event is a string or not.
     // If it's a string, assign it to the phone number field.
     // If it's an event object, assign the value of the target to the phone number field.
-    $data.form.phone_number = $event.constructor == String ? $event : $event.target.value.trim()
+    $data.form.phone_number = $event.constructor == String ? $event : $event.target.value
 }
 
 /**

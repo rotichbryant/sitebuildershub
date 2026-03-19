@@ -78,6 +78,7 @@ Route::name('landing.')->group(function () {
         Route::post('/profile/business/store', [LandingProfileController::class, 'business_store'])->name('profile.business.store');
         Route::post('/profile/project/store',  [LandingProfileController::class, 'project_store'])->name('profile.project.store');
         Route::post('/profile/project/file',   [LandingProfileController::class, 'project_store_file'])->name('profile.project.file');
+        Route::post('/profile/personal/image', [LandingProfileController::class, 'personal_store_image'])->name('profile.personal.image');
         Route::post('/profile/business',       [LandingProfileController::class, 'business'])->name('profile.business');
         Route::post('/profile/projects',       [LandingProfileController::class, 'projects'])->name('profile.project');
         Route::post('/profile/personal',       [LandingProfileController::class, 'personal'])->name('profile.personal');

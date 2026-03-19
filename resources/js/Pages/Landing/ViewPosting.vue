@@ -86,7 +86,7 @@
                                         <h4 class="mb-0"><a class="text-black-2 font-size-6 font-weight-semibold" href="#">{{ posting.user.name }}</a></h4>
                                         <h5 class="font-size-4 font-weight-semibold mb-0 text-black-2 text-break">{{ posting.town }}, {{ posting.county }}</h5>
                                         <h5 class="font-size-4 font-weight-semibold mb-3" v-if="!isEmpty(posting.user.phone_number)"><a class="text-black-2 text-break" :href="`tel:${posting.user.phone_number}`">{{ posting.user.phone_number }}</a></h5>
-                                        <a :href="`https://wa.me/${posting.user.phone_number}`" v-if="!isEmpty(posting.user.phone_number)" target="_blank" class="btn btn-outline-primary w-100">Chat on Whatsapp</a>                                
+                                        <a :href="`https://wa.me/${posting.user.phone_number.replace('+','').replaceAll(/\s/g,'')}`" v-if="!isEmpty(posting.user.phone_number)" target="_blank" class="btn btn-outline-primary w-100">Chat on Whatsapp</a>                                
                                     </div>
                                     <!-- Top End -->
                                 </div>                                             

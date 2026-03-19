@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <label class="mb-1">Phone Number</label>
                                 <VueTelInput 
-                                    :value="$data.form.phone_number"
+                                    :value="$data.form.phone_number ?? '' "
                                     @input="getPhoneNumber" 
                                     defaultCountry="KE" 
                                     :inputOptions="{ styleClasses: 'form-control bg-white', placeholder: 'Phone Number' }" 

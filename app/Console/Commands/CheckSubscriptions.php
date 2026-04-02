@@ -33,7 +33,7 @@ class CheckSubscriptions extends Command
         $users = User::all();
         $now   = now();
         
-        $users->filter( fn($user) => !empty($user->subscription) )->each(
+        $users->filter( fn($user) => !empty($user->subscription) && $user->activeSubscription->default == false )->each(
             function($user) use($now) {
                 $days_to_expiry = floor($now->diffInDays($user->subscription->end_date));              
                 $invoice        = array();

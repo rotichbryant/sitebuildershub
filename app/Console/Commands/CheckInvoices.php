@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Mail\Landing\SubscriptionExpiryNotification;
 use App\Models\InvoiceModel;
+use App\Models\SubscriptionModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -31,20 +32,30 @@ class CheckInvoices extends Command
         //
         $invoices = InvoiceModel::with(['sourceable'])->where('status','unpaid')->get();
         $now      = now();
+        $default_subscription = SubscriptionModel::where('default',true)->first();
 
-        $invoices->filter( fn($invoice): bool => $invoice->source_type == 'subscription' )->each(
-            function($invoice,$index) use($now) {
+        $invoices->filter( fn($invoice): bool => $invoice->source_type == 'subscription' && $invoice->sourceable->default == false )->each(
+            function($invoice,$index) use($now, $default_subscription) {
                 $days_to_expiry = floor($now->diffInDays($invoice->targetable->end_date));              
                 $data           = [];
                 switch($invoice->targetable->billing_cycle){
                     case "monthly":      
-                        print_r($days_to_expiry);  
-                        if( $days_to_expiry == 8){
+                        if( $days_to_expiry == 7){
                             $data = [
                                 'markdown'   => 'emails.subscriptions.count_down_reminder',
                                 'subject'    => "Action Required: $days_to_expiry days until your {$invoice->sourceable->name} subscription expires"
                             ];          
                         } 
+
+                        
+                        if( $days_to_expiry == 3){
+
+                            $data = [
+                                'markdown' => 'emails.subscriptions.count_down_reminder',
+                                'subject'    => "Action Required: $days_to_expiry days until your {$invoice->sourceable->name} subscription expires"
+                            ];                          
+
+                        }                         
 
                         if( $days_to_expiry == 0 ){
 
@@ -56,7 +67,12 @@ class CheckInvoices extends Command
                         } 
                         
                         if( $days_to_expiry == -1){
-
+                            $invoice->targetable()->update([
+                                'billing_cycle'   => 'infinity',
+                                'start_date'      => null,
+                                'end_date'        => null,
+                                'subscription_id' => $default_subscription->id
+                            ]);
                         }                         
                     break;
                     case "yearly":
@@ -96,6 +112,14 @@ class CheckInvoices extends Command
 
                         } 
                         
+                        if( $days_to_expiry == -1){
+                            $invoice->targetable()->update([
+                                'billing_cycle'   => 'infinity',
+                                'start_date'      => null,
+                                'end_date'        => null,
+                                'subscription_id' => $default_subscription->id
+                            ]);
+                        }                         
                     break;
                 }
 

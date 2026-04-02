@@ -112,12 +112,12 @@ class InvoiceController extends Controller
     public function pay(int $invoice_number, PesaPalService $pesapal)
     {
         //
-            gettype($invoice_number);
+            print_r(gettype($invoice_number));
         return;
         try {
 
             $invoice = InvoiceModel::where([
-                'invoice_number' => intval($invoice_number),
+                'invoice_number' => $invoice_number,
                 'status'         => 'unpaid'
             ])->firstOrFail();
             

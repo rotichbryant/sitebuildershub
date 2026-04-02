@@ -40,6 +40,12 @@
                     </div>
                 </div>                
             </div>
+            <div  v-if="isEmpty(invoices.data)"  class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" >
+                <h6 class="text-primary">
+                    <i class="fa fa-exclamation-circle mr-2"></i>
+                    <span>Nothing Found Here</span>
+                </h6>
+            </div>                                                     
             <div class="col-12 mt-8" v-if="!isEmpty(invoices.data)" >
                 <div class="col-md-12 d-flex justify-content-center">
                     <nav aria-label="Page navigation">

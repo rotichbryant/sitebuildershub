@@ -66,9 +66,12 @@
                         </div>                                            
                     </div>                    
                 </div>
-                <div v-if="isEmpty(pageProps.projects)" class="text-center p-3">
-                    <p class="text-muted"><i class="fa fa-ban mx-2"></i>Nothing found here</p>
-                </div>
+                <div  v-if="isEmpty(pageProps.projects.data)"  class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" >
+                    <h6 class="text-primary">
+                        <i class="fa fa-exclamation-circle mr-2"></i>
+                        <span>Nothing Found Here</span>
+                    </h6>
+                </div>                      
             </div>
         </div>
         <CreateProject 

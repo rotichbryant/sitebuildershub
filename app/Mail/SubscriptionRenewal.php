@@ -46,8 +46,8 @@ class SubscriptionRenewal extends Mailable
             markdown: 'emails.subscriptions.renewal',
             with: [
                 'subscription_name' => $this->subscription->name,
-                'end_date'          => $this->user_subscription->end_date,
-                'start_date'        => $this->user_subscription->start_date,
+                'end_date'          => $this->user_subscription->end_date->format('jS F Y'),
+                'start_date'        => $this->user_subscription->start_date->format('jS F Y'),
             ]
         );
     }

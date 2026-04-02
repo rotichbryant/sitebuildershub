@@ -112,8 +112,6 @@ class InvoiceController extends Controller
     public function pay(int $invoice_number, PesaPalService $pesapal)
     {
         //
-            print_r(gettype($invoice_number));
-        return;
         try {
 
             $invoice = InvoiceModel::where([

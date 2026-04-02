@@ -113,7 +113,7 @@ class InvoiceController extends Controller
     {
         //
             gettype($invoice_number);
-
+        return;
         try {
 
             $invoice = InvoiceModel::where([

@@ -71,11 +71,10 @@
                                             <div class="col-md-12 d-flex justify-content-center">
                                                 <nav aria-label="Page navigation">
                                                     <ul class="pagination">
-                                                        <li class="page-item" v-for="(page,key) in $data.postings.links" :key="key">
+                                                        <li class="page-item" v-bind:class="{ 'disabled': page.url == null, 'active': page.active }" v-for="(page,key) in $data.postings.links" :key="key">
                                                             <a 
                                                                 class="page-link" 
-                                                                :href="page.url" 
-                                                                v-bind:class="{ 'disabled': !page.active, 'active': page.active }"
+                                                                :href="page.url"                                                                 
                                                                 v-html="page.label"
                                                             ></a>
                                                         </li>

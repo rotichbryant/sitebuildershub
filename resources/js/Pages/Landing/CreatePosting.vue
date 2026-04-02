@@ -27,6 +27,7 @@
                                                             </optgroup>
                                                         </template>                                                                                    
                                                     </select>
+                                                   
                                                     <p v-show="has($data.errors,'location')" class="text-danger">{{ $data.errors.location }}</p>              
                                                 </div>                                
                                                 <div class="col-12 mb-4">
@@ -364,6 +365,10 @@ const getImageFile = (target: any) => {
         // Read the contents of the file as a data URL
         reader.readAsDataURL(target.files[0])
     })        
+}
+
+const handleLocationSelect = () => {
+    console.log(arguments);
 }
 
 const formSchema: any = computed( () => object().shape($data.active_schema) );

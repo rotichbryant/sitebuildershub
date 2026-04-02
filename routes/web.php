@@ -24,6 +24,7 @@ use App\Http\Controllers\GoogleMapsController;
 use App\Http\Controllers\Landing\ChatController;
 use App\Http\Controllers\Landing\CommentController;
 use App\Http\Controllers\Landing\DashboardController;
+use App\Http\Controllers\Landing\InvoiceController;
 use App\Http\Controllers\Landing\MyPostingsController;
 use App\Http\Controllers\Landing\ProfileController as LandingProfileController;
 use App\Http\Controllers\Landing\SubscriptionController as LandingSubscriptionController;
@@ -51,6 +52,7 @@ Route::name('landing.')->group(function () {
         Route::get('/subscriptions',           [LandingSubscriptionController::class, 'index'])->name('subscription');
         Route::post('/subscriptions',          [LandingSubscriptionController::class, 'store'])->name('subscriptions.store');
         
+        Route::get('/transactions/{invoice_number}/ipn', [LandingTransactionController::class, 'ipn'])->name('transactions.invoice.ipn');
         Route::get('/transactions/subscription/{user_subscription}/complete', [LandingTransactionController::class, 'subscription_complete'])->name('transactions.subscription.complete');
         Route::post('/transactions/subscription/create',                      [LandingTransactionController::class, 'subscription'])->name('transactions.subscription.create');
 
@@ -84,6 +86,9 @@ Route::name('landing.')->group(function () {
         Route::post('/profile/personal',       [LandingProfileController::class, 'personal'])->name('profile.personal');
         Route::post('/forbidden',              [LandingProfileController::class, 'forbidden'])->name('forbidden');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
+    
+        Route::get('/invoices/{invoice_number}/paid',      [InvoiceController::class, 'paid'])->name('invoices.paid');    
+        Route::get('/invoices/{invoice_number}/pay',      [InvoiceController::class, 'pay'])->name('invoices.pay');    
     });
 });
 

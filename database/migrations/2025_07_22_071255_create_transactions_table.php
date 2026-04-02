@@ -21,8 +21,6 @@ return new class extends Migration
             $table->integer('status_code');
             $table->string('reference');
             $table->string('tracking_id');
-            $table->morphs('sourceable');
-            $table->morphs('targetable');
             $table->timestamps();
         });
     }

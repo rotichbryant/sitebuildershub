@@ -12,8 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->uuid('sourceable_id')->nullable()->default(null)->change();
-            $table->uuid('targetable_id')->nullable()->default(null)->change();
             $table->string('confirmation_code')->nullable()->default(null)->change();
             $table->string('payment_method')->nullable()->default(null)->change();
             $table->string('status')->nullable()->default(null)->change();
@@ -32,17 +30,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {       
-            $table->string('sourceable_id')->nullable()->default(null)->change();
-            $table->string('targetable_id')->nullable()->default(null)->change();
             $table->string('confirmation_code')->change();
             $table->string('payment_method')->change();
             $table->string('status')->change();
             $table->integer('status_code')->change();
-            $table->string('reference')->change();
-            $table->dropIfExists('currency');        
-            $table->dropIfExists('paid_at');             
-            $table->dropForeign('user_id');
-            $table->dropIfExists('user_id ');      
+            $table->string('reference')->change();             
+            $table->dropForeign(['user_id']);
+            $table->dropColumn(['currency','paid_at','user_id']);      
         });
     }
 };

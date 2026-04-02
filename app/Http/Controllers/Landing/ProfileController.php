@@ -53,8 +53,11 @@ class ProfileController extends Controller
                 $data['user']     = $user;
             break;
             case 'projects':
-                $data['projects'] = $user->projects;
-            break;            
+                $data['projects'] = $user->projects()->paginate(1);
+            break;   
+            case 'invoices':
+                $data['invoices'] = $user->invoices()->paginate(10);
+            break;                        
             case 'business':
                 $data['maps']              = config('services.google');
                 $data['business_profile']  = $user->business_profile;
@@ -73,8 +76,6 @@ class ProfileController extends Controller
         //
 
         $validated = $request->validated();
-
-        print_r($validated);
         
         $user = auth()->user();
 
@@ -166,6 +167,18 @@ class ProfileController extends Controller
         $name     = Str::uuid().'.'.$uploaded->getClientOriginalExtension();
 
         $image = Image::read($uploaded);
+
+        $width = $image->width();
+        $height = $image->height();
+
+        // Create an empty canvas with a transparent background
+        $canvas = Image::canvas($width, $height);
+
+        // Draw a black circle on the canvas
+        $canvas->circle($width, $width / 2, $height / 2, function ($draw) {
+            $draw->background('#000000');
+        });        
+
         $cropped = $image->cover(1200,720,50,50);
 
         $cropped->save(storage_path('app/public/images/'.$name));

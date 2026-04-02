@@ -131,8 +131,6 @@ class TransactionController extends Controller
 
             $order       = $pesapal->order($order_data,$auth->token);
 
-            print_r($order);
-
             $transaction = new TransactionModel([
                 'amount'            => $order_data['amount'],
                 'tracking_id'       => $order['order_tracking_id'],

@@ -109,12 +109,13 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function pay(string $invoice_number, PesaPalService $pesapal)
+    public function pay(int $invoice_number, PesaPalService $pesapal)
     {
         //
 
         try {
 
+            gettype($invoice_number);
             $invoice = InvoiceModel::where([
                 'invoice_number' => intval($invoice_number),
                 'status'         => 'unpaid'
@@ -122,7 +123,7 @@ class InvoiceController extends Controller
             
             $pending_transaction = $invoice->pending_transaction;
 
-            if( $invoice->status == 'unpaid' && !empty($pending_transaction) && !is_null($pending_transaction->payment_url) ){
+            if( $invoice->status == 'unpaid' && !is_null($pending_transaction) && !is_null($pending_transaction->payment_url) ){
                 return redirect()->away($pending_transaction->payment_url);
             }
 

@@ -46,9 +46,10 @@ class InvoiceModel extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'amount'     => 'decimal:2',
-        'created_at' => 'datetime:d M, Y',
-        'due_date'   => 'datetime',
+        'amount'         => 'decimal:2',
+        'created_at'     => 'datetime:d M, Y',
+        'due_date'       => 'datetime',
+        'invoice_number' => 'integer'
     ];    
 
     protected $with = [

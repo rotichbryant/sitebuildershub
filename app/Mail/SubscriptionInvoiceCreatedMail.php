@@ -10,6 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Mail\Markdown;
 
 class SubscriptionInvoiceCreatedMail extends Mailable
 {
@@ -64,29 +65,34 @@ class SubscriptionInvoiceCreatedMail extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    // public function attachments(): array
-    // {
-    //     $pdf = Pdf::loadView(
-    //         'emails.invoices.subscription',
-    // [
-                // "billing_cycle"     => $this->invoice->targetable->billing_cycle,    
-    //     "client_name"       => $this->invoice->user->name,
-    //     "client_email"      => $this->invoice->user->email,
-    //     "date"              => $this->invoice->created_at->format('jS F Y'),
-    //     "due_date"          => $this->invoice->due_date->format('jS F Y'),                
-    //     "invoice_number"    => $this->invoice->invoice_number,
-    //     "price"             => $this->invoice->sourceable->currency_price,
-    //     "subscription_name" => $this->invoice->sourceable->name,
-    //     "total_amount"      => $this->invoice->user->company->currency.' '.($this->invoice->targetable->billing_cycle == 'yearly' ? 12 : 1) * $this->invoice->sourceable->price,
-    //     "url"               => route('landing.invoices.pay',[ 'invoice_number' => $this->invoice->invoice_number ])
-    // ] 
-    //     )->output();
+    public function attachments(): array
+    {
+        // Point to the published mail markdown file
+        $markdown = new Markdown(view(), config('mail.markdown'));
 
-    //     return [ 
-    //         Attachment::fromData( 
-    //             fn () => $pdf, 
-    //             $this->invoice->invoice_number.'.pdf'
-    //         )->withMime('application/pdf') 
-    //     ];
-    // }
+        $template = $markdown->render(
+            'emails.invoices.subscription',
+            [
+                "billing_cycle"     => $this->invoice->targetable->billing_cycle,    
+                "client_name"       => $this->invoice->user->name,
+                "client_email"      => $this->invoice->user->email,
+                "date"              => $this->invoice->created_at->format('jS F Y'),
+                "due_date"          => $this->invoice->due_date->format('jS F Y'),                
+                "invoice_number"    => $this->invoice->invoice_number,
+                "price"             => $this->invoice->sourceable->currency_price,
+                "subscription_name" => $this->invoice->sourceable->name,
+                "total_amount"      => $this->invoice->user->company->currency.' '.($this->invoice->targetable->billing_cycle == 'yearly' ? 12 : 1) * $this->invoice->sourceable->price,
+                "url"               => route('landing.invoices.pay',[ 'invoice_number' => $this->invoice->invoice_number ])
+            ]             
+        );      
+
+        $pdf = Pdf::loadHTML($template->toHtml())->output();
+        
+        return [ 
+            Attachment::fromData( 
+                fn () => $pdf, 
+                $this->invoice->invoice_number.'-invoice.pdf'
+            )->withMime('application/pdf') 
+        ];
+    }
 }

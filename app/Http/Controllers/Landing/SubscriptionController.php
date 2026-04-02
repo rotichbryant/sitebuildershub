@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\StoreSubscriptionRequest;
+use App\Mail\SubscriptionInvoiceCreatedMail;
 use App\Models\InvoiceModel;
 use App\Models\SubscriptionModel;
 use App\Models\User;
 use App\Models\UserSubscriptionModel;
 use App\Services\PesaPalService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class SubscriptionController extends Controller
@@ -81,6 +83,8 @@ class SubscriptionController extends Controller
             'targetable_type' => $user->subscription::class,
             'user_id'         => $user->id            
         ]);        
+
+        Mail::to($user)->send( new SubscriptionInvoiceCreatedMail($invoice) );          
 
         return back()->with('data',compact('invoice'));
     }

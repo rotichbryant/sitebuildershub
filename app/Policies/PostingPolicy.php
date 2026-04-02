@@ -29,11 +29,11 @@ class PostingPolicy
      */
     public function create(User $user)
     {
-        if( $user->postings()->count() < $user->subscription->features->max_posts ){
+        if( $user->postings()->count() < $user->activeSubscription->features->max_posts ){
             return true;
         }
 
-        if( $user->postings()->count() == $user->subscription->features->max_posts ){
+        if( $user->postings()->count() == $user->activeSubscription->features->max_posts ){
             return Response::denyWithStatus(403, 'You have reached the maximum number of postings.');
         }  
     }

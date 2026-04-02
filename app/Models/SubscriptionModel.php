@@ -20,8 +20,8 @@ class SubscriptionModel extends Model
     ];
 
     protected $casts = [
-        'active' => 'boolean',
-        'default' => 'boolean',
+        'active'  => 'integer',
+        'default' => 'integer',
     ];
 
     /**

@@ -21,7 +21,7 @@
                                         >
                                             <i class="fa fa-list mr-2"></i>
                                             Project Detail
-                                            <i class="fa fa-lock" v-if="!subscription.features.for_professionals"></i>
+                                            <i class="fa fa-lock mr-2" v-if="!subscription.features.for_professionals"></i>
                                             <i class="fa fa-question-circle" v-if="!subscription.features.for_businesses"></i>
                                         </a>
                                     </li>

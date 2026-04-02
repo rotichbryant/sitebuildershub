@@ -78,7 +78,7 @@ onBeforeMount(
 onMounted( 
     () => setTimeout( 
         () => { 
-            window.location.href = route('landing.profile')          
+            window.location.href = route('landing.profile',{tab:'invoices'})          
         },
         1500
     ) 

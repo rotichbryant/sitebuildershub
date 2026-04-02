@@ -141,9 +141,8 @@ const submit = async () => {
         route('landing.subscriptions.store'), 
         {
 
-            onSuccess: ({ props}: any) => {
-                let { user_subscription } = props.data;
-                create_transaction(user_subscription)
+            onSuccess: ({ props: { data: { invoice }}}: any) => {
+                window.location.href = route('landing.invoices.pay',{ invoice_number: invoice.invoice_number })
             },
         }
     );        

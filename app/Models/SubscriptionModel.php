@@ -19,6 +19,11 @@ class SubscriptionModel extends Model
         'currency_price'
     ];
 
+    protected $casts = [
+        'active' => 'boolean',
+        'default' => 'boolean',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

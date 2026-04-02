@@ -54,8 +54,8 @@ class PlacementModel extends Model
 
     public function scopeFilterPromotion($query, $active=true){
         return $query->whereHas('promotions', function ($sub_query) use ($active) {
-            return $sub_query->whereHas('transaction',function($sub_sub_query){
-                return $sub_sub_query->where('status',200);
+            return $sub_query->whereHas('invoice',function($sub_sub_query){
+                return $sub_sub_query->where('status','paid');
             })
             ->whereDate('date_from','<=',now()->format('Y-m-d'))
             ->whereDate('date_to','>=',now()->format('Y-m-d'));
@@ -91,7 +91,7 @@ class PlacementModel extends Model
         return $this->morphedByMany(
             PostingModel::class, 
             'sourceable',
-            'transactions',
+            'invoices',
             'sourceable_id',
             'id',
             'id',

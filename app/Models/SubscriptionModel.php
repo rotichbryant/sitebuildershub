@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class SubscriptionModel extends Model
@@ -54,9 +55,9 @@ class SubscriptionModel extends Model
     /**
      * Get all transactions for the order.
      */
-    public function transactions(): MorphOne
+    public function invoices(): MorphMany
     {
-        return $this->morphOne(TransactionModel::class, 'transactionable');
+        return $this->morphMany(InvoiceModel::class, 'sourcable');
     }  
     
     /**

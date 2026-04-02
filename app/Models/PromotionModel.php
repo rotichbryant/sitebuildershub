@@ -97,7 +97,7 @@ class PromotionModel extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\TransactionModel>
      */
-    public function transaction(): MorphOne
+    public function invoice(): MorphOne
     {
         // The morphFrom relationship is used to define the relationship between the promotion
         // and the transaction that it belongs to. The morphFrom relationship is a polymorphic
@@ -105,6 +105,6 @@ class PromotionModel extends Model
         // not directly related. In this case, the promotion model is related to the
         // transaction model using the `targatable_id` foreign key, which references the
         // `id` column on the `transactions` table.
-        return $this->morphOne(TransactionModel::class,'targetable');
+        return $this->morphOne(InvoiceModel::class,'targetable');
     }       
 }

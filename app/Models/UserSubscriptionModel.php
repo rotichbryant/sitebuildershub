@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 
 class UserSubscriptionModel extends Model
 {
@@ -32,6 +34,17 @@ class UserSubscriptionModel extends Model
     ];    
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'end_date'   => 'datetime:M d, Y',
+        'start_date' => 'datetime:M d, Y',
+    ];    
+
+
+    /**
      * The subscription that this user is subscribed to.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -42,23 +55,12 @@ class UserSubscriptionModel extends Model
     }
 
     /**
-     * Get the transaction that the promotion belongs to.
-     *
-     * This relationship is defined by the `targatable_id` foreign key on the `promotions` table,
-     * which references the `id` column on the `transactions` table.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\TransactionModel>
+     * Get all transactions for the order.
      */
-    public function transaction(): MorphOne
+    public function invoices(): MorphMany
     {
-        // The morphFrom relationship is used to define the relationship between the promotion
-        // and the transaction that it belongs to. The morphFrom relationship is a polymorphic
-        // relationship that is used to define a relationship between two models that are
-        // not directly related. In this case, the promotion model is related to the
-        // transaction model using the `targatable_id` foreign key, which references the
-        // `id` column on the `transactions` table.
-        return $this->morphOne(TransactionModel::class,'targetable');
-    }     
+        return $this->morphMany(InvoiceModel::class, 'targetable');
+    }  
 
     public function user()
     {

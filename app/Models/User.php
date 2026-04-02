@@ -69,6 +69,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'due_date'   => 'datetime:M d, Y',
         'created_at' => 'datetime:M d, Y',
         // 'updated_at' => 'datetime:M d, Y \a\t h:i A',
     ];       
@@ -195,7 +196,34 @@ class User extends Authenticatable
              */
             foreignKey: 'user_id',
         );
-    }     
+    }  
+    
+    /**
+     * Get the invoices that belong to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\InvoiceModel>
+     */
+    public function invoices(): HasMany
+    {
+        /**
+         * Define the relationship using the InvoiceModel class.
+         * 
+         * @return HasMany<\App\Models\InvoiceModel>
+         */
+        return $this->hasMany(
+            related: InvoiceModel::class,
+            /**
+             * The foreign key on the `users` table that references the `id` column
+             * on the `invoices` table.
+             */
+            foreignKey: 'user_id',
+            /**
+             * The owner key on the `invoices` table that references the `id` column
+             * on the `users` table.
+             */
+            localKey: 'id',
+        );
+    }
 
     /**
      * Get the business profile that belongs to the user.

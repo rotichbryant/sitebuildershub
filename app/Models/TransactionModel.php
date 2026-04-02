@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class TransactionModel extends Model
@@ -31,7 +32,9 @@ class TransactionModel extends Model
     protected $fillable = [
         'amount',
         'confirmation_code',
+        'paid_at',
         'payment_method',
+        'payment_url',
         'status',
         'status_code',
         'reference',
@@ -82,6 +85,21 @@ class TransactionModel extends Model
     }
 
     /**
+     * Scope a query to only include pending transactions.
+     * 
+     * A pending transaction is a transaction that has not been confirmed by the user.
+     * This is determined by the confirmation code being null.
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePending($query){
+        // Only include transactions that have not been confirmed by the user
+        // This is determined by the confirmation code being null
+        return $query->whereNull('confirmation_code')->first();
+    }
+
+    /**
      * Get the parent transactionable model.
      */
     public function sourceable(): MorphTo
@@ -97,8 +115,38 @@ class TransactionModel extends Model
     {
         return $this->morphTo();
     }  
-    
-    public function user(){
+
+    /**
+     * Get the associated invoice.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function invoice()
+    {
+        /**
+         * The associated invoice is the invoice that was created for this transaction.
+         * It is nullable because not all transactions have an associated invoice (e.g. payment attempts).
+         *
+         * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+         */
+        return $this->belongsTo(InvoiceModel::class, 'invoice_id');
+    }
+
+    /**
+     * Get the user that owns the transaction.
+     *
+     * This relationship is defined by the `user_id` foreign key on the `transactions` table,
+     * which references the `id` column on the `users` table.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        /**
+         * The user that owns the transaction.
+         *
+         * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+         */
         return $this->belongsTo(User::class, 'user_id');
     }
 }

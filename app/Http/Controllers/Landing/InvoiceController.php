@@ -87,6 +87,7 @@ class InvoiceController extends Controller
                 }
 
                 $invoice->targetable()->update([
+                    'active'     => true,
                     'start_date' => now()->format('Y-m-d'),
                     'end_date'   => $end_date,
                 ]);
@@ -119,9 +120,9 @@ class InvoiceController extends Controller
                 'status'         => 'unpaid'
             ])->firstOrFail();
             
-            $pending_transaction = $invoice->transactions()->pending();
+            $pending_transaction = $invoice->pending_transaction;
 
-            if( $invoice->status == 'unpaid' && !empty($pending_transaction) ){
+            if( $invoice->status == 'unpaid' && !empty($pending_transaction) && !is_null($pending_transaction->payment_url) ){
                 return redirect()->away($pending_transaction->payment_url);
             }
 
@@ -159,7 +160,7 @@ class InvoiceController extends Controller
             $transaction->user()->associate($invoice->user);
             $transaction->save();
 
-            return redirect()->away($order->redirect_url);
+            return redirect()->away($order['redirect_url']);
 
         } catch(ModelNotFoundException $error) {
 

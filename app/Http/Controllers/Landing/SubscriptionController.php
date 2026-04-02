@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\StoreSubscriptionRequest;
+use App\Models\InvoiceModel;
 use App\Models\SubscriptionModel;
 use App\Models\User;
 use App\Models\UserSubscriptionModel;
+use App\Services\PesaPalService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -38,12 +40,14 @@ class SubscriptionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubscriptionRequest $request)
+    public function store(StoreSubscriptionRequest $request,PesaPalService $pesapal)
     {
         $validated = $request->validated();
         
         $user              = User::find($validated['user_id']);
         $user_subscription = array();
+
+        $subscription = SubscriptionModel::find($validated['subscription_id']);        
         
         if( !is_null($user->subscription) ){
             $user->subscription()->update([
@@ -51,8 +55,8 @@ class SubscriptionController extends Controller
                 'active'          => false,
                 'billing_cycle'   => $validated['subscription_type'],
                 'user_id'         => $validated['user_id'],
-                'end_date'        => $validated['end_date'],
-                'start_date'      => $validated['start_date'],                
+                'end_date'        => now()->parse($validated['end_date'])->format('Y-m-d'),
+                'start_date'      => now()->parse($validated['start_date'])->format('Y-m-d'),                
             ]);
             $user_subscription = $user->subscription;
         }
@@ -62,12 +66,23 @@ class SubscriptionController extends Controller
                 'subscription_id' => $validated['subscription_id'],
                 'billing_cycle'   => $validated['subscription_type'],
                 'user_id'         => $validated['user_id'],
-                'end_date'        => $validated['end_date'],
-                'start_date'      => $validated['start_date'],
+                'end_date'        => now()->parse($validated['end_date'])->format('Y-m-d'),
+                'start_date'      => now()->parse($validated['start_date'])->format('Y-m-d'),                
             ]); 
         }
 
-        return back()->with('data',compact('user_subscription'));
+        $invoice = InvoiceModel::create([
+            'amount'          => $subscription->price,
+            'due_date'        => now()->addDay(7)->format('Y-m-d'),
+            'invoice_number'  => now()->format('Ymdhis'),
+            'sourceable_id'   => $subscription->id,
+            'sourceable_type' => $subscription::class,
+            'targetable_id'   => $user->subscription->id,
+            'targetable_type' => $user->subscription::class,
+            'user_id'         => $user->id            
+        ]);        
+
+        return back()->with('data',compact('invoice'));
     }
 
     /**

@@ -74,7 +74,7 @@ class SubscriptionController extends Controller
         $invoice = InvoiceModel::create([
             'amount'          => $subscription->price,
             'due_date'        => now()->addDay(7)->format('Y-m-d'),
-            'invoice_number'  => now()->format('Ymdhis'),
+            'invoice_number'  => intval(now()->format('Ymdhis')),
             'sourceable_id'   => $subscription->id,
             'sourceable_type' => $subscription::class,
             'targetable_id'   => $user->subscription->id,

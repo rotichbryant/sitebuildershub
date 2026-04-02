@@ -6,8 +6,8 @@
                 <button class="btn btn-primary" @click="$data.modals.create = true">Add Project</button>                            
             </div>                    
             <div class="col-12 py-4 px-0">
-                <div class="row" v-if="!isEmpty(pageProps.projects)">                        
-                    <div class="col-md-12" v-for="(project, index) in pageProps.projects">
+                <div class="row" v-if="!isEmpty(pageProps.projects.data)">                        
+                    <div class="col-md-12" v-for="(project, index) in pageProps.projects.data">
                         <div class="card shadow-sm border-0 mb-3">
                             <div class="card-body">
                                 <div class="col-12 text-right">
@@ -45,6 +45,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 mt-8" v-if="!isEmpty(pageProps.projects.data)" >
+                        <div class="col-md-12 d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li 
+                                        class="page-item" 
+                                        v-bind:class="{ 'disabled': page.url == null, 'active': page.active }" 
+                                        v-for="(page,key) in pageProps.projects.links" 
+                                        :key="key"
+                                    >
+                                        <a 
+                                            class="page-link" 
+                                            :href="page.url"                             
+                                            v-html="page.label"
+                                        ></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>                                            
+                    </div>                    
                 </div>
                 <div v-if="isEmpty(pageProps.projects)" class="text-center p-3">
                     <p class="text-muted"><i class="fa fa-ban mx-2"></i>Nothing found here</p>

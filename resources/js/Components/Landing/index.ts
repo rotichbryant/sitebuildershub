@@ -6,6 +6,7 @@ export { default as LandingFooter } from './Footer.vue';
 
 // Tabs
 export { default as BusinessDetailsTab } from './Tabs/BusinessDetails.vue';
+export { default as InvoicesTab } from './Tabs/Invoices.vue';
 export { default as PersonalDetailsTab } from './Tabs/PersonalDetails.vue';
 export { default as ProjectDetailsTab } from './Tabs/ProjectDetails.vue';
 

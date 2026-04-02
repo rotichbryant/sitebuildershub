@@ -46,24 +46,25 @@
             </a>
           </div>
           <div class="header-btn-devider ml-auto ml-lg-5 pl-2 d-none d-xs-flex align-items-center" v-else>
-            <div>
+            <a class="btn btn-primary" :href="route('landing.mypostings.create')">Create Posting</a>
+            <!-- <div>
               <a href="#" class="px-3 ml-7 font-size-7 notification-block flex-y-center position-relative">
                 <i class="fas fa-bell heading-default-color"></i>
                 <span class="font-size-3 count font-weight-semibold text-white bg-primary circle-24 border border-width-3 border border-white">3</span>
               </a>
-            </div>
+            </div> -->
             <div>
               <div class="dropdown show-gr-dropdown py-5">
                 <a class="proile media ml-7 flex-y-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-user fa-lg"></i>                
+                  <i class="fa fa-user fa-lg mr-2"></i>   
+                  {{ auth_user.name }}             
                   <!-- <div class="circle-40">
                   </div> -->
                   <i class="fas fa-chevron-down heading-default-color ml-6"></i>
                 </a>
                 <div class="dropdown-menu gr-menu-dropdown dropdown-right border-0 border-width-2 py-2 w-auto bg-default" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.overview')">Overview </a>
                   <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.mypostings')">My Postings </a>
-                  <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.chat')">Chat</a>
+                  <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.profile',{tab:'invoices'})">Invoices</a>
                   <a class="dropdown-item py-2 font-size-3 font-weight-semibold line-height-1p2 text-uppercase" :href="route('landing.profile',{ tab:'personal'})">Profile</a>
                   <a class="dropdown-item py-2 text-red font-size-3 font-weight-semibold line-height-1p2 text-uppercase" href="#" @click="logout">Log Out</a>
                 </div>

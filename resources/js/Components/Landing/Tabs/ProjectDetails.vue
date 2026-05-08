@@ -7,35 +7,39 @@
             </div>                    
             <div class="col-12 py-4 px-0">
                 <div class="row" v-if="!isEmpty(pageProps.projects.data)">                        
-                    <div class="col-md-12" v-for="(project, index) in pageProps.projects.data">
+                    <div class="col-md-6" v-for="(project, index) in pageProps.projects.data">
                         <div class="card shadow-sm border-0 mb-3">
                             <div class="card-body">
-                                <div class="col-12 text-right">
-                                    <a href="#" class="text-danger" @click.prevent="$delete(project)"><i class="fa fa-trash"></i></a>
-                                </div>
                                 <div class="col-12 px-0">
-                                    <h5>{{ project.title }}</h5>
-                                    <Swiper 
-                                        slidesPerView="auto" 
-                                        :spaceBetween="30" 
-                                        :modules="$data.modules" 
-                                        :loop="true" 
-                                        :pagination="{clickable: true}"
-                                        :centeredSlides="true"
-                                        :autoplay="{delay: 2500,disableOnInteraction: false}"                
-                                    >
-                                        <SwiperSlide v-for="(image,index) in project.files" :key="index">
-                                            <img :src="image" />
-                                        </SwiperSlide>
-                                    </Swiper>                                        
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <h6>Start Date</h6>
-                                            <p>{{ project.start_date }}</p>
+                                        <div class="col-12 d-flex justify-content-between mb-3">
+                                            <h5 class="mb-4">{{ project.title }}</h5> 
+                                            <a href="#" class="text-danger" @click.prevent="$delete(project)"><i class="fa fa-trash"></i></a>
                                         </div>
-                                        <div class="col-md-6">
-                                            <h6>End Date</h6>
-                                            <p>{{ project.end_date }}</p>
+                                        <div class="col-12">
+                                            <Swiper 
+                                                slidesPerView="auto" 
+                                                :spaceBetween="30" 
+                                                :modules="$data.modules" 
+                                                :loop="true" 
+                                                :pagination="{clickable: true}"
+                                                :centeredSlides="true"
+                                                :autoplay="{delay: 2500,disableOnInteraction: false}"                
+                                            >
+                                                <SwiperSlide v-for="(image,index) in project.files" :key="index">
+                                                    <img :src="image" width="100%" height="70%"/>
+                                                </SwiperSlide>
+                                            </Swiper>                                               
+                                        </div>
+                                        <div class="col-12 d-flex justify-content-between my-3">
+                                            <div>
+                                                <h6>Start Date</h6>
+                                                <p>{{ project.start_date }}</p>
+                                            </div>
+                                            <div>
+                                                <h6>End Date</h6>
+                                                <p>{{ project.end_date }}</p>
+                                            </div>
                                         </div>   
                                         <div class="col-md-12">
                                             <div v-html="project.content"></div>
@@ -104,7 +108,7 @@ const pageProps: any = computed( () => usePage().props );
 const $swal: any  = inject('$swal');  
 const $toast: any = inject('$toast');  
 
-const $data  = reactive({ 
+const $data: any  = reactive({ 
   errors: Object(), 
   modals: {
     create: false
@@ -135,11 +139,11 @@ const $delete = async (project: any) => {
 
     // Fetch the categories from the server
     router.delete(
-        route('landing.profile.projects.delete',{ project: project.id }),
+        route('landing.profile.project.delete',{ project: project.id }),
         {
             onSuccess: () => {
                 // Post message
-                $toast.success($props.flash.message);   
+                $toast.success(pageProps.flash.message);   
             },
             onError: (error) => {
                 // Set the loading flag
@@ -148,27 +152,6 @@ const $delete = async (project: any) => {
         }
     );
 }
-
-/**
- * Submits the login form.
- *
- * Posts the form data to the `login` route and resets the password field
- * on success.
- */
- const submit = () => {
-//   form.post(
-//     route('landing.signup'), 
-//     {
-//       onSuccess: (value: any) => {
-//         if( !isEmpty(value.props.flash.message) ){
-//           toast.success(value.props.flash.message);
-//           modals.value.signup = false;
-//         }
-//         resetForm();
-//       },
-//     }
-//   );
-};
 
 onMounted(
     () => {

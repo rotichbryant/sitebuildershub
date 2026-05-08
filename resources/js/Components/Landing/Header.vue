@@ -23,6 +23,9 @@
                   <a class="nav-link" :href="route('landing.postings')">Postings</a>
                 </li>
                 <li class="nav-item">
+                  <a class="nav-link" :href="route('landing.projects')">Projects</a>
+                </li>                
+                <li class="nav-item">
                   <a class="nav-link" :href="route('landing.subscription')">Subscriptions</a>
                 </li>
                 <li class="nav-item">

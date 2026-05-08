@@ -53,7 +53,7 @@ class ProfileController extends Controller
                 $data['user']     = $user;
             break;
             case 'projects':
-                $data['projects'] = $user->projects()->paginate(1);
+                $data['projects'] = $user->projects()->paginate(2);
             break;   
             case 'invoices':
                 $data['invoices'] = $user->invoices()->paginate(10);
@@ -153,6 +153,20 @@ class ProfileController extends Controller
 
         return back()->with([
             'message' => 'Project has been added'
+        ]);
+    }
+
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function project_delete(ProjectModel $project)
+    {
+        //
+        $project->delete();
+
+        return back()->with([
+            'message' => 'Project has been deleted'
         ]);
     }
 

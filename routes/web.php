@@ -27,6 +27,7 @@ use App\Http\Controllers\Landing\DashboardController;
 use App\Http\Controllers\Landing\InvoiceController;
 use App\Http\Controllers\Landing\MyPostingsController;
 use App\Http\Controllers\Landing\ProfileController as LandingProfileController;
+use App\Http\Controllers\Landing\ProjectsControiller;
 use App\Http\Controllers\Landing\SubscriptionController as LandingSubscriptionController;
 use App\Http\Controllers\Landing\TransactionController as LandingTransactionController;
 use App\Models\TransactionModel;
@@ -44,6 +45,8 @@ Route::name('landing.')->group(function () {
         Route::get('/security',                 [HomeController::class, 'security'])->name('security');
         Route::get('/postings/view',           [LandingPostingController::class, 'show'])->name('postings.view');
         Route::get('/postings',                [LandingPostingController::class, 'index'])->name('postings');
+        Route::get('/projects',                [ProjectsControiller::class, 'index'])->name('projects');
+        Route::get('/projects/view',           [ProjectsControiller::class, 'show'])->name('projects.view');
         Route::get('/aboutus',                 [AboutUsController::class, 'index'])->name('aboutus');
         Route::get('/contactus',               [ContactUsController::class, 'index'])->name('contactus');
         Route::get('/places',                  [GoogleMapsController::class, 'create'])->name('maps.places');
@@ -86,6 +89,8 @@ Route::name('landing.')->group(function () {
         Route::post('/profile/personal',       [LandingProfileController::class, 'personal'])->name('profile.personal');
         Route::post('/forbidden',              [LandingProfileController::class, 'forbidden'])->name('forbidden');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
+
+        Route::delete('/profile/project/{project}/delete',  [LandingProfileController::class, 'project_delete'])->name('profile.project.delete');
     
         Route::get('/invoices/{invoice_number}/paid',      [InvoiceController::class, 'paid'])->name('invoices.paid');    
         Route::get('/invoices/{invoice_number}/pay',      [InvoiceController::class, 'pay'])->name('invoices.pay');    

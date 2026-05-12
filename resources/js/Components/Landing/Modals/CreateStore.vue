@@ -110,7 +110,6 @@
 </template>
   
 <script lang="ts" setup>
-import { GoogleMap, AdvancedMarker } from 'vue3-google-map'
 import { useForm, usePage } from '@inertiajs/vue3';
 import Multiselect from 'vue-multiselect';
 import { computed, defineEmits, defineProps, onMounted, reactive, watch } from 'vue';

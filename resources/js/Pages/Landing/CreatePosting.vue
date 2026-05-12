@@ -138,6 +138,10 @@
                                                                     <button type="button" class="btn btn-danger text-uppercase h-px-48" @click="removeCrop">Cancel</button>          
                                                                 </div>
                                                             </div>
+                                                            <p class="font-size-4 font-weight-semibold text-danger" v-if="!isEmpty($data.selected_placement)">
+                                                                Required Dimmensions. 
+                                                                Width: {{ $data.selected_placement.custom.width }}px, Height: {{ $data.selected_placement.custom.height }}px
+                                                            </p>
                                                             <div class="col-12 px-0" v-if="!isEmpty($data.readers.advert_crop_image) && !isEmpty($data.active_form.promotion_image)">
                                                                 <picture>
                                                                     <img :src="$data.readers.advert_crop_image"/>
@@ -249,6 +253,7 @@ const $data: any  = reactive({
         resizeHeight:    480,
         maxFilesize:     10.0,
     },
+    selected_placement: {},
     errors: {},
     form:   {},
     modals: {
@@ -371,6 +376,7 @@ const handleLocationSelect = () => {
     console.log(arguments);
 }
 
+
 const formSchema: any = computed( () => object().shape($data.active_schema) );
 
 /**
@@ -459,15 +465,17 @@ const submit = async () => {
                     resetForm();                    
                 }
 
-                if( form.promotion_status ){
-                    create_transaction(props.data)
+                console.log(props.data);
+                
+                if( has(props.data,'invoice') ){
+                    window.location.href = route('landing.invoices.pay',{ invoice_number: props.data.invoice.invoice_number })                
                 }
             },
         }
     );        
 };
 
-const create_transaction = async (promotion: any) => {
+const create_invoice = async (promotion: any) => {
     router.put(
         route('landing.transactions.promotion.create',{ promotion: promotion.id }),
         {},
@@ -513,8 +521,6 @@ const selectCrop = async () => {
         const blob: any = await cropper.getBlob();
         const reader    = new FileReader()        
 
-        console.log(blob);
-
         // Define the onload callback function
         reader.onload = function () {
             // Resolve the Promise with the data URL of the file
@@ -546,7 +552,7 @@ const select_section = ($event:any) => {
     const section  = pageProps.value.placements.find( (item: any) => item.section == value );
     const days     = moment($data.active_form.promotion_date_to).diff(moment($data.active_form.promotion_date_from),'days');
 
-    console.log(section);
+    $data.selected_placement             = cloneDeep(section);
     $data.crop_image.options.aspectRatio = aspectRatio(section.custom.width,section.custom.height);
 
     $data.crop_image.presetMode.height  = section.custom.height;
@@ -663,7 +669,7 @@ watch(
  */
  watch(
   () => $data.active_form, 
-  (form) => {
+  (form: any) => {
 
     // Check on promotion form
     if( 

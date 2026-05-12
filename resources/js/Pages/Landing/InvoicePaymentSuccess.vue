@@ -71,7 +71,7 @@ const $data: any = reactive({
 
 onBeforeMount(
     () => {
-        $data.purpose = $props.invoice.source_type == 'subscription' ? 'Payment for subscription' : 'Payment for advert placement'
+        $data.purpose = $props.invoice.source_type == 'subscription' ? 'Payment for subscription' : 'Payment for advert promotion'
     }
 )
 

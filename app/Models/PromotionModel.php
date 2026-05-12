@@ -37,7 +37,6 @@ class PromotionModel extends Model
         'date_to',
         'placement_id',
         'posting_id',
-        'transaction_id',
     ]; 
 
         /**
@@ -55,7 +54,15 @@ class PromotionModel extends Model
 
     public function getActiveAttribute(){
         return !is_null($this->transaction) && $this->transaction->status == 200 ? true : false;
-    }     
+    }    
+    
+    /**
+     * Get all transactions for the order.
+     */
+    public function invoices(): MorphOne
+    {
+        return $this->morphOne(InvoiceModel::class, 'sourcable');
+    }  
     
     /**
      * Get the company that the placement belongs to.

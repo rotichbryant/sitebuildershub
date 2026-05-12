@@ -7,7 +7,9 @@ use App\Http\Requests\Landing\CreatePostingRequest;
 use App\Http\Requests\Landing\CreatePromotionPostingRequest;
 use App\Http\Requests\Landing\PostingFileUploadRequest;
 use App\Http\Requests\Landing\QuotationUploadRequest;
+use App\Mail\CreatePromotionInvoiceMail;
 use App\Models\CategoryModel;
+use App\Models\InvoiceModel;
 use App\Models\PlacementModel;
 use App\Models\PostingCategoryModel;
 use App\Models\PostingModel;
@@ -17,6 +19,7 @@ use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -90,6 +93,7 @@ class MyPostingsController extends Controller
         Gate::authorize('create-posting');
         
         try {
+            
             $form = $request->validated();
             
             if( !empty($form['promotion_image']) ){
@@ -109,7 +113,6 @@ class MyPostingsController extends Controller
 
             $posting                 = PostingModel::create($form);        
     
-
             PostingCategoryModel::insert(
                 collect($form['categories'])->map( 
                     fn($value): array => [
@@ -134,7 +137,20 @@ class MyPostingsController extends Controller
                     'placement_id' => $form['placement_id'],
                 ]);
 
-                return back()->with('data',$promotion);
+                $invoice = InvoiceModel::create([
+                    'amount'          => $form['promotion_amount'],
+                    'due_date'        => now()->format('Y-m-d'),
+                    'invoice_number'  => intval(now()->format('Ymdhis')),
+                    'sourceable_id'   => $form['placement_id'],
+                    'sourceable_type' => PlacementModel::class,
+                    'targetable_id'   => $promotion->id,
+                    'targetable_type' => PromotionModel::class,
+                    'user_id'         => $form['user_id']            
+                ]);   
+
+                Mail::to(auth('client')->user())->send( new CreatePromotionInvoiceMail($invoice) );          
+
+                return back()->with('data',compact('invoice'));
             }
             
             if( !$form['promotion_status'] ){
@@ -143,6 +159,7 @@ class MyPostingsController extends Controller
 
         } catch(Error $error) {
 
+            print_r($error);
             return back()->with('message', 'Something went wrong. Please try again.');
 
         }

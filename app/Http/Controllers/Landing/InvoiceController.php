@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CreatePromotionReceiptMail;
 use App\Mail\SubscriptionReceipt;
 use App\Mail\SubscriptionRenewal;
 use App\Models\InvoiceModel;
@@ -95,6 +96,13 @@ class InvoiceController extends Controller
                 Mail::to($invoice->user)->send( new SubscriptionReceipt($invoice,$transaction) );
                 Mail::to($invoice->user)->send( new SubscriptionRenewal($invoice->sourceable,$invoice->targetable) );
                 
+            }
+
+            if( $invoice->source_type == 'placement') {
+                
+                $invoice->targetable()->update(['active' => true]);
+
+                Mail::to($invoice->user)->send( new CreatePromotionReceiptMail($invoice,$transaction) );
             }
 
             return Inertia::render('Landing/InvoicePaymentSuccess',compact('invoice','transaction'));    

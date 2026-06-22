@@ -1,10 +1,10 @@
 <template>
-    <div class="col-lg-4 col-md-6" data-aos="fade-up" :data-aos-duration="props.delay" data-aos-once="true">
+    <div class="col-lg-4 col-md-6">
         <a :href="route('landing.postings.view', { title: decodeURIComponent(posting.title) })">
             <!-- Start Feature One -->
             <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9 feature-cardOne-adjustments">
                 <div class="d-block mb-7" style="height: 30vh;">
-                    <img :src="posting.images[0]" :alt="posting.title" style="object-fit: cover; width: 100%; height: 100%;"/>
+                    <img :src="posting.link_images[0]" :alt="posting.title" style="object-fit: cover; width: 100%; height: 100%;"/>
                 </div>
                 <h4 class="mt-n4">{{ posting.title }}</h4>
                 <p class="mb-7 font-size-4 text-gray"> {{ posting.description.substring(0, 50) }}... </p>

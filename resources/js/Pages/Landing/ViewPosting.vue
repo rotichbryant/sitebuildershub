@@ -34,11 +34,11 @@
                                         :wrap-around="false" 
                                         v-model="$data.slider.current"
                                     >
-                                        <Slide v-for="(image,index) in posting.images" :key="index">
+                                        <Slide v-for="(image,index) in posting.link_images" :key="index">
                                             <InnerImageZoom :src="image" :zoomScale="4" />                                
                                         </Slide>
                                     </Carousel>     
-                                    <div class="col-12 my-6" v-if="posting.images.length > 1">
+                                    <div class="col-12 my-6" v-if="posting.link_images.length > 1">
                                         <Carousel
                                             id="thumbnails"
                                             :itemsToShow="3"
@@ -46,7 +46,7 @@
                                             ref="carousel"
                                             v-model="$data.slider.current"
                                         >
-                                            <Slide v-for="(image,index) in posting.images" :key="index">
+                                            <Slide v-for="(image,index) in posting.link_images" :key="index">
                                                 <img :src="image" alt="" width="100%" >
                                             </Slide>
                                             <template #addons>

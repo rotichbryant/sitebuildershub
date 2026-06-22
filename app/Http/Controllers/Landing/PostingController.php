@@ -77,6 +77,7 @@ class PostingController extends Controller
         $posting = PostingModel::with(['categories','comments.user'])->where('title', $title)->first();
         $visited = $posting->views()->where('ip',$request->ip())->whereDate('created_at', '=',now()->format('Y-m-d'))->first();
 
+
         if( empty($visited) ){
             $posting->views()->create([ 'ip' => $request->getClientIp() ]);
         }

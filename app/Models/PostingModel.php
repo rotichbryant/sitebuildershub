@@ -12,7 +12,9 @@ class PostingModel extends Model
 {
     use HasFactory, HasUuids;
     
-    protected $append = [
+    protected $appends = [
+        'link_images',
+        'quotation_link',
         'views_count'
     ];
         
@@ -55,7 +57,7 @@ class PostingModel extends Model
     protected $with = [
         'views',
         'user'
-    ];
+    ];    
     
     /**
      * Accessor to convert the stored images from JSON to a collection.
@@ -65,14 +67,13 @@ class PostingModel extends Model
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getImagesAttribute(): \Illuminate\Support\Collection
+    public function getLinkImagesAttribute()
     {
-        return collect(json_decode($this->attributes['images']))
-            ->map(function ($image) {
+        return collect(json_decode($this->attributes['images']))->map(function ($image) {
                 // Convert the image path to an absolute URL
                 return asset('storage/images/' . $image);
-            });
-    }
+            })->toArray();
+    } 
 
     /**
      * Accessor to convert the stored images from JSON to a collection.
@@ -82,9 +83,9 @@ class PostingModel extends Model
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getQuotationAttribute()
+    public function getQuotationLinkAttribute()
     {
-        return asset('storage/quotation/'.$this->attributes['quotation']);
+        return !empty($this->attributes['quotation']) ? asset('storage/quotation/'.$this->attributes['quotation']) : null;
     }
 
     /**

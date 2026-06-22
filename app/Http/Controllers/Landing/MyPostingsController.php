@@ -83,7 +83,35 @@ class MyPostingsController extends Controller
         $image->move(storage_path('app/public/quotation'), $name);
 
         return response()->json(array('name' => $name ));
-    }        
+    } 
+    
+    /**
+     * Display the specified resource.
+     */
+    public function quotationRemove(PostingModel $posting, Request $request)
+    {
+        $filename = $request->input('filename');
+
+        $posting->update(['quotation' => ""]);
+
+        Storage::disk('public')->delete('/quotation/'.$filename);
+
+        return back() ;
+    }   
+    
+    /**
+     * Display the specified resource.
+     */
+    public function imageRemove(PostingModel $posting, Request $request)
+    {
+        $filename = $request->input('filename');
+
+        $posting->update(['images' => collect($posting->images)->filter( fn ($image) => $image != $filename )]);
+
+        Storage::disk('public')->delete('/images/'.$filename);
+
+        return back();
+    }       
 
     /**
      * Store a newly created resource in storage.
@@ -159,7 +187,6 @@ class MyPostingsController extends Controller
 
         } catch(Error $error) {
 
-            print_r($error);
             return back()->with('message', 'Something went wrong. Please try again.');
 
         }
@@ -170,9 +197,12 @@ class MyPostingsController extends Controller
      */
     public function show(PostingModel $posting)
     {
+        $categories  = CategoryModel::with(['subCategories'])->get();
+        $locations   = config('location');
+
         $posting->load(['categories','promotions']);
                                
-        return Inertia::render('Landing/ViewMyPosting',compact('posting'));
+        return Inertia::render('Landing/ViewMyPosting',compact('categories','locations','posting'));
     }
 
     /**
@@ -186,9 +216,21 @@ class MyPostingsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostingModel $posting, Request $request)
     {
         //
+        $validated = $request->validate([
+            'categories'   => 'required|array',
+            'description'  => 'required|string',
+            'phone_number' => 'required|string',
+            'images'       => 'required|array',
+            'quotation'    => 'required|string',
+            'title'        => 'required|string',
+        ]);
+
+        $posting->update($validated);
+
+        return back()->with('message','Posting has been updated.');
     }
 
     /**

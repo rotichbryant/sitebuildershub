@@ -64,14 +64,17 @@ Route::name('landing.')->group(function () {
     Route::middleware('landing.auth')->group(function () {
         Route::get('/overview',                [LandingOverviewController::class, 'index'])->name('overview');
 
-        Route::get('/mypostings/{posting}/view',      [MyPostingsController::class, 'show'])->name('mypostings.show');    
-        Route::get('/mypostings/create',              [MyPostingsController::class, 'create'])->name('mypostings.create');
-        Route::get('/mypostings',                     [MyPostingsController::class, 'index'])->name('mypostings');
-        Route::post('/mypostings/quotation/upload',   [MyPostingsController::class, 'quotationUpload'])->name('mypostings.quotation.upload');
-        Route::post('/mypostings/images/upload',      [MyPostingsController::class, 'imageUpload'])->name('mypostings.image.upload');
-        Route::post('/mypostings/promote',            [MyPostingsController::class, 'promote'])->name('mypostings.promote');
-        Route::post('/mypostings',                    [MyPostingsController::class, 'store'])->name('mypostings.store');
-        Route::delete('/mypostings/{posting}/delete', [MyPostingsController::class, 'destroy'])->name('mypostings.delete');
+        Route::get('/mypostings/{posting}/view',             [MyPostingsController::class, 'show'])->name('mypostings.show');    
+        Route::get('/mypostings/create',                     [MyPostingsController::class, 'create'])->name('mypostings.create');
+        Route::get('/mypostings',                            [MyPostingsController::class, 'index'])->name('mypostings');
+        Route::post('/mypostings/quotation/upload',          [MyPostingsController::class, 'quotationUpload'])->name('mypostings.quotation.upload');
+        Route::post('/mypostings/images/upload',             [MyPostingsController::class, 'imageUpload'])->name('mypostings.image.upload');
+        Route::post('/mypostings/promote',                   [MyPostingsController::class, 'promote'])->name('mypostings.promote');
+        Route::post('/mypostings',                           [MyPostingsController::class, 'store'])->name('mypostings.store');
+        Route::put('/mypostings/{posting}/quotation/remove', [MyPostingsController::class, 'quotationRemove'])->name('mypostings.quotation.remove');
+        Route::put('/mypostings/{posting}/images/remove',    [MyPostingsController::class, 'imageRemove'])->name('mypostings.image.remove');
+        Route::put('/mypostings/{posting}/update',           [MyPostingsController::class, 'update'])->name('mypostings.update');
+        Route::delete('/mypostings/{posting}/delete',        [MyPostingsController::class, 'destroy'])->name('mypostings.delete');
         
         Route::get('transactions/{promotion}/complete',[LandingTransactionController::class, 'update'])->name('transactions.promotion.complete');
         Route::put('transactions/{promotion}/create',  [LandingTransactionController::class, 'create'])->name('transactions.promotion.create');
@@ -87,6 +90,7 @@ Route::name('landing.')->group(function () {
         Route::post('/profile/business',       [LandingProfileController::class, 'business'])->name('profile.business');
         Route::post('/profile/projects',       [LandingProfileController::class, 'projects'])->name('profile.project');
         Route::post('/profile/personal',       [LandingProfileController::class, 'personal'])->name('profile.personal');
+        Route::post('/profile/subscription',   [LandingProfileController::class, 'subscription'])->name('profile.subscription');
         Route::post('/forbidden',              [LandingProfileController::class, 'forbidden'])->name('forbidden');
         // Route::put('/profile/edit', [LandingProfileController::class, 'index'])->name('profile.edit');
 

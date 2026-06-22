@@ -44,45 +44,34 @@
                             <!-- <PostingFilter /> -->
                             <div class="ml-lg-0 ml-md-15">
                                 <div class="row">
-                                    <WhenVisible data="$data.postings" :buffer="500">
-                                        <template #fallback>
-                                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;">
-                                                <h6 class="text-primary">
-                                                    <i class="fa fa-spinner fa-spin mr-2"></i>
-                                                    <span>Loading...</span>
-                                                </h6>
-                                            </div>  
-                                        </template>
-                                        <template v-for="(posting,index) in $data.postings.data" :key="posting.id" >
-                                            <Posting 
-                                                :data="posting" 
-                                                :delay="(index + 1) * 800"
-                                            />                                        
-                                        </template>
-                                        <template v-if="isEmpty($data.postings.data)" >
-                                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" >
-                                                <h6 class="text-primary">
-                                                    <i class="fa fa-exclamation-circle mr-2"></i>
-                                                    <span>Nothing Found Here</span>
-                                                </h6>
-                                            </div>                                              
-                                        </template>
-                                        <template v-if="!isEmpty($data.postings.data)" >
-                                            <div class="col-md-12 d-flex justify-content-center">
-                                                <nav aria-label="Page navigation">
-                                                    <ul class="pagination">
-                                                        <li class="page-item" v-bind:class="{ 'disabled': page.url == null, 'active': page.active }" v-for="(page,key) in $data.postings.links" :key="key">
-                                                            <a 
-                                                                class="page-link" 
-                                                                :href="page.url"                                                                 
-                                                                v-html="page.label"
-                                                            ></a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
-                                            </div>                                            
-                                        </template>
-                                    </WhenVisible >                                                                         
+                                    <template v-for="(posting,index) in $data.postings.data" :key="posting.id" >
+                                        <Posting 
+                                            :data="posting" 
+                                        />                                        
+                                    </template>
+                                    <template v-if="isEmpty($data.postings.data)" >
+                                        <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" >
+                                            <h6 class="text-primary">
+                                                <i class="fa fa-exclamation-circle mr-2"></i>
+                                                <span>Nothing Found Here</span>
+                                            </h6>
+                                        </div>                                              
+                                    </template>
+                                    <template v-if="!isEmpty($data.postings.data)" >
+                                        <div class="col-md-12 d-flex justify-content-center">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    <li class="page-item" v-bind:class="{ 'disabled': page.url == null, 'active': page.active }" v-for="(page,key) in $data.postings.links" :key="key">
+                                                        <a 
+                                                            class="page-link" 
+                                                            :href="page.url"                                                                 
+                                                            v-html="page.label"
+                                                        ></a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>                                            
+                                    </template>                                                                     
                                 </div>                                
                             </div>
                             <!-- form end -->

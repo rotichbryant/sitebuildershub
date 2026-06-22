@@ -248,8 +248,6 @@ const addFiles = async() => {
             
         }     
         
-        console.log($data.form.link_images);
-        
         $data.form.link_images.forEach(
             async (image: string, key: number) => {
 
@@ -274,7 +272,6 @@ const addFiles = async() => {
 onMounted(
     () => {
         $data.form            = pick(usePage().props.posting ,['title','description','categories','images','link_images','quotation_link','location','phone_number','quotation'])
-        $data.form.categories = $data.form.categories.map( (value: any) => value.sub_category )
         addFiles();
     }
 )

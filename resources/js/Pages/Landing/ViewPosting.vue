@@ -59,7 +59,7 @@
                                         <h3 class="font-size-8 text-black-2 font-weight-semibold">{{ posting.title }}</h3>
                                         <ul class="list-unstyled d-flex flex-wrap">
                                             <li v-for="(value,index) in posting.categories">
-                                                <a class="badge badge-primary p-4 mr-2" :href="route('landing.postings',{category: value.sub_category.name})">{{ value.sub_category.name }}</a>
+                                                <a class="badge badge-primary p-4 mr-2" :href="route('landing.postings',{category: value.name})">{{ value.name }}</a>
                                             </li>
                                         </ul>
                                         <h4 class="font-size-6 mt-5 text-black-2 font-weight-semibold">Description</h4>

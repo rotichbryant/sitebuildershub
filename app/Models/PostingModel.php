@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class PostingModel extends Model
 {
@@ -107,11 +108,11 @@ class PostingModel extends Model
      * This relationship is defined by the `category_id` foreign key on the `posting_categories` table,
      * which references the `id` column on the `categories` table.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\PostingCategoryModel>
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough<\App\Models\SubCategoryModel>
      */
-    public function categories(): HasMany
+    public function categories(): HasManyThrough
     {
-        return $this->hasMany(PostingCategoryModel::class,'posting_id');
+        return $this->hasManyThrough(SubCategoryModel::class,PostingCategoryModel::class,'posting_id','id','id','sub_category_id')->with(['category']);
     }  
 
     /**

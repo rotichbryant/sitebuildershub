@@ -228,7 +228,38 @@ class MyPostingsController extends Controller
             'title'        => 'required|string',
         ]);
 
-        $posting->update($validated);
+        $updated_categories = collect($validated['categories'])->map( fn ($category) => $category['id'] );
+        $stored_categories  = collect($posting->categories)->map( fn ($category) => $category->id );
+        $add_categories     = collect($updated_categories)->diff($stored_categories);
+        $delete_categories  = collect($stored_categories)->diff($updated_categories);
+
+        if( !empty($add_categories) ){
+            
+            $add_categories->each( 
+                function($category,$key) use($posting) {
+                    $target = SubCategoryModel::with(['category'])->find($category);
+                    PostingCategoryModel::create([
+                        'posting_id' => $posting->id,
+                        'category_id' =>  $target->category->id,
+                        'sub_category_id' => $category
+                    ]);
+                }
+            );
+
+        }
+
+        if( !empty($delete_categories) ){
+            
+            $delete_categories->each( 
+                function($category,$key) use($posting) {
+                    PostingCategoryModel::where([
+                        'posting_id' => $posting->id,
+                        'sub_category_id' => $category
+                    ])->delete();
+                }
+            );
+
+        }        
 
         return back()->with('message','Posting has been updated.');
     }

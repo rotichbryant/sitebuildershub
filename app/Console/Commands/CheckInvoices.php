@@ -66,7 +66,7 @@ class CheckInvoices extends Command
 
                         } 
                         
-                        if( $days_to_expiry == -1){
+                        if( $days_to_expiry < 0){
                             $invoice->targetable()->update([
                                 'billing_cycle'   => 'infinity',
                                 'start_date'      => null,
@@ -112,7 +112,7 @@ class CheckInvoices extends Command
 
                         } 
                         
-                        if( $days_to_expiry == -1){
+                        if( $days_to_expiry < 0 ){
                             $invoice->targetable()->update([
                                 'billing_cycle'   => 'infinity',
                                 'start_date'      => null,

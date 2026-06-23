@@ -49,7 +49,8 @@
                                         <textarea type="text" class="form-control" placeholder="Description" rows="10" v-model="$data.form.description"></textarea>
                                     </div>             
                                     <div class="col-12 px-0 mb-4">
-                                        <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Images</label>
+                                        <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Images</label><br>
+                                        <label class="text-danger">Recommended image dimensions is 1080px by 720px</label>
                                         <vue-dropzone
                                             ref="images" 
                                             id="images" 
@@ -57,7 +58,7 @@
                                             @vdropzone-sending="addExtraFormData"
                                             @vdropzone-success="successFileUpload"
                                             @vdropzone-removed-file="handleFileRemoval"
-                                        />    
+                                        />   
                                     </div>
                                     <div class="col-12 px-0 mb-4">
                                         <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Catalogue</label>
@@ -69,7 +70,10 @@
                                             @vdropzone-success="successCatalogueUpload"
                                             @vdropzone-removed-file="handleCatalogueRemoval"
                                         />    
-                                    </div>                                                                                                                              
+                                    </div>  
+                                    <div class="col-12 px-0 mb-4">
+
+                                    </div>                                                                                                                            
                                 </div>
                                 <div class="col-12 text-center">
                                     <button type="button" class="btn btn-primary text-uppercase h-px-48" @click="submit" >Save Changes</button>

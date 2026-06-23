@@ -55,6 +55,7 @@
                                             <div class="col-12">
                                                 <h3 class="font-size-8 text-black-2 font-weight-semibold">{{ project.title }}</h3>
                                                 <p class="text-primary"><i class="fa fa-user mr-2"></i> {{ project.user.name }}</p>
+                                                <p class="text-primary"><i class="fa fa-phone mr-2"></i> {{ project.user.phone_number }}</p>
                                             </div>
                                             <div class="col-12">
                                                 <ul class="list-unstyled d-flex flex-wrap">

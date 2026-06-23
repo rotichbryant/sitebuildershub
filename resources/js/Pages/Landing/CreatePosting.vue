@@ -45,7 +45,8 @@
                                                     <p v-show="has($data.errors,'categories')" class="text-danger">{{ $data.errors.categories }}</p>              
                                                 </div>
                                                 <div class="col-12">
-                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Photo</label>
+                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Photo</label><br>
+                                                    <label class="text-danger">Recommended image dimensions is 1080px by 720px</label>
                                                     <vue-dropzone
                                                         ref="images" 
                                                         id="images" 

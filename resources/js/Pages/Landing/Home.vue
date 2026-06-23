@@ -96,7 +96,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12" v-if="!isEmpty($props.postings)">
                         <Swiper                          
-                            :slides-per-view="3"
+                            :slides-per-view="5"
                             :spaceBetween="10" 
                             :modules="$data.modules" 
                             :loop="true" 

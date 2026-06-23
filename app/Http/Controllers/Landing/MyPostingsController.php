@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Intervention\Image\Laravel\Facades\Image;  // facade
+use Illuminate\Validation\Rules\File;
 
 class MyPostingsController extends Controller
 {
@@ -61,7 +62,14 @@ class MyPostingsController extends Controller
     public function imageUpload(PostingFileUploadRequest $request)
     {
         //
-        $uploaded = $request->file('image');
+        $validated = $request->validate([
+            'image' => [
+                'required',
+                File::image()->types(['jpeg,png,jpg'])->max(10 * 1024 * 1024)
+            ]
+        ]);     
+
+        $uploaded = $validated['image'];
         $name     = Str::uuid().'.'.$uploaded->getClientOriginalExtension();
 
         $image = Image::read($uploaded);
@@ -78,7 +86,14 @@ class MyPostingsController extends Controller
     public function quotationUpload(QuotationUploadRequest $request)
     {
         //
-        $image = $request->file('quotation');
+        $validated = $request->validate([
+            'quotation' => [
+                'required',
+                File::image()->types(['jpeg,png,jpg'])->max(10 * 1024 * 1024)
+            ]
+        ]);
+
+        $image = $validated['quotation'];        
         $name  = Str::uuid().'.'.$image->getClientOriginalExtension();
         $image->move(storage_path('app/public/quotation'), $name);
 
@@ -90,13 +105,15 @@ class MyPostingsController extends Controller
      */
     public function quotationRemove(PostingModel $posting, Request $request)
     {
-        $filename = $request->input('filename');
+        $validated = $request->validated([
+            'filename' => 'required|string'
+        ]);
 
         $posting->update(['quotation' => ""]);
 
-        Storage::disk('public')->delete('/quotation/'.$filename);
+        Storage::disk('public')->delete('/quotation/'.$validated['filename']);
 
-        return back() ;
+        return back();
     }   
     
     /**

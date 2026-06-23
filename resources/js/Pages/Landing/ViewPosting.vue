@@ -17,7 +17,7 @@
                         <div class="row justify-content-center">
                             <div class="col-12 dark-mode-texts">
                                 <div class="mb-9">
-                                    <a class="d-flex align-items-center ml-4" :href="route('landing.mypostings')"> 
+                                    <a class="d-flex align-items-center ml-4" :href="route('landing.postings')"> 
                                         <i class="fa fa-chevron-left bg-white circle-40 mr-5 text-black font-weight-bold shadow-8"></i>
                                         <span class="text-uppercase font-size-3 font-weight-bold text-gray">Back</span>
                                     </a>

@@ -26,7 +26,7 @@ class QuotationUploadRequest extends FormRequest
             //
             'quotation' => [
                 'required',
-                File::types(['pdf'])->max(10000)
+                File::types(['application/pdf'])->max(10000)
             ],
         ];
     }

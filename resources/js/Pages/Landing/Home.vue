@@ -96,8 +96,8 @@
                 <div class="row justify-content-center">
                     <div class="col-12" v-if="!isEmpty($props.postings)">
                         <Swiper                          
-                            :slides-per-view="5"
-                            :spaceBetween="10" 
+                            :slides-per-view="3"
+                            :spaceBetween="0" 
                             :modules="$data.modules" 
                             :loop="true" 
                             :pagination="{clickable: false}"
@@ -107,7 +107,9 @@
                             parallax       
                         >
                             <SwiperSlide v-for="(posting,index) in $props.postings" :key="index">
-                                <img :src="posting.link_images[0]" height="25%" width="50%">
+                                <a :href="route('landing.postings.view', { title: decodeURIComponent(posting.title) })" >
+                                    <img :src="posting.link_images[0]" height="10%" width="90%">
+                                </a>
                             </SwiperSlide>
                         </Swiper>                        
                     </div>

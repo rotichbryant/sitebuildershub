@@ -86,14 +86,8 @@ class MyPostingsController extends Controller
     public function quotationUpload(QuotationUploadRequest $request)
     {
         //
-        $validated = $request->validate([
-            'quotation' => [
-                'required',
-                File::image()->types(['jpeg,png,jpg'])->max(10 * 1024 * 1024)
-            ]
-        ]);
-
-        $image = $validated['quotation'];        
+        $image = $request->file('quotation');
+               
         $name  = Str::uuid().'.'.$image->getClientOriginalExtension();
         $image->move(storage_path('app/public/quotation'), $name);
 

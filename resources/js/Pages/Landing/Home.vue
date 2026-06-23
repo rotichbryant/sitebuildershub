@@ -102,12 +102,12 @@
                             :loop="true" 
                             :pagination="{clickable: false}"
                             :centeredSlides="true"
-                            :autoplay="{delay: 1000,disableOnInteraction: false}"  
+                            :autoplay="{delay: 2000,disableOnInteraction: false}"  
                             style="z-index: 0;"    
                             parallax       
                         >
                             <SwiperSlide v-for="(posting,index) in $props.postings" :key="index">
-                                <img :src="posting.link_images[0]" height="100%" width="75%" >
+                                <img :src="posting.link_images[0]" height="100%" >
                             </SwiperSlide>
                         </Swiper>                        
                     </div>

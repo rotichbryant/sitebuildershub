@@ -57,7 +57,11 @@ class ProfileController extends Controller
             break;   
             case 'invoices':
                 $data['invoices'] = $user->invoices()->paginate(10);
-            break;                        
+            break; 
+            case 'subscription':
+                $data['subscription'] = $user->subscription;
+                $data['active_subscription'] = $user->active_subscription;
+            break;                                    
             case 'business':
                 $data['maps']              = config('services.google');
                 $data['business_profile']  = $user->business_profile;

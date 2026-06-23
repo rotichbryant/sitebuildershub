@@ -24,11 +24,12 @@ class HomeController extends Controller
         $subscriptions  = SubscriptionModel::get();
         $postings       = PostingModel::get()->sortBy('views_count');
         $placements     = PlacementModel::with(['promotions'])->whereIn('section',['top-banner'])->filterPromotion()->get();
+        $count_postings = PostingModel::count();
 
         // $poromotions = PromotionModel::active()->whereBetween()
         $session     = session('status');
 
-        return Inertia::render('Landing/Home',compact('categories','postings','session','subscriptions','placements'));
+        return Inertia::render('Landing/Home',compact('categories','count_postings','postings','session','subscriptions','placements'));
     }
 
     /**

@@ -33,6 +33,7 @@
                             </div>  
                             <div class="col-12">
                                 <h6 class="text-primary"><i class="fa fa-user mr-2"></i> {{ project.user.name }}</h6>
+                                <h6 class="text-primary"><i class="fa fa-phone mr-2"></i> {{ project.user.phone_number }}</h6>
                             </div>                          
                         </div>                                                        
                     </div>

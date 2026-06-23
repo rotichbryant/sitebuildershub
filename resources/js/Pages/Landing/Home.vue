@@ -6,7 +6,7 @@
                 <div class="container d-flex align-items-center justify-content-center py-15 py-lg-23">
                     <div class="">
                         <div class="text-primary font-size-5 font-weight-semibold mb-7">
-                        #4923 adverts posted right now
+                        #{{ count_postings }} adverts posted right now
                         </div>
                         <h1 class="font-size-11 mb-9 text-black-2">Find what you are looking for ?</h1>
                         <p class="font-size-5">Here we give you the best construction products readily available for you to pick.</p>
@@ -82,7 +82,7 @@
 
         <!-- Hero Area -->
         <!-- featuredJobOne Area -->
-        <div class="pt-11 pt-lg-27 pb-7 pb-lg-26 bg-black-2 dark-mode-texts">
+        <div class="pt-11 pt-lg-27 pb-7 pb-lg-26">
             <div class="container">
                 <!-- Section Top -->
                 <div class="row align-items-center pb-14">
@@ -94,27 +94,23 @@
                 </div>
                 <!-- End Section Top -->
                 <div class="row justify-content-center">
-                    <WhenVisible data="$props.postings">
-                        <template #fallback>
-                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;">
-                                <h6 class="text-primary">
-                                    <i class="fa fa-spinner fa-spin mr-2"></i>
-                                    <span>Loading...</span>
-                                </h6>
-                            </div>  
-                        </template>    
-                        <template v-for="(posting,index) in $props.postings" :key="posting.id" >
-                            <TrendingPosting :data="posting" :delay="(index + 1 ) * 800" />
-                        </template>
-                        <template v-if="isEmpty($props.postings)">
-                            <div class="col-12 d-flex align-items-center justify-content-center" style="height: 50vh;" v-if="isEmpty($props.postings)">
-                                <h6 class="text-primary">
-                                    <i class="fa fa-exclamation-circle mr-2"></i>
-                                    <span>Nothing Found Here</span>
-                                </h6>
-                            </div>                                              
-                        </template>                        
-                    </WhenVisible>  
+                    <div class="col-12" v-if="!isEmpty($props.postings)">
+                        <Swiper                          
+                            :slides-per-view="5"
+                            :spaceBetween="30" 
+                            :modules="$data.modules" 
+                            :loop="true" 
+                            :pagination="{clickable: false}"
+                            :centeredSlides="true"
+                            :autoplay="{delay: 1000,disableOnInteraction: false}"  
+                            style="z-index: 0;"    
+                            parallax       
+                        >
+                            <SwiperSlide v-for="(posting,index) in $props.postings" :key="index">
+                                <img :src="posting.link_images[0]" height="100%" width="75%" >
+                            </SwiperSlide>
+                        </Swiper>                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,6 +139,7 @@ import { TrendingPosting } from '@/Components/Landing';
 
 const $props: any = defineProps({
     categories:    Array,
+    count_postings: Number,
     postings:      Array,
     placements:    Array,
     subscriptions: Array,

@@ -10,6 +10,7 @@ export { default as BusinessDetailsTab } from './Tabs/BusinessDetails.vue';
 export { default as InvoicesTab } from './Tabs/Invoices.vue';
 export { default as PersonalDetailsTab } from './Tabs/PersonalDetails.vue';
 export { default as ProjectDetailsTab } from './Tabs/ProjectDetails.vue';
+export { default as SubscriptionTab } from './Tabs/Subscription.vue';
 
 export { default as Comment } from './Comment.vue';
 

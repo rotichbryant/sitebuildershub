@@ -75,7 +75,7 @@
                                 <!-- Top Start -->
                                 <button class="btn btn-primary w-100 btn-lg mb-4" @click="getQuote" :disabled="$data.loaders.fetch">
                                     <i class="fa fa-spinner fa-spin" v-if="$data.loaders.fetch"></i>
-                                    Get Quotation
+                                    Get Catalogue
                                 </button>  
                                 <!-- Top Start -->
                                 <div class="bg-white shadow-9 rounded-4 mb-6">
@@ -143,7 +143,7 @@ const getQuote = async () => {
         // Create a temporary link
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `${moment().unix()} - Quotation.pdf`); // file name
+        link.setAttribute('download', `${moment().unix()} - Catalogue.pdf`); // file name
         document.body.appendChild(link);
         link.click();
 

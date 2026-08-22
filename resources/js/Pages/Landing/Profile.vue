@@ -10,6 +10,9 @@
                                     <li :class="`list-group-item ${$props.tab == 'personal' ? 'active' : '' }`">
                                         <a :href="route('landing.profile', { tab: 'personal' })" :class="`${$props.tab == 'personal' ? 'text-white' : '' }`"><i class="fa fa-user mr-2"></i>Personal Details</a>
                                     </li>
+                                    <li :class="`list-group-item ${$props.tab == 'subscription' ? 'active' : '' }`">
+                                        <a :href="route('landing.profile', { tab: 'subscription' })" :class="`${$props.tab == 'subscription' ? 'text-white' : '' }`"><i class="fa fa-check-circle mr-2"></i>Subscription</a>
+                                    </li>   
                                     <li :class="`list-group-item ${$props.tab == 'invoices' ? 'active' : '' }`">
                                         <a :href="route('landing.profile', { tab: 'invoices' })" :class="`${$props.tab == 'invoices' ? 'text-white' : '' }`"><i class="fa fa-file mr-2"></i>Invoices</a>
                                     </li>                                    
@@ -45,6 +48,7 @@
                             <div class="col-md-9 col-xs-12 ">
                                 <PersonalDetailsTab v-if="$props.tab == 'personal'" />
                                 <InvoicesTab v-if="$props.tab == 'invoices'" />
+                                <SubscriptionTab v-if="$props.tab == 'subscription'" />
                                 <ProjectDetailsTab v-if="$props.tab == 'projects' && subscription.features.for_professionals" />
                                 <BusinessDetailsTab v-if="$props.tab == 'business' && subscription.features.for_businesses" />
                             </div>
@@ -89,7 +93,7 @@
     } */
 </style>
 <script lang="ts" setup>
-import { BusinessDetailsTab, InvoicesTab, PersonalDetailsTab, ProjectDetailsTab } from '@/Components/Landing';
+import { BusinessDetailsTab, InvoicesTab, SubscriptionTab, PersonalDetailsTab, ProjectDetailsTab } from '@/Components/Landing';
 import { LandingLayout } from '@/Layouts';
 import { Head, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';

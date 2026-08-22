@@ -2,7 +2,7 @@
     <div class="col-12">
         <h5>Invoices</h5>
         <div class="row">
-            <div class="col-md-6 col-xs-12" v-for="(invoice,index) in invoices.data">
+            <div class="col-md-6 col-xs-12 mb-5" v-for="(invoice,index) in invoices.data">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-10">
                         <div class="p-5 px-xs-12 pt-7 pb-5 text-center">
@@ -17,6 +17,7 @@
                                 <i class="fa fa-file"></i>
                             </p>
                             <p class="font-size-6 mb-3 text-success font-weight-semibold">#{{ invoice.invoice_number }}</p>
+                            {{ invoice.pending_transaction }}
                             <a class="btn btn-outline-primary" v-if="!isNull(invoice.pending_transaction)" :href="invoice.pending_transaction.payment_url">Pay</a>
                         </div>                        
                         <ul class="list-unstyled font-size-4 text-black-2">

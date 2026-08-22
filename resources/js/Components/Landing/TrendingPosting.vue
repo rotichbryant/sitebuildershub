@@ -3,7 +3,7 @@
         <!-- Start Feature One -->
         <div class="bg-white px-8 pt-9 pb-7 rounded-4 mb-9">
             <div class="d-block mb-7" style="height: 30vh;">
-                <img :src="posting.images[0]" :alt="posting.title" style="object-fit: cover; width: 100%; height: 100%;"/>
+                <img :src="posting.link_images[0]" :alt="posting.title" style="object-fit: cover; width: 100%; height: 100%;"/>
             </div>
             <h2 class="mt-n4">
                 <a class="font-size-7 text-black-2 font-weight-bold mb-4" href="">{{ posting.title }}</a>

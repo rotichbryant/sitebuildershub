@@ -56,13 +56,13 @@
             </div>
             <div class="col-md-6 col-sm-12 col-xs-12" v-if="!isEmpty($data.placements)">
               <Swiper 
-                  slidesPerView="auto" 
-                  :spaceBetween="30" 
-                  :modules="$data.modules" 
-                  :loop="true" 
-                  :pagination="{clickable: false}"
-                  :centeredSlides="true"
-                  :autoplay="{delay: 2500,disableOnInteraction: true}"                
+                slidesPerView="auto" 
+                :spaceBetween="30" 
+                :modules="$data.modules" 
+                :loop="true" 
+                :pagination="{clickable: false}"
+                :centeredSlides="true"
+                :autoplay="{delay: 2500,disableOnInteraction: true}"                
               >
                   <SwiperSlide v-for="(image,index) in advert_images" :key="index">
                       <img :src="image.url" :height="image.height" width="100%" />

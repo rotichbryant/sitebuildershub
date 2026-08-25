@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Intervention\Image\Laravel\Facades\Image;  // facade
 use Illuminate\Validation\Rules\File;
+use Illuminate\Validation\Rule;
 
 class MyPostingsController extends Controller
 {
@@ -48,7 +49,7 @@ class MyPostingsController extends Controller
     {    
         Gate::authorize('create-posting');
 
-        $categories     = CategoryModel::with(['subCategories'])->get();
+        $categories     = CategoryModel::with(['subCategories','childSubCategories'])->get();
         $placements     = PlacementModel::get();
         $locations      = config('location');
         $status         = session('status');
@@ -65,17 +66,21 @@ class MyPostingsController extends Controller
         $validated = $request->validate([
             'image' => [
                 'required',
-                File::image()->types(['jpeg,png,jpg'])->max(10 * 1024 * 1024)
+                'image',
+                Rule::dimensions()->minWidth(1080)->minHeight(720),
+                // File::image()->types(['jpeg,png,jpg'])->max(10 * 1024 * 1024)
             ]
         ]);     
 
         $uploaded = $validated['image'];
         $name     = Str::uuid().'.'.$uploaded->getClientOriginalExtension();
 
-        $image = Image::read($uploaded);
-        $cropped = $image->cover(1024,720,50,50);
+        // $image = Image::read($uploaded);
+        // $cropped = $image->cover(1024,720,50,50);
 
-        $cropped->save(storage_path('app/public/images/'.$name));
+        Storage::disk('public')->put('images/'.$name,file_get_contents($uploaded));
+
+        // $cropped->save(storage_path('app/public/images/'.$name));
 
         return response()->json(array('name' => $name ));
     }    
@@ -153,12 +158,13 @@ class MyPostingsController extends Controller
             $posting                 = PostingModel::create($form);        
     
             PostingCategoryModel::insert(
-                collect($form['categories'])->map( 
+                collect($form['sub_categories'])->map( 
                     fn($value): array => [
                         'id'              => Str::uuid(),
                         'posting_id'      => $posting->id,
                         'category_id'     => $value['category_id'], 
-                        'sub_category_id' => $value['id'],
+                        'sub_category_id' => $value['sub_category_id'],
+                        'child_sub_category_id' => $value['id'],
                         'created_at'      => now(),
                         'updated_at'      => now()
                     ] 

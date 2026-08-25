@@ -17,7 +17,7 @@ class PostingController extends Controller
     public function index(Request $request)
     {
         $postings    = PostingModel::with(['categories']);
-        $categories  = CategoryModel::with(['subCategories'])->get();
+        $categories  = CategoryModel::with(['subCategories','childSubCategories'])->get();
         $placements  = PlacementModel::with(['promotions'])->whereIn('section',['advert'])->filterPromotion()->get();
         $queryParams = $request->query();
         $locations   = config('location');

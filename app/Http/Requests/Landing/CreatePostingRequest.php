@@ -27,6 +27,10 @@ class CreatePostingRequest extends FormRequest
                 'array',
                 'required'
             ],
+            'sub_categories' => [
+                'array',
+                'required'
+            ],            
             'description' => [
                 'string',
                 'required'

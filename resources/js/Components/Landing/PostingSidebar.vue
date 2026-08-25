@@ -53,6 +53,19 @@
                 v-model="filters.categories"
             />
         </div>
+        <div class="widgets mb-4">
+            <h4 class="font-size-6 font-weight-semibold">Sub Categories</h4>
+            <Multiselect 
+                :group-select="true"
+                group-values="child_sub_categories" 
+                group-label="category"
+                :options="categories"
+                :multiple="true"
+                track-by="name" 
+                label="name"
+                v-model="filters.sub_categories"
+            />
+        </div>        
         <!-- Sidebar End -->        
         <div class="col-12 px-0 py-3">
             <button class="btn btn-primary text-uppercase font-size-3 w-100" type="button" @click="$emit('filter')">

@@ -57,6 +57,7 @@
                                             :options="$data.photo_options"
                                             @vdropzone-sending="addExtraFormData"
                                             @vdropzone-success="successFileUpload"
+                                            @vdropzone-error="errorFileUpload"
                                             @vdropzone-removed-file="handleFileRemoval"
                                         />   
                                     </div>
@@ -142,6 +143,12 @@ const successFileUpload = (_: any, { name }: any) => {
     // Add the file name to the images array
     $data.form.images.push(name);
 }
+
+const errorFileUpload = (_: any, { name }: any) => {
+    // Add the file name to the images array
+    $data.form.images.push(name);
+}
+
 
 const successCatalogueUpload = (_: any, { name }: any) => {
     // Add the file name to the images array

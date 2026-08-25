@@ -107,6 +107,7 @@ const $data: any  = reactive({
     postings:     usePage().props.postings,
     filters:{
         categories:  ref([]),
+        sub_categories:  ref([]),
         cities:      ref([]),
         price_range: String(),
         name:        ref([])
@@ -140,6 +141,9 @@ const applyFilter = () => {
             case 'categories':
                 set(filters, 'categories', decodeURIComponent(get($data.filters,value).map( (category:any) => category.name ).join(',')));
             break;
+            case 'sub_categories':
+                set(filters, 'sub_categories', decodeURIComponent(get($data.filters,value).map( (category:any) => category.name ).join(',')));
+            break;            
             case 'cities':
                 set(filters, 'cities', decodeURIComponent(get($data.filters,value).map( (city:any) => city.name ).join(',')));
             break;

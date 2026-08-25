@@ -41,9 +41,22 @@
                                                         track-by="name" 
                                                         label="name"
                                                         v-model="$data.active_form.categories"
+                                                        @select="select_category"
+                                                        @remove="deselect_category"
                                                     />                                                    
                                                     <p v-show="has($data.errors,'categories')" class="text-danger">{{ $data.errors.categories }}</p>              
                                                 </div>
+                                                <div class="col-12 mb-4">
+                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Sub Category</label>
+                                                    <Multiselect 
+                                                        :options="sub_categories"
+                                                        :multiple="true"
+                                                        track-by="name" 
+                                                        label="name"
+                                                        v-model="$data.active_form.sub_categories"
+                                                    />                                                    
+                                                    <p v-show="has($data.errors,'categories')" class="text-danger">{{ $data.errors.sub_categories }}</p>              
+                                                </div>                                                
                                                 <div class="col-12">
                                                     <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Photo</label><br>
                                                     <label class="text-danger">Recommended image dimensions is 1080px by 720px</label>
@@ -255,6 +268,7 @@ const $data: any  = reactive({
         maxFilesize:     10.0,
     },
     selected_placement: {},
+    selected_category:  "",
     errors: {},
     form:   {},
     modals: {
@@ -286,6 +300,7 @@ const $data: any  = reactive({
     tab_forms: [
         {
             categories:   Array(),
+            sub_categories:   Array(),
             location:     String(),     
             images:       Array(),
         },
@@ -307,6 +322,7 @@ const $data: any  = reactive({
     schemas: [
         {
             categories:   array().min(1,'*At least one category is needed.').required("*Category is required"),
+            sub_categories:   array().min(1,'*At least one sub category is needed.').required("*Sub Category is required"),
             location:     string().required("*Location is required"),
             images:       array().min(1,'*Please select at least one image').required("*Please select at least one image"),
         },
@@ -348,6 +364,7 @@ const $data: any  = reactive({
     tab: 1,
 });
 
+
 /**
  * Asynchronously reads the contents of a file as a data URL and returns it.
  *
@@ -379,6 +396,14 @@ const handleLocationSelect = () => {
 
 
 const formSchema: any = computed( () => object().shape($data.active_schema) );
+
+const select_category = (item: any) => {
+    $data.selected_category = item.constructor == Array ? item[0].category_id : item.category_id
+}
+
+const deselect_category = (item: any) => {
+    $data.selected_category = "";
+}
 
 /**
  * Validates a form field based on the provided field name.
@@ -426,11 +451,17 @@ const addPromotionImage = async ({ target }: any) => {
     $data.readers.advert_image = await getImageFile(target);
 }
 
-const categories: any = computed( () => usePage().props.categories );
+const categories: any     = computed( () => usePage().props.categories );
 
-const locations: any  = computed( () => usePage().props.locations );
+const sub_categories: any = computed( 
+    () => {         
+        return $data.selected_category == "" ? [] : categories.value.find( item => item.id == $data.selected_category).child_sub_categories
+    }
+);
 
-const pageProps:  any = computed( () => usePage().props );
+const locations: any      = computed( () => usePage().props.locations );
+
+const pageProps:  any     = computed( () => usePage().props );
 
 const addExtraFormData = (file: any,xhr: any, formData: any) => {
     formData.append('_token', pageProps.value.csrf_token);

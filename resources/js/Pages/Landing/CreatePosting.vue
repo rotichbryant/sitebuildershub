@@ -91,7 +91,7 @@
                                                     <p v-show="has($data.errors,'description')" class="text-danger">{{ $data.errors.description }}</p>              
                                                 </div>
                                                 <div class="col-12">
-                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Quotation</label>
+                                                    <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Add Catalogue</label>
                                                     <vue-dropzone
                                                         ref="quotation" 
                                                         id="quotation" 
@@ -244,6 +244,7 @@ const $data: any  = reactive({
     active_form:   {},
     active_schema: {},
     photo_options: {
+        addRemoveLinks: true,
         paramName:      'image',
         url:            route('landing.mypostings.image.upload'),
         method:         'post',
